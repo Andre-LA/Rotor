@@ -89,8 +89,14 @@ function Motor:new_world(systems_names)
    }
 
    local new_world = self.worlds[self.last_world_id]
-   for sn=1,#systems_names do
-      new_world.systems[sn] = self.systems[systems_names[sn]].new(self, self.last_world_id)
+
+   for s=1, #self.systems, 2 do
+      for sn=1, #systems_names do
+         if systems_names[sn] == self.systems[s] then
+            new_world.systems[#new_world.systems+1] = self.systems[s+1].new(self, self.last_world_id)
+            break
+         end
+      end
    end
 
    return self.last_world_id
