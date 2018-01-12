@@ -1,20 +1,8 @@
---- Motor: An ECS-like lua library
--- @usage
--- -- see the main.lua file for a full example
--- local Motor = require ("motor/motor")
--- local motor = Motor.new(
---    { -- components constructors:
---        position = function(v) return {x = v.x, y = v.y} end,
---        velocity = function(v) return {x = v.x, y = v.y} end,
---        mesh     = function(v) return {mesh = love.graphics.newMesh(v.vertices, v.mode, v.usage)} end,
---        drawable = function(v) return {drawable = v.drawable} end,
---    },
---    { -- systems:
---       "move", require ("example_systems/move_system"),
---       "drawer", require ("example_systems/draw_drawable_system"),
---    }
--- )
+--- Motor: An ECS-like lua library.
+-- check @{main.lua|main.lua example}
 -- @see new
+-- @license MIT
+-- @author André Luiz Alvares
 -- @module Motor
 local motor = {}
 local Motor = {}
@@ -155,7 +143,7 @@ function Motor:get_world (world_id)
    return self.worlds[bin_search_with_key(self.worlds, world_id, 'id')]
 end
 
---- returns multiple @{world}s from multiple world ids
+--- returns multiple @{world|worlds} from multiple world ids
 -- @see world
 -- @function get_worlds
 -- @tparam {number} world_ids table of ids
@@ -204,7 +192,7 @@ function Motor.new_entity(world)
    return world.last_id -- return the id of created entity
 end
 
---- create multiple entities in a @{world}
+--- create multiple @{entity|entities} in a @{world}
 -- @usage
 -- local some_entities_ids = motor.new_entities(world_ref, 4)
 -- @tparam world world

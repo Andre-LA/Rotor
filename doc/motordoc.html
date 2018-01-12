@@ -56,29 +56,17 @@
 <div id="content">
 
 <h1>Module <code>Motor</code></h1>
-<p>Motor: An ECS-like lua library</p>
-<p></p>
+<p>Motor: An ECS-like lua library.</p>
+<p>
+ check <a href="examples/main.lua.html#">main.lua example</a></p>
     <h3>See also:</h3>
     <ul>
-         <a href="index.html#new">new</a>
+         <a href="motordoc.html#new">new</a>
     </ul>
-    <h3>Usage:</h3>
+    <h3>Info:</h3>
     <ul>
-        <pre class="example">-- see the main.lua file for a full example
-local Motor = require (&quot;motor/motor&quot;)
-local motor = Motor.new(
-   { -- components constructors:
-       position = function(v) return {x = v.x, y = v.y} end,
-       velocity = function(v) return {x = v.x, y = v.y} end,
-       mesh     = function(v) return {mesh = love.graphics.newMesh(v.vertices, v.mode, v.usage)} end,
-       drawable = function(v) return {drawable = v.drawable} end,
-   },
-   { -- systems:
-      &quot;move&quot;, require (&quot;example_systems/move_system&quot;),
-      &quot;drawer&quot;, require (&quot;example_systems/draw_drawable_system&quot;),
-   }
-)
-</pre>
+        <li><strong>License</strong>: MIT</li>
+        <li><strong>Author</strong>: André Luiz Alvares</li>
     </ul>
 
 
@@ -90,49 +78,49 @@ local motor = Motor.new(
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#call">call (function_name, ...)</a></td>
-	<td class="summary">calls a function (if it exists) in all systems in all <a href="index.html#world">world</a>s</td>
+	<td class="summary">calls a function (if it exists) in all systems in all <a href="motordoc.html#world">worlds</a></td>
 	</tr>
 </table>
 <h2><a href="#World_Functions">World Functions </a></h2>
 <table class="function_list">
 	<tr>
 	<td class="name" nowrap><a href="#new_world">new_world (systems_names)</a></td>
-	<td class="summary">creates a new <a href="index.html#world">world</a> inside motor instance</td>
+	<td class="summary">creates a new <a href="motordoc.html#world">world</a> inside motor instance</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#get_world">get_world (world_id)</a></td>
-	<td class="summary">returns the <a href="index.html#world">world</a> of this id</td>
+	<td class="summary">returns the <a href="motordoc.html#world">world</a> of this id</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#get_worlds">get_worlds (world_ids)</a></td>
-	<td class="summary">returns multiple <a href="index.html#world">world</a>s from multiple world ids</td>
+	<td class="summary">returns multiple <a href="motordoc.html#world">worlds</a> from multiple world ids</td>
 	</tr>
 </table>
 <h2><a href="#Entities_Functions">Entities Functions </a></h2>
 <table class="function_list">
 	<tr>
 	<td class="name" nowrap><a href="#new_entity">new_entity (world)</a></td>
-	<td class="summary">Create an <a href="index.html#entity">entity</a> in a <a href="index.html#world">world</a></td>
+	<td class="summary">Create an <a href="motordoc.html#entity">entity</a> in a <a href="motordoc.html#world">world</a></td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#new_entities">new_entities (world, quantity)</a></td>
-	<td class="summary">create multiple entities in a <a href="index.html#world">world</a></td>
+	<td class="summary">create multiple <a href="motordoc.html#entity">entities</a> in a <a href="motordoc.html#world">world</a></td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#get_entity">get_entity (world, entity_id)</a></td>
-	<td class="summary">get a <a href="index.html#entity">entity</a></td>
+	<td class="summary">get a <a href="motordoc.html#entity">entity</a></td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#get_entities">get_entities (world, entities)</a></td>
-	<td class="summary">get multiple <a href="index.html#entity">entities</a></td>
+	<td class="summary">get multiple <a href="motordoc.html#entity">entities</a></td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#set_components_on_entity">set_components_on_entity (world, entity, component_names_and_values)</a></td>
-	<td class="summary">set multiple components in an <a href="index.html#entity">entity</a></td>
+	<td class="summary">set multiple components in an <a href="motordoc.html#entity">entity</a></td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#destroy_entity">destroy_entity (world, entity_id)</a></td>
-	<td class="summary">destroy an <a href="index.html#entity">entity</a></td>
+	<td class="summary">destroy an <a href="motordoc.html#entity">entity</a></td>
 	</tr>
 </table>
 <h2><a href="#_Table__Structures">(Table) Structures </a></h2>
@@ -206,7 +194,7 @@ local motor = Motor.new(
     <strong>call (function_name, ...)</strong>
     </dt>
     <dd>
-    calls a function (if it exists) in all systems in all <a href="index.html#world">world</a>s
+    calls a function (if it exists) in all systems in all <a href="motordoc.html#world">worlds</a>
 
 
     <h3>Parameters:</h3>
@@ -240,14 +228,14 @@ local motor = Motor.new(
     <strong>new_world (systems_names)</strong>
     </dt>
     <dd>
-    creates a new <a href="index.html#world">world</a> inside motor instance
+    creates a new <a href="motordoc.html#world">world</a> inside motor instance
 
 
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">systems_names</span>
             <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">{string}</a></span>
-         each string is a system to be processed in the <a href="index.html#world">world</a>
+         each string is a system to be processed in the <a href="motordoc.html#world">world</a>
         </li>
     </ul>
 
@@ -255,13 +243,13 @@ local motor = Motor.new(
     <ol>
 
            <span class="types"><span class="type">number</span></span>
-        the id of the created <a href="index.html#world">world</a>
+        the id of the created <a href="motordoc.html#world">world</a>
     </ol>
 
 
     <h3>See also:</h3>
     <ul>
-         <a href="index.html#world">world</a>
+         <a href="motordoc.html#world">world</a>
     </ul>
 
     <h3>Usage:</h3>
@@ -275,28 +263,28 @@ local motor = Motor.new(
     <strong>get_world (world_id)</strong>
     </dt>
     <dd>
-    returns the <a href="index.html#world">world</a> of this id
+    returns the <a href="motordoc.html#world">world</a> of this id
 
 
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">world_id</span>
             <span class="types"><span class="type">number</span></span>
-         (integer) id of the <a href="index.html#world">world</a> to be obtained
+         (integer) id of the <a href="motordoc.html#world">world</a> to be obtained
         </li>
     </ul>
 
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="index.html#world">world</a></span>
+           <span class="types"><a class="type" href="motordoc.html#world">world</a></span>
         world reference
     </ol>
 
 
     <h3>See also:</h3>
     <ul>
-         <a href="index.html#world">world</a>
+         <a href="motordoc.html#world">world</a>
     </ul>
 
     <h3>Usage:</h3>
@@ -310,7 +298,7 @@ local motor = Motor.new(
     <strong>get_worlds (world_ids)</strong>
     </dt>
     <dd>
-    returns multiple <a href="index.html#world">world</a>s from multiple world ids
+    returns multiple <a href="motordoc.html#world">worlds</a> from multiple world ids
 
 
     <h3>Parameters:</h3>
@@ -324,14 +312,14 @@ local motor = Motor.new(
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="index.html#world">{world}</a></span>
+           <span class="types"><a class="type" href="motordoc.html#world">{world}</a></span>
         a table of worlds
     </ol>
 
 
     <h3>See also:</h3>
     <ul>
-         <a href="index.html#world">world</a>
+         <a href="motordoc.html#world">world</a>
     </ul>
 
 
@@ -345,13 +333,13 @@ local motor = Motor.new(
     <strong>new_entity (world)</strong>
     </dt>
     <dd>
-    Create an <a href="index.html#entity">entity</a> in a <a href="index.html#world">world</a>
+    Create an <a href="motordoc.html#entity">entity</a> in a <a href="motordoc.html#world">world</a>
 
 
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">world</span>
-            <span class="types"><a class="type" href="index.html#world">world</a></span>
+            <span class="types"><a class="type" href="motordoc.html#world">world</a></span>
 
         </li>
     </ul>
@@ -360,14 +348,14 @@ local motor = Motor.new(
     <ol>
 
            <span class="types"><span class="type">number</span></span>
-        id of the new <a href="index.html#entity">entity</a>
+        id of the new <a href="motordoc.html#entity">entity</a>
     </ol>
 
 
     <h3>See also:</h3>
     <ul>
-         <li><a href="index.html#entity">entity</a></li>
-         <li><a href="index.html#world">world</a></li>
+         <li><a href="motordoc.html#entity">entity</a></li>
+         <li><a href="motordoc.html#world">world</a></li>
     </ul>
 
     <h3>Usage:</h3>
@@ -381,18 +369,18 @@ local motor = Motor.new(
     <strong>new_entities (world, quantity)</strong>
     </dt>
     <dd>
-    create multiple entities in a <a href="index.html#world">world</a>
+    create multiple <a href="motordoc.html#entity">entities</a> in a <a href="motordoc.html#world">world</a>
 
 
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">world</span>
-            <span class="types"><a class="type" href="index.html#world">world</a></span>
+            <span class="types"><a class="type" href="motordoc.html#world">world</a></span>
 
         </li>
         <li><span class="parameter">quantity</span>
             <span class="types"><span class="type">number</span></span>
-         quantity of <a href="index.html#entity">entities</a> to be created in this <a href="index.html#world">world</a>
+         quantity of <a href="motordoc.html#entity">entities</a> to be created in this <a href="motordoc.html#world">world</a>
         </li>
     </ul>
 
@@ -416,33 +404,33 @@ local motor = Motor.new(
     <strong>get_entity (world, entity_id)</strong>
     </dt>
     <dd>
-    get a <a href="index.html#entity">entity</a>
+    get a <a href="motordoc.html#entity">entity</a>
 
 
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">world</span>
-            <span class="types"><a class="type" href="index.html#world">world</a></span>
+            <span class="types"><a class="type" href="motordoc.html#world">world</a></span>
          table (not world id)
         </li>
         <li><span class="parameter">entity_id</span>
             <span class="types"><span class="type">number</span></span>
-         id of the <a href="index.html#entity">entity</a> to be obtained
+         id of the <a href="motordoc.html#entity">entity</a> to be obtained
         </li>
     </ul>
 
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="index.html#entity">entity</a></span>
+           <span class="types"><a class="type" href="motordoc.html#entity">entity</a></span>
         entity reference of this id
     </ol>
 
 
     <h3>See also:</h3>
     <ul>
-         <li><a href="index.html#world">world</a></li>
-         <li><a href="index.html#entity">entity</a></li>
+         <li><a href="motordoc.html#world">world</a></li>
+         <li><a href="motordoc.html#entity">entity</a></li>
     </ul>
 
     <h3>Usage:</h3>
@@ -456,13 +444,13 @@ local motor = Motor.new(
     <strong>get_entities (world, entities)</strong>
     </dt>
     <dd>
-    get multiple <a href="index.html#entity">entities</a>
+    get multiple <a href="motordoc.html#entity">entities</a>
 
 
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">world</span>
-            <span class="types"><a class="type" href="index.html#world">world</a></span>
+            <span class="types"><a class="type" href="motordoc.html#world">world</a></span>
          of this entities
         </li>
         <li><span class="parameter">entities</span>
@@ -474,15 +462,15 @@ local motor = Motor.new(
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="index.html#entity">{entity}</a></span>
-        table of multiple <a href="index.html#entity">entities</a>
+           <span class="types"><a class="type" href="motordoc.html#entity">{entity}</a></span>
+        table of multiple <a href="motordoc.html#entity">entities</a>
     </ol>
 
 
     <h3>See also:</h3>
     <ul>
-         <li><a href="index.html#world">world</a></li>
-         <li><a href="index.html#entity">entity</a></li>
+         <li><a href="motordoc.html#world">world</a></li>
+         <li><a href="motordoc.html#entity">entity</a></li>
     </ul>
 
     <h3>Usage:</h3>
@@ -496,17 +484,17 @@ local motor = Motor.new(
     <strong>set_components_on_entity (world, entity, component_names_and_values)</strong>
     </dt>
     <dd>
-    set multiple components in an <a href="index.html#entity">entity</a>
+    set multiple components in an <a href="motordoc.html#entity">entity</a>
 
 
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">world</span>
-            <span class="types"><a class="type" href="index.html#world">world</a></span>
+            <span class="types"><a class="type" href="motordoc.html#world">world</a></span>
          table (not world id)
         </li>
         <li><span class="parameter">entity</span>
-            <span class="types"><a class="type" href="index.html#entity">entity</a></span>
+            <span class="types"><a class="type" href="motordoc.html#entity">entity</a></span>
          to be modified
         </li>
         <li><span class="parameter">component_names_and_values</span>
@@ -542,18 +530,18 @@ local motor = Motor.new(
     <strong>destroy_entity (world, entity_id)</strong>
     </dt>
     <dd>
-    destroy an <a href="index.html#entity">entity</a>
+    destroy an <a href="motordoc.html#entity">entity</a>
 
 
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">world</span>
-            <span class="types"><a class="type" href="index.html#world">world</a></span>
+            <span class="types"><a class="type" href="motordoc.html#world">world</a></span>
          table (not world id)
         </li>
         <li><span class="parameter">entity_id</span>
             <span class="types"><span class="type">number</span></span>
-         id of the <a href="index.html#entity">entity</a> to be destroyed
+         id of the <a href="motordoc.html#entity">entity</a> to be destroyed
         </li>
     </ul>
 
@@ -582,7 +570,7 @@ local motor = Motor.new(
     <ul>
         <li><span class="parameter">id</span>
             <span class="types"><span class="type">number</span></span>
-         id of this <a href="index.html#world">world</a>
+         id of this <a href="motordoc.html#world">world</a>
         </li>
         <li><span class="parameter">last_id</span>
             <span class="types"><span class="type">number</span></span>
@@ -590,10 +578,10 @@ local motor = Motor.new(
         </li>
         <li><span class="parameter">the</span>
             <span class="types"><span class="type">{system}</span></span>
-         systems that will be processed in this <a href="index.html#world">world</a>. It is automatically generated by systems_names
+         systems that will be processed in this <a href="motordoc.html#world">world</a>. It is automatically generated by systems_names
         </li>
         <li><span class="parameter">entities</span>
-            <span class="types"><a class="type" href="index.html#entity">{entity}</a></span>
+            <span class="types"><a class="type" href="motordoc.html#entity">{entity}</a></span>
 
         </li>
     </ul>
@@ -643,7 +631,7 @@ local motor = Motor.new(
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2018-01-12 00:55:47 </i>
+<i style="float:right;">Last updated 2018-01-12 12:12:08 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

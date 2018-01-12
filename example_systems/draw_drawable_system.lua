@@ -13,7 +13,6 @@ function Draw_Drawable_System:draw ()
    for e=#entities, 1, -1 do
       local e_drawable = entities[e].drawable
       local e_position = entities[e].position
-
       love.graphics.draw(e_drawable.drawable, e_position.x, e_position.y)
    end
 end
