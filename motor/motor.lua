@@ -89,6 +89,9 @@ function Motor:call(function_name, ...)
    end
 end
 
+--- World Functions
+-- @section World
+
 --- returns the @{world} of this id
 -- @see world
 -- @function get_world
@@ -148,7 +151,7 @@ local function update_systems_entities_on_add(world, entity)
       end
    end
 end
-
+t
 local function update_systems_entities_on_remove(world, entity_id)
    for s=1, #world.systems do
       local system = world.systems[s]
@@ -158,6 +161,9 @@ local function update_systems_entities_on_remove(world, entity_id)
       end
    end
 end
+
+--- Entities Functions
+-- @section Entity
 
 --- get a entity
 -- @see world
@@ -250,6 +256,8 @@ end
 
 
 return motor
+--- (Table) Structures
+-- @section structures
 
 --- World structure
 -- @tfield number id id of this @{world}
