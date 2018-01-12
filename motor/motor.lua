@@ -1,4 +1,5 @@
---- @module Motor
+--- Motor: An ECS-like library
+-- @module Motor
 local motor = {}
 local Motor = {}
 Motor.__index = Motor
@@ -92,28 +93,6 @@ end
 --- World Functions
 -- @section World
 
---- returns the @{world} of this id
--- @see world
--- @function get_world
--- @number world_id (integer) id of the @{world} to be obtained
--- @treturn world world reference
-function Motor:get_world (world_id)
-   return self.worlds[bin_search_with_key(self.worlds, world_id, 'id')]
-end
-
---- returns multiple @{world}s from multiple world ids
--- @see world
--- @function get_worlds
--- @tparam {number} world_ids table of ids
--- @treturn {world} a table of worlds
-function Motor:get_worlds (world_ids)
-   local worlds = {}
-      for wi=1,#world_ids do
-         worlds[wi] = self:get_world(world_ids[wi])
-      end
-   return worlds
-end
-
 --- creates a new @{world} inside motor instance
 -- @see world
 -- @function new_world
@@ -143,6 +122,29 @@ function Motor:new_world(systems_names)
    return self.last_world_id
 end
 
+--- returns the @{world} of this id
+-- @see world
+-- @function get_world
+-- @number world_id (integer) id of the @{world} to be obtained
+-- @treturn world world reference
+function Motor:get_world (world_id)
+   return self.worlds[bin_search_with_key(self.worlds, world_id, 'id')]
+end
+
+--- returns multiple @{world}s from multiple world ids
+-- @see world
+-- @function get_worlds
+-- @tparam {number} world_ids table of ids
+-- @treturn {world} a table of worlds
+function Motor:get_worlds (world_ids)
+   local worlds = {}
+      for wi=1,#world_ids do
+         worlds[wi] = self:get_world(world_ids[wi])
+      end
+   return worlds
+end
+
+
 local function update_systems_entities_on_add(world, entity)
    for s=1, #world.systems do
       local system = world.systems[s]
@@ -151,7 +153,7 @@ local function update_systems_entities_on_add(world, entity)
       end
    end
 end
-t
+
 local function update_systems_entities_on_remove(world, entity_id)
    for s=1, #world.systems do
       local system = world.systems[s]
@@ -164,6 +166,30 @@ end
 
 --- Entities Functions
 -- @section Entity
+
+--- Create an entity in a world
+-- @function new_entity
+-- @see entity
+-- @see world
+-- @tparam world world
+-- @treturn number id of the new entity
+function Motor.new_entity(world)
+   world.last_id = world.last_id + 1 -- incrementing last entity id of this world
+   world.entities[#world.entities+1] = {id = world.last_id} -- create the entity
+   return world.last_id -- return the id of created entity
+end
+
+--- create multiple entities in a world
+-- @tparam world world
+-- @tparam number quantity quantity of entities to be created in this @{world}
+-- @treturn {number} table of entities ids created
+function Motor.new_entities(world, quantity)
+   local entities_ids = {}
+   for i=1, quantity do
+      entities_ids[i] = Motor.new_entity(world)
+   end
+   return entities_ids
+end
 
 --- get a entity
 -- @see world
@@ -189,16 +215,6 @@ function Motor.get_entities (world, entities_ids)
       entities[ei] = Motor.get_entity(world, entities_ids[ei], 'id')
    end
    return entities
-end
-
---- destroy an entity
--- @function destroy_entity
--- @tparam world world table (not world id)
--- @tparam number entity_id id of the entity to be destroyed
-function Motor.destroy_entity(world, entity_id)
-   local entity_id_index = bin_search_with_key(world.entities, entity_id, 'id')
-   _table_remove(world.entities, entity_id_index)
-   update_systems_entities_on_remove(world, entity_id)
 end
 
 --- set multiple components in an entity
@@ -230,32 +246,18 @@ function Motor:set_components_on_entity (world, entity, component_names_and_valu
    update_systems_entities_on_add(world, entity)
 end
 
---- Create an entity in a world
--- @function new_entity
--- @see entity
--- @see world
--- @tparam world world
--- @treturn number id of the new entity
-function Motor.new_entity(world)
-   world.last_id = world.last_id + 1 -- incrementing last entity id of this world
-   world.entities[#world.entities+1] = {id = world.last_id} -- create the entity
-   return world.last_id -- return the id of created entity
+--- destroy an entity
+-- @function destroy_entity
+-- @tparam world world table (not world id)
+-- @tparam number entity_id id of the entity to be destroyed
+function Motor.destroy_entity(world, entity_id)
+   local entity_id_index = bin_search_with_key(world.entities, entity_id, 'id')
+   _table_remove(world.entities, entity_id_index)
+   update_systems_entities_on_remove(world, entity_id)
 end
-
---- create multiple entities in a world
--- @tparam world world
--- @tparam number quantity quantity of entities to be created in this @{world}
--- @treturn {number} table of entities ids created
-function Motor.new_entities(world, quantity)
-   local entities_ids = {}
-   for i=1, quantity do
-      entities_ids[i] = Motor.new_entity(world)
-   end
-   return entities_ids
-end
-
 
 return motor
+
 --- (Table) Structures
 -- @section structures
 

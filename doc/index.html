@@ -46,7 +46,7 @@
 <div id="content">
 
 <h1>Module <code>Motor</code></h1>
-<p></p>
+<p>Motor: An ECS-like library</p>
 <p></p>
 
 
@@ -64,6 +64,10 @@
 <h2><a href="#World_Functions">World Functions </a></h2>
 <table class="function_list">
 	<tr>
+	<td class="name" nowrap><a href="#new_world">new_world (systems_names)</a></td>
+	<td class="summary">creates a new <a href="index.html#world">world</a> inside motor instance</td>
+	</tr>
+	<tr>
 	<td class="name" nowrap><a href="#get_world">get_world (world_id)</a></td>
 	<td class="summary">returns the <a href="index.html#world">world</a> of this id</td>
 	</tr>
@@ -71,13 +75,17 @@
 	<td class="name" nowrap><a href="#get_worlds">get_worlds (world_ids)</a></td>
 	<td class="summary">returns multiple <a href="index.html#world">world</a>s from multiple world ids</td>
 	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#new_world">new_world (systems_names)</a></td>
-	<td class="summary">creates a new <a href="index.html#world">world</a> inside motor instance</td>
-	</tr>
 </table>
 <h2><a href="#Entities_Functions">Entities Functions </a></h2>
 <table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#new_entity">new_entity (world)</a></td>
+	<td class="summary">Create an entity in a world</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#new_entities">new_entities (world, quantity)</a></td>
+	<td class="summary">create multiple entities in a world</td>
+	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#get_entity">get_entity (world, entity_id)</a></td>
 	<td class="summary">get a entity</td>
@@ -87,20 +95,12 @@
 	<td class="summary">get multiple entities</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#destroy_entity">destroy_entity (world, entity_id)</a></td>
-	<td class="summary">destroy an entity</td>
-	</tr>
-	<tr>
 	<td class="name" nowrap><a href="#set_components_on_entity">set_components_on_entity (world, entity, component_names_and_values)</a></td>
 	<td class="summary">set multiple components in an entity</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#new_entity">new_entity (world)</a></td>
-	<td class="summary">Create an entity in a world</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#new_entities">new_entities (world, quantity)</a></td>
-	<td class="summary">create multiple entities in a world</td>
+	<td class="name" nowrap><a href="#destroy_entity">destroy_entity (world, entity_id)</a></td>
+	<td class="summary">destroy an entity</td>
 	</tr>
 </table>
 <h2><a href="#_Table__Structures">(Table) Structures </a></h2>
@@ -198,6 +198,37 @@
 
     <dl class="function">
     <dt>
+    <a name = "new_world"></a>
+    <strong>new_world (systems_names)</strong>
+    </dt>
+    <dd>
+    creates a new <a href="index.html#world">world</a> inside motor instance
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">systems_names</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">{string}</a></span>
+         each string is a system to be processed in the <a href="index.html#world">world</a>
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        the id of the created <a href="index.html#world">world</a>
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="index.html#world">world</a>
+    </ul>
+
+
+</dd>
+    <dt>
     <a name = "get_world"></a>
     <strong>get_world (world_id)</strong>
     </dt>
@@ -259,19 +290,23 @@
 
 
 </dd>
+</dl>
+    <h2 class="section-header "><a name="Entities_Functions"></a>Entities Functions </h2>
+
+    <dl class="function">
     <dt>
-    <a name = "new_world"></a>
-    <strong>new_world (systems_names)</strong>
+    <a name = "new_entity"></a>
+    <strong>new_entity (world)</strong>
     </dt>
     <dd>
-    creates a new <a href="index.html#world">world</a> inside motor instance
+    Create an entity in a world
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">systems_names</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">{string}</a></span>
-         each string is a system to be processed in the <a href="index.html#world">world</a>
+        <li><span class="parameter">world</span>
+            <span class="types"><a class="type" href="index.html#world">world</a></span>
+
         </li>
     </ul>
 
@@ -279,21 +314,49 @@
     <ol>
 
            <span class="types"><span class="type">number</span></span>
-        the id of the created <a href="index.html#world">world</a>
+        id of the new entity
     </ol>
 
 
     <h3>See also:</h3>
     <ul>
-         <a href="index.html#world">world</a>
+         <li><a href="index.html#entity">entity</a></li>
+         <li><a href="index.html#world">world</a></li>
     </ul>
 
 
 </dd>
-</dl>
-    <h2 class="section-header "><a name="Entities_Functions"></a>Entities Functions </h2>
+    <dt>
+    <a name = "new_entities"></a>
+    <strong>new_entities (world, quantity)</strong>
+    </dt>
+    <dd>
+    create multiple entities in a world
 
-    <dl class="function">
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">world</span>
+            <span class="types"><a class="type" href="index.html#world">world</a></span>
+
+        </li>
+        <li><span class="parameter">quantity</span>
+            <span class="types"><span class="type">number</span></span>
+         quantity of entities to be created in this <a href="index.html#world">world</a>
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">{number}</span></span>
+        table of entities ids created
+    </ol>
+
+
+
+
+</dd>
     <dt>
     <a name = "get_entity"></a>
     <strong>get_entity (world, entity_id)</strong>
@@ -367,31 +430,6 @@
 
 </dd>
     <dt>
-    <a name = "destroy_entity"></a>
-    <strong>destroy_entity (world, entity_id)</strong>
-    </dt>
-    <dd>
-    destroy an entity
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">world</span>
-            <span class="types"><a class="type" href="index.html#world">world</a></span>
-         table (not world id)
-        </li>
-        <li><span class="parameter">entity_id</span>
-            <span class="types"><span class="type">number</span></span>
-         id of the entity to be destroyed
-        </li>
-    </ul>
-
-
-
-
-
-</dd>
-    <dt>
     <a name = "set_components_on_entity"></a>
     <strong>set_components_on_entity (world, entity, component_names_and_values)</strong>
     </dt>
@@ -438,63 +476,25 @@
 
 </dd>
     <dt>
-    <a name = "new_entity"></a>
-    <strong>new_entity (world)</strong>
+    <a name = "destroy_entity"></a>
+    <strong>destroy_entity (world, entity_id)</strong>
     </dt>
     <dd>
-    Create an entity in a world
+    destroy an entity
 
 
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">world</span>
             <span class="types"><a class="type" href="index.html#world">world</a></span>
-
+         table (not world id)
         </li>
-    </ul>
-
-    <h3>Returns:</h3>
-    <ol>
-
-           <span class="types"><span class="type">number</span></span>
-        id of the new entity
-    </ol>
-
-
-    <h3>See also:</h3>
-    <ul>
-         <li><a href="index.html#entity">entity</a></li>
-         <li><a href="index.html#world">world</a></li>
-    </ul>
-
-
-</dd>
-    <dt>
-    <a name = "new_entities"></a>
-    <strong>new_entities (world, quantity)</strong>
-    </dt>
-    <dd>
-    create multiple entities in a world
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">world</span>
-            <span class="types"><a class="type" href="index.html#world">world</a></span>
-
-        </li>
-        <li><span class="parameter">quantity</span>
+        <li><span class="parameter">entity_id</span>
             <span class="types"><span class="type">number</span></span>
-         quantity of entities to be created in this <a href="index.html#world">world</a>
+         id of the entity to be destroyed
         </li>
     </ul>
 
-    <h3>Returns:</h3>
-    <ol>
-
-           <span class="types"><span class="type">{number}</span></span>
-        table of entities ids created
-    </ol>
 
 
 
@@ -577,7 +577,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2018-01-11 23:10:02 </i>
+<i style="float:right;">Last updated 2018-01-11 23:41:08 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
