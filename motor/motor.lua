@@ -92,6 +92,10 @@ end
 
 --- calls a function (if it exists) in all systems in all @{world}s
 -- @function call
+-- @usage
+-- function love.update(dt)
+--    motor:call("update", dt)
+-- end
 -- @tparam string function_name the name of function to be called
 -- @param ... parameters of the function to be called.
 function Motor:call(function_name, ...)
@@ -110,6 +114,8 @@ end
 -- @section World
 
 --- creates a new @{world} inside motor instance
+-- @usage
+-- local main_world_id = motor:new_world({"move", "drawer"})
 -- @see world
 -- @function new_world
 -- @tparam {string} systems_names each string is a system to be processed in the @{world}
@@ -139,6 +145,8 @@ function Motor:new_world(systems_names)
 end
 
 --- returns the @{world} of this id
+-- @usage
+-- local world_ref = motor:get_world(main_world_id)
 -- @see world
 -- @function get_world
 -- @number world_id (integer) id of the @{world} to be obtained
@@ -159,7 +167,6 @@ function Motor:get_worlds (world_ids)
       end
    return worlds
 end
-
 
 local function update_systems_entities_on_add(world, entity)
    for s=1, #world.systems do
@@ -185,6 +192,8 @@ end
 
 --- Create an @{entity} in a @{world}
 -- @function new_entity
+-- @usage
+-- local entity_id = motor.new_entity(world_ref)
 -- @see entity
 -- @see world
 -- @tparam world world
@@ -196,6 +205,8 @@ function Motor.new_entity(world)
 end
 
 --- create multiple entities in a @{world}
+-- @usage
+-- local some_entities_ids = motor.new_entities(world_ref, 4)
 -- @tparam world world
 -- @tparam number quantity quantity of @{entity|entities} to be created in this @{world}
 -- @treturn {number} table of entities ids created
@@ -208,6 +219,8 @@ function Motor.new_entities(world, quantity)
 end
 
 --- get a @{entity}
+-- @usage
+-- local entity_ref = motor.get_entity(world_ref, entity_id)
 -- @see world
 -- @see entity
 -- @function get_entity
@@ -221,6 +234,8 @@ end
 --- get multiple @{entity|entities}
 -- @see world
 -- @see entity
+-- @usage
+-- local some_entities = motor.get_entity(world_ref, entity_id)
 -- @function get_entities
 -- @tparam world world of this entities
 -- @tparam {number} entities id
@@ -263,6 +278,8 @@ function Motor:set_components_on_entity (world, entity, component_names_and_valu
 end
 
 --- destroy an @{entity}
+-- @usage
+-- motor.destroy_entity(world_ref, hero_id)
 -- @function destroy_entity
 -- @tparam world world table (not world id)
 -- @tparam number entity_id id of the @{entity} to be destroyed
@@ -291,5 +308,3 @@ return motor
 -- @tfield table example_component_2
 -- @field ... other components
 -- @table entity
-
-
