@@ -7,6 +7,37 @@ local _floor = math.floor
 local _table_remove = table.remove
 local _setmetatable = setmetatable
 
+--- Motor constructor
+-- @function new
+-- @tparam table components_constructors
+-- @tparam table systems
+-- @treturn table new Motor instance
+-- @usage
+-- local motor = Motor.new(
+--    { -- components constructors:
+--        position = function(v) return {x = v.x, y = v.y} end,
+--        velocity = function(v) return {x = v.x, y = v.y} end,
+--        mesh     = function(v) return {mesh = love.graphics.newMesh(v.vertices, v.mode, v.usage)} end,
+--        drawable = function(v) return {drawable = v.drawable} end,
+--    },
+--    { -- systems:
+--       "move", require ("example_systems/move_system"),
+--       "drawer", require ("example_systems/draw_drawable_system"),
+--    }
+-- )
+function motor.new(components_constructors, systems)
+   local new = {
+      -- registered components_constructors and systems
+      components_constructors = components_constructors,
+      systems = systems,
+      worlds = {},
+      last_world_id = 0,
+   }
+
+   _setmetatable(new, Motor)
+   return new
+end
+
 local function bin_search(tbl, target)
    local min = 1
    local max = #tbl
@@ -42,7 +73,7 @@ local function bin_search_with_key(tbl, target, key)
    return nil, "value " .. target .. " of " .. key .. " key not found"
 end
 
---- calls a function (if it exists) in all systems in all worlds
+--- calls a function (if it exists) in all systems in all @{world}s
 -- @function call
 -- @tparam string function_name the name of function to be called
 -- @param ... parameters of the function to be called.
@@ -58,15 +89,17 @@ function Motor:call(function_name, ...)
    end
 end
 
---- returns the world of this id
+--- returns the @{world} of this id
+-- @see world
 -- @function get_world
--- @number world_id (integer) id of the world to be obtained
--- @treturn world a world table
+-- @number world_id (integer) id of the @{world} to be obtained
+-- @treturn world world reference
 function Motor:get_world (world_id)
    return self.worlds[bin_search_with_key(self.worlds, world_id, 'id')]
 end
 
---- returns multiple worlds from multiple identities
+--- returns multiple @{world}s from multiple world ids
+-- @see world
 -- @function get_worlds
 -- @tparam {number} world_ids table of ids
 -- @treturn {world} a table of worlds
@@ -78,11 +111,11 @@ function Motor:get_worlds (world_ids)
    return worlds
 end
 
---- creates a new world
+--- creates a new @{world} inside motor instance
 -- @see world
 -- @function new_world
--- @tparam {string} systems_names each string is a system to be processed in the world
--- @treturn number the id of the created world
+-- @tparam {string} systems_names each string is a system to be processed in the @{world}
+-- @treturn number the id of the created @{world}
 function Motor:new_world(systems_names)
 
    self.last_world_id = self.last_world_id + 1
@@ -127,6 +160,8 @@ local function update_systems_entities_on_remove(world, entity_id)
 end
 
 --- get a entity
+-- @see world
+-- @see entity
 -- @function get_entity
 -- @tparam world world table (not world id)
 -- @tparam number entity_id id of the entity to be obtained
@@ -136,15 +171,17 @@ function Motor.get_entity (world, entity_id)
 end
 
 --- get multiple entities
+-- @see world
+-- @see entity
 -- @function get_entities
 -- @tparam world world of this entities
 -- @tparam {number} entities id
 -- @treturn {entity} table of multiple entities
 function Motor.get_entities (world, entities_ids)
    local entities = {}
-      for ei=1,#entities_ids do -- ei: entity id
-         entities[ei] = Motor.get_entity(world, entities_ids[ei], 'id')
-      end
+   for ei=1,#entities_ids do -- ei: entity id
+      entities[ei] = Motor.get_entity(world, entities_ids[ei], 'id')
+   end
    return entities
 end
 
@@ -159,77 +196,65 @@ function Motor.destroy_entity(world, entity_id)
 end
 
 --- set multiple components in an entity
+-- @usage
+-- -- creating the world and getting a reference of it
+-- main_world_id = motor:new_world({"move", "drawer"})
+-- local world_ref = motor:get_world(main_world_id)
+--
+-- -- creating one entity and getting a reference of it
+-- entity_id = motor.new_entity(world_ref)
+-- local entity_ref = motor.get_entity(world_ref, entity_id)
+--
+-- -- setting the entity components
+-- motor:set_components_on_entity(world_ref, entity_ref, {
+--     "position", {x = 5, y = 5},
+--     "velocity", {x = 1, y = 1},
+--     "mesh"    , {vertices = {{-50, -50}, {50, -50}, {00, 50}}},
+-- })
 -- @function set_components_on_entity
 -- @tparam world world table (not world id)
 -- @tparam entity entity to be modified
--- @param component_names_and_values
+-- @tparam table component_names_and_values component names and values in pairs
 function Motor:set_components_on_entity (world, entity, component_names_and_values)
    for cnavi=1,#component_names_and_values, 2 do -- cnavi: Component Name And Value Index
       local component_name = component_names_and_values[cnavi]
       local component_constructor = self.components_constructors[component_name]
-      local component_value = component_constructor(component_names_and_values[cnavi+1])
-      entity[component_name] = component_value
+      entity[component_name] = component_constructor(component_names_and_values[cnavi+1])
    end
    update_systems_entities_on_add(world, entity)
 end
 
---- create multiple entities
+--- Create an entity in a world
+-- @function new_entity
+-- @see entity
+-- @see world
 -- @tparam world world
--- @tparam number quantity of entities to be created
+-- @treturn number id of the new entity
+function Motor.new_entity(world)
+   world.last_id = world.last_id + 1 -- incrementing last entity id of this world
+   world.entities[#world.entities+1] = {id = world.last_id} -- create the entity
+   return world.last_id -- return the id of created entity
+end
+
+--- create multiple entities in a world
+-- @tparam world world
+-- @tparam number quantity quantity of entities to be created in this @{world}
 -- @treturn {number} table of entities ids created
 function Motor.new_entities(world, quantity)
    local entities_ids = {}
-
-   for ne=1, quantity do -- ne: new entity
-      world.last_id = world.last_id + 1
-
-      -- create the entity
-      world.entities[#world.entities+1] = {id = world.last_id}
-
-      -- register to the entities_ids, to return later
-      entities_ids[ne] = world.last_id
+   for i=1, quantity do
+      entities_ids[i] = Motor.new_entity(world)
    end
-
    return entities_ids
 end
 
---- Motor constructor
--- @function new
--- @tparam table components_constructors
--- @tparam table systems
--- @treturn table new Motor instance
--- @usage
--- local motor = Motor.new(
---    { -- components constructors:
---        position = function(v) return {x = v.x, y = v.y} end,
---        velocity = function(v) return {x = v.x, y = v.y} end,
---        mesh     = function(v) return {mesh = love.graphics.newMesh(v.vertices, v.mode, v.usage)} end,
---        drawable = function(v) return {drawable = v.drawable} end,
---    },
---    { -- systems:
---       "move", require ("example_systems/move_system"),
---       "drawer", require ("example_systems/draw_drawable_system"),
---    }
--- )
-function motor.new(components_constructors, systems)
-   local new = {
-      -- registered components_constructors and systems
-      components_constructors = components_constructors,
-      systems = systems,
-      worlds = {},
-      last_world_id = 0,
-   }
-
-   _setmetatable(new, Motor)
-   return new
-end
 
 return motor
 
 --- World structure
--- @tfield number id id of this world
+-- @tfield number id id of this @{world}
 -- @tfield number last_id used to generate entity ids, stores the id of the last entity
--- @tfield {system} the systems that will be processed in this world. It is automatically generated by systems_names
+-- @tfield {system} the systems that will be processed in this @{world}. It is automatically generated by systems_names
 -- @tfield {entity} entities
 -- @table world
 
