@@ -29,7 +29,7 @@ function love.load()
    motor:set_components_on_entity(world_ref, entity_ref, {
       "position", {x = 5, y = 5},
       "velocity", {x = 1, y = 1},
-      "mesh"    , {vertices = {{-50, -50}, {50, -50}, {00, 50}}},
+      "mesh"    , {vertices = {{-50, -50}, {50, -50}, {50, 50}, {-50, 50}}},
    })
    motor:set_components_on_entity(world_ref, entity_ref, {
       "drawable", {drawable = entity_ref.mesh.mesh}
@@ -41,7 +41,7 @@ function love.update(dt)
 end
 
 function love.keypressed(key)
-   if key == "d" then
+   if key == "delete" then
       local world_ref = motor:get_world(main_world_id)
       motor.destroy_entity(world_ref, entity_id)
    end
