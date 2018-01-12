@@ -51,20 +51,24 @@
 <h2><a href="#Functions">Functions</a></h2>
 <table class="function_list">
 	<tr>
+	<td class="name" nowrap><a href="#new">new (components_constructors, systems)</a></td>
+	<td class="summary">Motor constructor</td>
+	</tr>
+	<tr>
 	<td class="name" nowrap><a href="#call">call (function_name, ...)</a></td>
-	<td class="summary">calls a function (if it exists) in all systems in all worlds</td>
+	<td class="summary">calls a function (if it exists) in all systems in all <a href="index.html#world">world</a>s</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#get_world">get_world (world_id)</a></td>
-	<td class="summary">returns the world of this id</td>
+	<td class="summary">returns the <a href="index.html#world">world</a> of this id</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#get_worlds">get_worlds (world_ids)</a></td>
-	<td class="summary">returns multiple worlds from multiple identities</td>
+	<td class="summary">returns multiple <a href="index.html#world">world</a>s from multiple world ids</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#new_world">new_world (systems_names)</a></td>
-	<td class="summary">creates a new world</td>
+	<td class="summary">creates a new <a href="index.html#world">world</a> inside motor instance</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#get_entity">get_entity (world, entity_id)</a></td>
@@ -83,12 +87,12 @@
 	<td class="summary">set multiple components in an entity</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#new_entities">new_entities (world, quantity)</a></td>
-	<td class="summary">create multiple entities</td>
+	<td class="name" nowrap><a href="#new_entity">new_entity (world)</a></td>
+	<td class="summary">Create an entity in a world</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#new">new (components_constructors, systems)</a></td>
-	<td class="summary">Motor constructor</td>
+	<td class="name" nowrap><a href="#new_entities">new_entities (world, quantity)</a></td>
+	<td class="summary">create multiple entities in a world</td>
 	</tr>
 </table>
 <h2><a href="#Tables">Tables</a></h2>
@@ -112,11 +116,57 @@
 
     <dl class="function">
     <dt>
+    <a name = "new"></a>
+    <strong>new (components_constructors, systems)</strong>
+    </dt>
+    <dd>
+    Motor constructor
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">components_constructors</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+
+        </li>
+        <li><span class="parameter">systems</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+        new Motor instance
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> motor = Motor.new(
+   { <span class="comment">-- components constructors:
+</span>       position = <span class="keyword">function</span>(v) <span class="keyword">return</span> {x = v.x, y = v.y} <span class="keyword">end</span>,
+       velocity = <span class="keyword">function</span>(v) <span class="keyword">return</span> {x = v.x, y = v.y} <span class="keyword">end</span>,
+       mesh     = <span class="keyword">function</span>(v) <span class="keyword">return</span> {mesh = love.graphics.newMesh(v.vertices, v.mode, v.usage)} <span class="keyword">end</span>,
+       drawable = <span class="keyword">function</span>(v) <span class="keyword">return</span> {drawable = v.drawable} <span class="keyword">end</span>,
+   },
+   { <span class="comment">-- systems:
+</span>      <span class="string">"move"</span>, <span class="global">require</span> (<span class="string">"example_systems/move_system"</span>),
+      <span class="string">"drawer"</span>, <span class="global">require</span> (<span class="string">"example_systems/draw_drawable_system"</span>),
+   }
+)</pre>
+    </ul>
+
+</dd>
+    <dt>
     <a name = "call"></a>
     <strong>call (function_name, ...)</strong>
     </dt>
     <dd>
-    calls a function (if it exists) in all systems in all worlds
+    calls a function (if it exists) in all systems in all <a href="index.html#world">world</a>s
 
 
     <h3>Parameters:</h3>
@@ -140,14 +190,14 @@
     <strong>get_world (world_id)</strong>
     </dt>
     <dd>
-    returns the world of this id
+    returns the <a href="index.html#world">world</a> of this id
 
 
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">world_id</span>
             <span class="types"><span class="type">number</span></span>
-         (integer) id of the world to be obtained
+         (integer) id of the <a href="index.html#world">world</a> to be obtained
         </li>
     </ul>
 
@@ -155,10 +205,14 @@
     <ol>
 
            <span class="types"><a class="type" href="index.html#world">world</a></span>
-        a world table
+        world reference
     </ol>
 
 
+    <h3>See also:</h3>
+    <ul>
+         <a href="index.html#world">world</a>
+    </ul>
 
 
 </dd>
@@ -167,7 +221,7 @@
     <strong>get_worlds (world_ids)</strong>
     </dt>
     <dd>
-    returns multiple worlds from multiple identities
+    returns multiple <a href="index.html#world">world</a>s from multiple world ids
 
 
     <h3>Parameters:</h3>
@@ -186,6 +240,10 @@
     </ol>
 
 
+    <h3>See also:</h3>
+    <ul>
+         <a href="index.html#world">world</a>
+    </ul>
 
 
 </dd>
@@ -194,14 +252,14 @@
     <strong>new_world (systems_names)</strong>
     </dt>
     <dd>
-    creates a new world
+    creates a new <a href="index.html#world">world</a> inside motor instance
 
 
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">systems_names</span>
             <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">{string}</a></span>
-         each string is a system to be processed in the world
+         each string is a system to be processed in the <a href="index.html#world">world</a>
         </li>
     </ul>
 
@@ -209,7 +267,7 @@
     <ol>
 
            <span class="types"><span class="type">number</span></span>
-        the id of the created world
+        the id of the created <a href="index.html#world">world</a>
     </ol>
 
 
@@ -248,6 +306,11 @@
     </ol>
 
 
+    <h3>See also:</h3>
+    <ul>
+         <li><a href="index.html#world">world</a></li>
+         <li><a href="index.html#entity">entity</a></li>
+    </ul>
 
 
 </dd>
@@ -279,6 +342,11 @@
     </ol>
 
 
+    <h3>See also:</h3>
+    <ul>
+         <li><a href="index.html#world">world</a></li>
+         <li><a href="index.html#entity">entity</a></li>
+    </ul>
 
 
 </dd>
@@ -326,12 +394,62 @@
          to be modified
         </li>
         <li><span class="parameter">component_names_and_values</span>
-
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         component names and values in pairs
         </li>
     </ul>
 
 
 
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="comment">-- creating the world and getting a reference of it
+</span>main_world_id = motor:new_world({<span class="string">"move"</span>, <span class="string">"drawer"</span>})
+<span class="keyword">local</span> world_ref = motor:get_world(main_world_id)
+
+<span class="comment">-- creating one entity and getting a reference of it
+</span>entity_id = motor.new_entity(world_ref)
+<span class="keyword">local</span> entity_ref = motor.get_entity(world_ref, entity_id)
+
+<span class="comment">-- setting the entity components
+</span>motor:set_components_on_entity(world_ref, entity_ref, {
+    <span class="string">"position"</span>, {x = <span class="number">5</span>, y = <span class="number">5</span>},
+    <span class="string">"velocity"</span>, {x = <span class="number">1</span>, y = <span class="number">1</span>},
+    <span class="string">"mesh"</span>    , {vertices = {{-<span class="number">50</span>, -<span class="number">50</span>}, {<span class="number">50</span>, -<span class="number">50</span>}, {<span class="number">00</span>, <span class="number">50</span>}}},
+})</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "new_entity"></a>
+    <strong>new_entity (world)</strong>
+    </dt>
+    <dd>
+    Create an entity in a world
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">world</span>
+            <span class="types"><a class="type" href="index.html#world">world</a></span>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        id of the new entity
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <li><a href="index.html#entity">entity</a></li>
+         <li><a href="index.html#world">world</a></li>
+    </ul>
 
 
 </dd>
@@ -340,7 +458,7 @@
     <strong>new_entities (world, quantity)</strong>
     </dt>
     <dd>
-    create multiple entities
+    create multiple entities in a world
 
 
     <h3>Parameters:</h3>
@@ -351,7 +469,7 @@
         </li>
         <li><span class="parameter">quantity</span>
             <span class="types"><span class="type">number</span></span>
-         of entities to be created
+         quantity of entities to be created in this <a href="index.html#world">world</a>
         </li>
     </ul>
 
@@ -364,52 +482,6 @@
 
 
 
-
-</dd>
-    <dt>
-    <a name = "new"></a>
-    <strong>new (components_constructors, systems)</strong>
-    </dt>
-    <dd>
-    Motor constructor
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">components_constructors</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
-
-        </li>
-        <li><span class="parameter">systems</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
-
-        </li>
-    </ul>
-
-    <h3>Returns:</h3>
-    <ol>
-
-           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
-        new Motor instance
-    </ol>
-
-
-
-    <h3>Usage:</h3>
-    <ul>
-        <pre class="example"><span class="keyword">local</span> motor = Motor.new(
-   { <span class="comment">-- components constructors:
-</span>       position = <span class="keyword">function</span>(v) <span class="keyword">return</span> {x = v.x, y = v.y} <span class="keyword">end</span>,
-       velocity = <span class="keyword">function</span>(v) <span class="keyword">return</span> {x = v.x, y = v.y} <span class="keyword">end</span>,
-       mesh     = <span class="keyword">function</span>(v) <span class="keyword">return</span> {mesh = love.graphics.newMesh(v.vertices, v.mode, v.usage)} <span class="keyword">end</span>,
-       drawable = <span class="keyword">function</span>(v) <span class="keyword">return</span> {drawable = v.drawable} <span class="keyword">end</span>,
-   },
-   { <span class="comment">-- systems:
-</span>      <span class="string">"move"</span>, <span class="global">require</span> (<span class="string">"example_systems/move_system"</span>),
-      <span class="string">"drawer"</span>, <span class="global">require</span> (<span class="string">"example_systems/draw_drawable_system"</span>),
-   }
-)</pre>
-    </ul>
 
 </dd>
 </dl>
@@ -428,7 +500,7 @@
     <ul>
         <li><span class="parameter">id</span>
             <span class="types"><span class="type">number</span></span>
-         id of this world
+         id of this <a href="index.html#world">world</a>
         </li>
         <li><span class="parameter">last_id</span>
             <span class="types"><span class="type">number</span></span>
@@ -436,7 +508,7 @@
         </li>
         <li><span class="parameter">the</span>
             <span class="types"><span class="type">{system}</span></span>
-         systems that will be processed in this world. It is automatically generated by systems_names
+         systems that will be processed in this <a href="index.html#world">world</a>. It is automatically generated by systems_names
         </li>
         <li><span class="parameter">entities</span>
             <span class="types"><a class="type" href="index.html#entity">{entity}</a></span>
@@ -489,7 +561,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2018-01-10 19:42:12 </i>
+<i style="float:right;">Last updated 2018-01-11 22:13:26 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
