@@ -3,7 +3,7 @@
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <head>
-    <title>Reference</title>
+    <title>Motor documentation</title>
     <link rel="stylesheet" href="ldoc.css" type="text/css" />
 </head>
 <body>
@@ -24,7 +24,7 @@
 
 <div id="navigation">
 <br/>
-<h1>ldoc</h1>
+<h1>Motor</h1>
 
 
 <h2>Contents</h2>
@@ -40,14 +40,46 @@
 <ul class="nowrap">
   <li><strong>Motor</strong></li>
 </ul>
+<h2>Topics</h2>
+<ul class="">
+  <li><a href="topics/README.md.html">README</a></li>
+</ul>
+<h2>Examples</h2>
+<ul class="nowrap">
+  <li><a href="examples/main.lua.html">main.lua</a></li>
+  <li><a href="examples/draw_drawable_system.lua.html">draw_drawable_system.lua</a></li>
+  <li><a href="examples/move_system.lua.html">move_system.lua</a></li>
+</ul>
 
 </div>
 
 <div id="content">
 
 <h1>Module <code>Motor</code></h1>
-<p>Motor: An ECS-like library</p>
+<p>Motor: An ECS-like lua library</p>
 <p></p>
+    <h3>See also:</h3>
+    <ul>
+         <a href="index.html#new">new</a>
+    </ul>
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">-- see the main.lua file for a full example
+local Motor = require (&quot;motor/motor&quot;)
+local motor = Motor.new(
+   { -- components constructors:
+       position = function(v) return {x = v.x, y = v.y} end,
+       velocity = function(v) return {x = v.x, y = v.y} end,
+       mesh     = function(v) return {mesh = love.graphics.newMesh(v.vertices, v.mode, v.usage)} end,
+       drawable = function(v) return {drawable = v.drawable} end,
+   },
+   { -- systems:
+      &quot;move&quot;, require (&quot;example_systems/move_system&quot;),
+      &quot;drawer&quot;, require (&quot;example_systems/draw_drawable_system&quot;),
+   }
+)
+</pre>
+    </ul>
 
 
 <h2><a href="#Functions">Functions</a></h2>
@@ -80,27 +112,27 @@
 <table class="function_list">
 	<tr>
 	<td class="name" nowrap><a href="#new_entity">new_entity (world)</a></td>
-	<td class="summary">Create an entity in a world</td>
+	<td class="summary">Create an <a href="index.html#entity">entity</a> in a <a href="index.html#world">world</a></td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#new_entities">new_entities (world, quantity)</a></td>
-	<td class="summary">create multiple entities in a world</td>
+	<td class="summary">create multiple entities in a <a href="index.html#world">world</a></td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#get_entity">get_entity (world, entity_id)</a></td>
-	<td class="summary">get a entity</td>
+	<td class="summary">get a <a href="index.html#entity">entity</a></td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#get_entities">get_entities (world, entities)</a></td>
-	<td class="summary">get multiple entities</td>
+	<td class="summary">get multiple <a href="index.html#entity">entities</a></td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#set_components_on_entity">set_components_on_entity (world, entity, component_names_and_values)</a></td>
-	<td class="summary">set multiple components in an entity</td>
+	<td class="summary">set multiple components in an <a href="index.html#entity">entity</a></td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#destroy_entity">destroy_entity (world, entity_id)</a></td>
-	<td class="summary">destroy an entity</td>
+	<td class="summary">destroy an <a href="index.html#entity">entity</a></td>
 	</tr>
 </table>
 <h2><a href="#_Table__Structures">(Table) Structures </a></h2>
@@ -112,7 +144,7 @@
 	<tr>
 	<td class="name" nowrap><a href="#entity">entity</a></td>
 	<td class="summary">Entity structure:
- a entity is just a table with id and components</td>
+ an entity is just a table with id and components</td>
 	</tr>
 </table>
 
@@ -299,7 +331,7 @@
     <strong>new_entity (world)</strong>
     </dt>
     <dd>
-    Create an entity in a world
+    Create an <a href="index.html#entity">entity</a> in a <a href="index.html#world">world</a>
 
 
     <h3>Parameters:</h3>
@@ -314,7 +346,7 @@
     <ol>
 
            <span class="types"><span class="type">number</span></span>
-        id of the new entity
+        id of the new <a href="index.html#entity">entity</a>
     </ol>
 
 
@@ -331,7 +363,7 @@
     <strong>new_entities (world, quantity)</strong>
     </dt>
     <dd>
-    create multiple entities in a world
+    create multiple entities in a <a href="index.html#world">world</a>
 
 
     <h3>Parameters:</h3>
@@ -342,7 +374,7 @@
         </li>
         <li><span class="parameter">quantity</span>
             <span class="types"><span class="type">number</span></span>
-         quantity of entities to be created in this <a href="index.html#world">world</a>
+         quantity of <a href="index.html#entity">entities</a> to be created in this <a href="index.html#world">world</a>
         </li>
     </ul>
 
@@ -362,7 +394,7 @@
     <strong>get_entity (world, entity_id)</strong>
     </dt>
     <dd>
-    get a entity
+    get a <a href="index.html#entity">entity</a>
 
 
     <h3>Parameters:</h3>
@@ -373,7 +405,7 @@
         </li>
         <li><span class="parameter">entity_id</span>
             <span class="types"><span class="type">number</span></span>
-         id of the entity to be obtained
+         id of the <a href="index.html#entity">entity</a> to be obtained
         </li>
     </ul>
 
@@ -381,7 +413,7 @@
     <ol>
 
            <span class="types"><a class="type" href="index.html#entity">entity</a></span>
-        entity
+        entity reference of this id
     </ol>
 
 
@@ -398,7 +430,7 @@
     <strong>get_entities (world, entities)</strong>
     </dt>
     <dd>
-    get multiple entities
+    get multiple <a href="index.html#entity">entities</a>
 
 
     <h3>Parameters:</h3>
@@ -417,7 +449,7 @@
     <ol>
 
            <span class="types"><a class="type" href="index.html#entity">{entity}</a></span>
-        table of multiple entities
+        table of multiple <a href="index.html#entity">entities</a>
     </ol>
 
 
@@ -434,7 +466,7 @@
     <strong>set_components_on_entity (world, entity, component_names_and_values)</strong>
     </dt>
     <dd>
-    set multiple components in an entity
+    set multiple components in an <a href="index.html#entity">entity</a>
 
 
     <h3>Parameters:</h3>
@@ -480,7 +512,7 @@
     <strong>destroy_entity (world, entity_id)</strong>
     </dt>
     <dd>
-    destroy an entity
+    destroy an <a href="index.html#entity">entity</a>
 
 
     <h3>Parameters:</h3>
@@ -491,7 +523,7 @@
         </li>
         <li><span class="parameter">entity_id</span>
             <span class="types"><span class="type">number</span></span>
-         id of the entity to be destroyed
+         id of the <a href="index.html#entity">entity</a> to be destroyed
         </li>
     </ul>
 
@@ -543,7 +575,7 @@
     </dt>
     <dd>
     Entity structure:
- a entity is just a table with id and components
+ an entity is just a table with id and components
 
 
     <h3>Fields:</h3>
@@ -577,7 +609,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2018-01-11 23:41:08 </i>
+<i style="float:right;">Last updated 2018-01-12 00:30:00 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

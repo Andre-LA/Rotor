@@ -1,4 +1,20 @@
---- Motor: An ECS-like library
+--- Motor: An ECS-like lua library
+-- @usage
+-- -- see the main.lua file for a full example
+-- local Motor = require ("motor/motor")
+-- local motor = Motor.new(
+--    { -- components constructors:
+--        position = function(v) return {x = v.x, y = v.y} end,
+--        velocity = function(v) return {x = v.x, y = v.y} end,
+--        mesh     = function(v) return {mesh = love.graphics.newMesh(v.vertices, v.mode, v.usage)} end,
+--        drawable = function(v) return {drawable = v.drawable} end,
+--    },
+--    { -- systems:
+--       "move", require ("example_systems/move_system"),
+--       "drawer", require ("example_systems/draw_drawable_system"),
+--    }
+-- )
+-- @see new
 -- @module Motor
 local motor = {}
 local Motor = {}
@@ -167,21 +183,21 @@ end
 --- Entities Functions
 -- @section Entity
 
---- Create an entity in a world
+--- Create an @{entity} in a @{world}
 -- @function new_entity
 -- @see entity
 -- @see world
 -- @tparam world world
--- @treturn number id of the new entity
+-- @treturn number id of the new @{entity}
 function Motor.new_entity(world)
    world.last_id = world.last_id + 1 -- incrementing last entity id of this world
    world.entities[#world.entities+1] = {id = world.last_id} -- create the entity
    return world.last_id -- return the id of created entity
 end
 
---- create multiple entities in a world
+--- create multiple entities in a @{world}
 -- @tparam world world
--- @tparam number quantity quantity of entities to be created in this @{world}
+-- @tparam number quantity quantity of @{entity|entities} to be created in this @{world}
 -- @treturn {number} table of entities ids created
 function Motor.new_entities(world, quantity)
    local entities_ids = {}
@@ -191,24 +207,24 @@ function Motor.new_entities(world, quantity)
    return entities_ids
 end
 
---- get a entity
+--- get a @{entity}
 -- @see world
 -- @see entity
 -- @function get_entity
 -- @tparam world world table (not world id)
--- @tparam number entity_id id of the entity to be obtained
--- @treturn entity entity
+-- @tparam number entity_id id of the @{entity} to be obtained
+-- @treturn entity entity reference of this id
 function Motor.get_entity (world, entity_id)
    return world.entities[bin_search_with_key(world.entities, entity_id, 'id')]
 end
 
---- get multiple entities
+--- get multiple @{entity|entities}
 -- @see world
 -- @see entity
 -- @function get_entities
 -- @tparam world world of this entities
 -- @tparam {number} entities id
--- @treturn {entity} table of multiple entities
+-- @treturn {entity} table of multiple @{entity|entities}
 function Motor.get_entities (world, entities_ids)
    local entities = {}
    for ei=1,#entities_ids do -- ei: entity id
@@ -217,7 +233,7 @@ function Motor.get_entities (world, entities_ids)
    return entities
 end
 
---- set multiple components in an entity
+--- set multiple components in an @{entity}
 -- @usage
 -- -- creating the world and getting a reference of it
 -- main_world_id = motor:new_world({"move", "drawer"})
@@ -246,10 +262,10 @@ function Motor:set_components_on_entity (world, entity, component_names_and_valu
    update_systems_entities_on_add(world, entity)
 end
 
---- destroy an entity
+--- destroy an @{entity}
 -- @function destroy_entity
 -- @tparam world world table (not world id)
--- @tparam number entity_id id of the entity to be destroyed
+-- @tparam number entity_id id of the @{entity} to be destroyed
 function Motor.destroy_entity(world, entity_id)
    local entity_id_index = bin_search_with_key(world.entities, entity_id, 'id')
    _table_remove(world.entities, entity_id_index)
@@ -269,9 +285,11 @@ return motor
 -- @table world
 
 --- Entity structure:
--- a entity is just a table with id and components
+-- an entity is just a table with id and components
 -- @tfield number id id of the entity
 -- @tfield table example_component_1
 -- @tfield table example_component_2
 -- @field ... other components
 -- @table entity
+
+
