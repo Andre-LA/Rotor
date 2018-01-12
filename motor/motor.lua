@@ -171,7 +171,7 @@ end
 local function update_systems_entities_on_add(world, entity)
    for s=1, #world.systems do
       local system = world.systems[s]
-      if system.filter(entity) then
+      if system.filter(entity) and not (bin_search(system.ids, entity.id)) then
          system.ids[#system.ids+1] = entity.id
       end
    end
