@@ -59,7 +59,7 @@ local function bin_search(tbl, target)
    local min = 1
    local max = #tbl
 
-   repeat
+   while min <= max do
       local mid = _floor( (min + max)/2 )
       if tbl[mid] == target then
          return mid
@@ -68,7 +68,7 @@ local function bin_search(tbl, target)
       else
          min = mid + 1
       end
-   until min > max
+   end
    return nil, "value " .. target .. " not found"
 end
 
@@ -76,7 +76,7 @@ local function bin_search_with_key(tbl, target, key)
    local min = 1
    local max = #tbl
 
-   repeat
+   while min <= max do
       local mid = _floor( (min + max)/2 )
       if tbl[mid][key] == target then
          return mid
@@ -85,12 +85,12 @@ local function bin_search_with_key(tbl, target, key)
       else
          min = mid + 1
       end
-   until min > max
+   end
 
    return nil, "value " .. target .. " of " .. key .. " key not found"
 end
 
---- calls a function (if it exists) in all systems in all @{world}s
+--- calls a function (if it exists) in all systems in all @{world|worlds}
 -- @function call
 -- @usage
 -- function love.update(dt)
