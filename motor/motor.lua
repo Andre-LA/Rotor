@@ -178,6 +178,17 @@ end
 --- Entities Functions
 -- @section Entity
 
+local function create_entity(world, parent_id)
+   world.last_id = world.last_id + 1 -- incrementing last entity id of this world
+   -- create the entity
+   world.entities[#world.entities+1] = {
+      id = world.last_id,
+      parent_id = parent_id or 0,
+      children = {},
+   }
+   return world.last_id -- return the id of created entity
+end
+
 --- Create an @{entity} in a @{world}
 -- @function new_entity
 -- @usage
@@ -185,11 +196,15 @@ end
 -- @see entity
 -- @see world
 -- @tparam world world
+-- @tparam[opt=0] number  parent_id optional parent id
 -- @treturn number id of the new @{entity}
-function Motor.new_entity(world)
-   world.last_id = world.last_id + 1 -- incrementing last entity id of this world
-   world.entities[#world.entities+1] = {id = world.last_id} -- create the entity
-   return world.last_id -- return the id of created entity
+function Motor.new_entity(world, parent_id)
+   local new_entity_id = create_entity(world, parent_id)
+   if parent_id then
+      local parent_entity = Motor.get_entity(world, parent_id)
+      parent_entity.children[#parent_entity.children+1] = new_entity_id
+   end
+   return new_entity_id
 end
 
 --- create multiple @{entity|entities} in a @{world}
@@ -197,13 +212,22 @@ end
 -- local some_entities_ids = motor.new_entities(world_ref, 4)
 -- @tparam world world
 -- @tparam number quantity quantity of @{entity|entities} to be created in this @{world}
+-- @tparam[pot=0] number parent_id optional parent_id
 -- @treturn {number} table of entities ids created
-function Motor.new_entities(world, quantity)
-   local entities_ids = {}
+function Motor.new_entities(world, quantity, parent_id)
+   local new_entities_ids = {}
    for i=1, quantity do
-      entities_ids[i] = Motor.new_entity(world)
+      new_entities_ids[i] = create_entity(world, parent_id)
    end
-   return entities_ids
+   if parent_id then
+      local parent_entity = Motor.get_entity(world, parent_id)
+      local c = 1
+      for i = #parent_entity.children + 1, #parent_entity.children + #new_entities_ids do
+         parent_entity.children[i] = new_entities_ids[c]
+         c = c + 1
+      end
+   end
+   return new_entities_ids
 end
 
 --- get a @{entity}
@@ -292,6 +316,8 @@ return motor
 --- Entity structure:
 -- an entity is just a table with id and components
 -- @tfield number id id of the entity
+-- @tfield number parent_id parent's id, if there is none, it will be 0.
+-- @tfield table children children ids
 -- @tfield table example_component_1
 -- @tfield table example_component_2
 -- @field ... other components
