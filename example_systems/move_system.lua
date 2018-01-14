@@ -10,7 +10,8 @@ end
 function Move_System:update()
    local world = self.motor:get_world(self.world_id)
    local entities = self.motor.get_entities(world, self.ids)
-   for e=#entities, 1, -1 do
+   local e = 1
+   while e <= #entities do
       local e_position = entities[e].position
       local e_velocity = entities[e].velocity
       -- horizontal movement
@@ -27,6 +28,8 @@ function Move_System:update()
       if love.keyboard.isDown('w') then
          e_position.y = e_position.y - e_velocity.y
       end
+      e = e + 1 -- if you destroy an entity,
+      -- then it should not add e, because the next entity will be at the current e index
    end
 end
 

@@ -10,10 +10,13 @@ end
 function Draw_Drawable_System:draw ()
    local world = self.motor:get_world(self.world_id)
    local entities = self.motor.get_entities(world, self.ids)
-   for e=#entities, 1, -1 do
+   local e = 1
+   while e <= #entities do
       local e_drawable = entities[e].drawable
       local e_position = entities[e].position
       love.graphics.draw(e_drawable.drawable, e_position.x, e_position.y)
+      e = e + 1 -- if you destroy an entity,
+      -- then it should not add e, because the next entity will be at the current e index
    end
 end
 
