@@ -31,51 +31,51 @@ local _setmetatable = setmetatable
 --    }
 -- )
 function motor.new(components_constructors, systems)
-   local new = {
-      -- registered components_constructors and systems
-      components_constructors = components_constructors,
-      systems = systems,
-      worlds = {},
-      last_world_id = 0,
-   }
+  local new = {
+    -- registered components_constructors and systems
+    components_constructors = components_constructors,
+    systems = systems,
+    worlds = {},
+    last_world_id = 0,
+  }
 
-   _setmetatable(new, Motor)
-   return new
+  _setmetatable(new, Motor)
+  return new
 end
 
 local function bin_search(tbl, target)
-   local min = 1
-   local max = #tbl
+  local min = 1
+  local max = #tbl
 
-   while min <= max do
-      local mid = _floor( (min + max)/2 )
-      if tbl[mid] == target then
-         return mid
-      elseif target < tbl[mid] then
-         max = mid - 1
-      else
-         min = mid + 1
-      end
-   end
-   return nil, "value " .. target .. " not found"
+  while min <= max do
+    local mid = _floor( (min + max)/2 )
+    if tbl[mid] == target then
+      return mid
+    elseif target < tbl[mid] then
+      max = mid - 1
+    else
+      min = mid + 1
+    end
+  end
+  return nil, "value " .. target .. " not found"
 end
 
 local function bin_search_with_key(tbl, target, key)
-   local min = 1
-   local max = #tbl
+  local min = 1
+  local max = #tbl
 
-   while min <= max do
-      local mid = _floor( (min + max)/2 )
-      if tbl[mid][key] == target then
-         return mid
-      elseif target < tbl[mid][key] then
-         max = mid - 1
-      else
-         min = mid + 1
-      end
-   end
+  while min <= max do
+    local mid = _floor( (min + max)/2 )
+    if tbl[mid][key] == target then
+      return mid
+    elseif target < tbl[mid][key] then
+      max = mid - 1
+    else
+      min = mid + 1
+    end
+  end
 
-   return nil, "value " .. target .. " of " .. key .. " key not found"
+  return nil, "value " .. target .. " of " .. key .. " key not found"
 end
 
 --- calls a function (if it exists) in all systems in all @{world|worlds}
@@ -87,15 +87,15 @@ end
 -- @tparam string function_name the name of function to be called
 -- @param ... parameters of the function to be called.
 function Motor:call(function_name, ...)
-   for w=1, #self.worlds do
-      local world = self.worlds[w]
-      for s=1, #world.systems do
-         local system = world.systems[s]
-         if system[function_name] then
-             system[function_name](system, ...)
-         end
+  for w=1, #self.worlds do
+    local world = self.worlds[w]
+    for s=1, #world.systems do
+      local system = world.systems[s]
+      if system[function_name] then
+        system[function_name](system, ...)
       end
-   end
+    end
+  end
 end
 
 --- World Functions
@@ -110,26 +110,26 @@ end
 -- @treturn number the id of the created @{world}
 function Motor:new_world(systems_names)
 
-   self.last_world_id = self.last_world_id + 1
-   self.worlds[#self.worlds+1] = {
-      id       = self.last_world_id,
-      last_id  = 0,
-      systems  = {},
-      entities = {},
-   }
+  self.last_world_id = self.last_world_id + 1
+  self.worlds[#self.worlds+1] = {
+    id       = self.last_world_id,
+    last_id  = 0,
+    systems  = {},
+    entities = {},
+  }
 
-   local new_world = self.worlds[self.last_world_id]
+  local new_world = self.worlds[self.last_world_id]
 
-   for s=1, #self.systems, 2 do
-      for sn=1, #systems_names do
-         if systems_names[sn] == self.systems[s] then
-            new_world.systems[#new_world.systems+1] = self.systems[s+1].new(self, self.last_world_id)
-            break
-         end
+  for s=1, #self.systems, 2 do
+    for sn=1, #systems_names do
+      if systems_names[sn] == self.systems[s] then
+        new_world.systems[#new_world.systems+1] = self.systems[s+1].new(self, self.last_world_id)
+        break
       end
-   end
+    end
+  end
 
-   return self.last_world_id
+  return self.last_world_id
 end
 
 --- returns the @{world} of this id
@@ -140,7 +140,7 @@ end
 -- @number world_id (integer) id of the @{world} to be obtained
 -- @treturn world world reference
 function Motor:get_world (world_id)
-   return self.worlds[bin_search_with_key(self.worlds, world_id, 'id')]
+  return self.worlds[bin_search_with_key(self.worlds, world_id, 'id')]
 end
 
 --- returns multiple @{world|worlds} from multiple world ids
@@ -149,44 +149,44 @@ end
 -- @tparam {number} world_ids table of ids
 -- @treturn {world} a table of worlds
 function Motor:get_worlds (world_ids)
-   local worlds = {}
-      for wi=1,#world_ids do
-         worlds[wi] = self:get_world(world_ids[wi])
-      end
-   return worlds
+  local worlds = {}
+  for wi=1,#world_ids do
+    worlds[wi] = self:get_world(world_ids[wi])
+  end
+  return worlds
 end
 
 local function update_systems_entities_on_add(world, entity)
-   for s=1, #world.systems do
-      local system = world.systems[s]
-      if system.filter(entity) and not (bin_search(system.ids, entity.id)) then
-         system.ids[#system.ids+1] = entity.id
-      end
-   end
+  for s=1, #world.systems do
+    local system = world.systems[s]
+    if system.filter(entity) and not (bin_search(system.ids, entity.id)) then
+      system.ids[#system.ids+1] = entity.id
+    end
+  end
 end
 
 local function update_systems_entities_on_remove(world, entity_id)
-   for s=1, #world.systems do
-      local system = world.systems[s]
-      local entity_id_index_in_system = bin_search(system.ids, entity_id)
-      if entity_id_index_in_system then
-         _table_remove(system.ids, entity_id_index_in_system)
-      end
-   end
+  for s=1, #world.systems do
+    local system = world.systems[s]
+    local entity_id_index_in_system = bin_search(system.ids, entity_id)
+    if entity_id_index_in_system then
+      _table_remove(system.ids, entity_id_index_in_system)
+    end
+  end
 end
 
 --- Entities Functions
 -- @section Entity
 
 local function create_entity(world, parent_id)
-   world.last_id = world.last_id + 1 -- incrementing last entity id of this world
-   -- create the entity
-   world.entities[#world.entities+1] = {
-      id = world.last_id,
-      parent_id = parent_id or 0,
-      children = {},
-   }
-   return world.last_id -- return the id of created entity
+  world.last_id = world.last_id + 1 -- incrementing last entity id of this world
+  -- create the entity
+  world.entities[#world.entities+1] = {
+    id = world.last_id,
+    parent_id = parent_id or 0,
+    children = {},
+  }
+  return world.last_id -- return the id of created entity
 end
 
 --- Create an @{entity} in a @{world}
@@ -199,12 +199,12 @@ end
 -- @tparam[opt=0] number  parent_id optional parent id
 -- @treturn number id of the new @{entity}
 function Motor.new_entity(world, parent_id)
-   local new_entity_id = create_entity(world, parent_id)
-   if parent_id then
-      local parent_entity = Motor.get_entity(world, parent_id)
-      parent_entity.children[#parent_entity.children+1] = new_entity_id
-   end
-   return new_entity_id
+  local new_entity_id = create_entity(world, parent_id)
+  if parent_id then
+    local parent_entity = Motor.get_entity(world, parent_id)
+    parent_entity.children[#parent_entity.children+1] = new_entity_id
+  end
+  return new_entity_id
 end
 
 --- create multiple @{entity|entities} in a @{world}
@@ -215,19 +215,19 @@ end
 -- @tparam[pot=0] number parent_id optional parent_id
 -- @treturn {number} table of entities ids created
 function Motor.new_entities(world, quantity, parent_id)
-   local new_entities_ids = {}
-   for i=1, quantity do
-      new_entities_ids[i] = create_entity(world, parent_id)
-   end
-   if parent_id then
-      local parent_entity = Motor.get_entity(world, parent_id)
-      local c = 1
-      for i = #parent_entity.children + 1, #parent_entity.children + #new_entities_ids do
-         parent_entity.children[i] = new_entities_ids[c]
-         c = c + 1
-      end
-   end
-   return new_entities_ids
+  local new_entities_ids = {}
+  for i=1, quantity do
+    new_entities_ids[i] = create_entity(world, parent_id)
+  end
+  if parent_id then
+    local parent_entity = Motor.get_entity(world, parent_id)
+    local c = 1
+    for i = #parent_entity.children + 1, #parent_entity.children + #new_entities_ids do
+      parent_entity.children[i] = new_entities_ids[c]
+      c = c + 1
+    end
+  end
+  return new_entities_ids
 end
 
 --- get a @{entity}
@@ -240,7 +240,7 @@ end
 -- @tparam number entity_id id of the @{entity} to be obtained
 -- @treturn entity entity reference of this id
 function Motor.get_entity (world, entity_id)
-   return world.entities[bin_search_with_key(world.entities, entity_id, 'id')]
+  return world.entities[bin_search_with_key(world.entities, entity_id, 'id')]
 end
 
 --- get multiple @{entity|entities}
@@ -253,11 +253,11 @@ end
 -- @tparam {number} entities id
 -- @treturn {entity} table of multiple @{entity|entities}
 function Motor.get_entities (world, entities_ids)
-   local entities = {}
-   for ei=1,#entities_ids do -- ei: entity id
-      entities[ei] = Motor.get_entity(world, entities_ids[ei], 'id')
-   end
-   return entities
+  local entities = {}
+  for ei=1,#entities_ids do -- ei: entity id
+    entities[ei] = Motor.get_entity(world, entities_ids[ei], 'id')
+  end
+  return entities
 end
 
 --- set multiple components in an @{entity}
@@ -281,12 +281,12 @@ end
 -- @tparam entity entity to be modified
 -- @tparam table component_names_and_values component names and values in pairs
 function Motor:set_components_on_entity (world, entity, component_names_and_values)
-   for cnavi=1,#component_names_and_values, 2 do -- cnavi: Component Name And Value Index
-      local component_name = component_names_and_values[cnavi]
-      local component_constructor = self.components_constructors[component_name]
-      entity[component_name] = component_constructor(component_names_and_values[cnavi+1])
-   end
-   update_systems_entities_on_add(world, entity)
+  for cnavi=1,#component_names_and_values, 2 do -- cnavi: Component Name And Value Index
+    local component_name = component_names_and_values[cnavi]
+    local component_constructor = self.components_constructors[component_name]
+    entity[component_name] = component_constructor(component_names_and_values[cnavi+1])
+  end
+  update_systems_entities_on_add(world, entity)
 end
 
 --- destroy an @{entity}
@@ -296,9 +296,9 @@ end
 -- @tparam world world table (not world id)
 -- @tparam number entity_id id of the @{entity} to be destroyed
 function Motor.destroy_entity(world, entity_id)
-   local entity_id_index = bin_search_with_key(world.entities, entity_id, 'id')
-   _table_remove(world.entities, entity_id_index)
-   update_systems_entities_on_remove(world, entity_id)
+  local entity_id_index = bin_search_with_key(world.entities, entity_id, 'id')
+  _table_remove(world.entities, entity_id_index)
+  update_systems_entities_on_remove(world, entity_id)
 end
 
 return motor
