@@ -43,23 +43,6 @@ function motor.new(components_constructors, systems)
   return new
 end
 
-local function bin_search(tbl, target)
-  local min = 1
-  local max = #tbl
-
-  while min <= max do
-    local mid = _floor( (min + max)/2 )
-    if tbl[mid] == target then
-      return mid
-    elseif target < tbl[mid] then
-      max = mid - 1
-    else
-      min = mid + 1
-    end
-  end
-  return nil, "value " .. target .. " not found"
-end
-
 local function bin_search_with_key(tbl, target, key)
   local min = 1
   local max = #tbl
