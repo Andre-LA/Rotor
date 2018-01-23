@@ -159,8 +159,8 @@ end
 local function update_systems_entities_on_add(world, entity)
   for s=1, #world.systems do
     local system = world.systems[s]
-    if system.filter(entity) and not (bin_search(system.ids, entity.id)) then
-      system.ids[#system.ids+1] = entity.id
+    if system.filter(entity) and not (bin_search_with_key(system.entities, entity.id, 'id')) then
+      system.entities[#system.entities+1] = entity
     end
   end
 end
@@ -168,9 +168,9 @@ end
 local function update_systems_entities_on_remove(world, entity_id)
   for s=1, #world.systems do
     local system = world.systems[s]
-    local entity_id_index_in_system = bin_search(system.ids, entity_id)
-    if entity_id_index_in_system then
-      _table_remove(system.ids, entity_id_index_in_system)
+    local entity_index_in_system = bin_search_with_key(system.entities, entity_id, 'id')
+    if entity_index_in_system then
+      _table_remove(system.entities, entity_index_in_system)
     end
   end
 end
