@@ -42,6 +42,7 @@ function motor.new(components_constructors, systems)
   _setmetatable(new, Motor)
   return new
 end
+_setmetatable(motor, {__call = function(_, cc, s) return motor.new(cc, s) end})
 
 local function bin_search_with_key(tbl, target, key)
   local min = 1
