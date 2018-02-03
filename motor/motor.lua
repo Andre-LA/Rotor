@@ -26,18 +26,23 @@ local _setmetatable = setmetatable
 --        drawable = function(v) return {drawable = v.drawable} end,
 --    },
 --    { -- systems:
---       "move", require ("example_systems/move_system"),
---       "drawer", require ("example_systems/draw_drawable_system"),
+--       require ("example_systems/move_system"),
+--       require ("example_systems/draw_drawable_system"),
 --    }
 -- )
 function motor.new(components_constructors, systems)
   local new = {
     -- registered components_constructors and systems
     components_constructors = components_constructors,
-    systems = systems,
+    systems = {},
     worlds = {},
     last_world_id = 0,
   }
+
+  for s=1, #systems do
+    local system = systems[s]
+    new.systems[s] = system
+  end
 
   _setmetatable(new, Motor)
   return new
@@ -104,10 +109,10 @@ function Motor:new_world(systems_names)
 
   local new_world = self.worlds[self.last_world_id]
 
-  for s=1, #self.systems, 2 do
+  for s=1, #self.systems do
     for sn=1, #systems_names do
-      if systems_names[sn] == self.systems[s] then
-        new_world.systems[#new_world.systems+1] = self.systems[s+1].new(self, self.last_world_id)
+      if systems_names[sn] == self.systems[s].name then
+        new_world.systems[#new_world.systems+1] = self.systems[s](self, new_world)
         break
       end
     end

@@ -1,4 +1,4 @@
-local move_system = {}
+local move_system = {name = "move_system"}
 local Move_System = {}
 Move_System.__index = Move_System
 

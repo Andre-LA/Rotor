@@ -8,8 +8,8 @@ local motor = Motor.new(
     drawable = function(v) return {drawable = v.drawable} end,
   },
   { -- systems:
-    "move", require ("example_systems/move_system"),
-    "drawer", require ("example_systems/draw_drawable_system"),
+    require ("example_systems/move_system"),
+    require ("example_systems/draw_drawable_system"),
   }
 )
 

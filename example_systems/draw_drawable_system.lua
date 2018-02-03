@@ -1,4 +1,4 @@
-local draw_drawable_system = {}
+local draw_drawable_system = {name = "draw_drawable_system"}
 local Draw_Drawable_System = {}
 Draw_Drawable_System.__index = Draw_Drawable_System
 local _setmetatable = setmetatable
