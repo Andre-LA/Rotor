@@ -92,14 +92,15 @@ end
 
 --- creates a new @{world} inside motor instance
 -- @usage
--- local main_world_id = motor:new_world({"move", "drawer"})
+-- local main_world_id, main_world_ref = motor:new_world({"move", "drawer"})
 -- @see world
 -- @function new_world
 -- @tparam {string} systems_names each string is a system to be processed in the @{world}
--- @treturn number the id of the created @{world}
+-- @treturn number the id of the created @{world},
+-- @treturn world the new world
 function Motor:new_world(systems_names)
-
   self.last_world_id = self.last_world_id + 1
+
   self.worlds[#self.worlds+1] = {
     id       = self.last_world_id,
     last_id  = 0,
@@ -175,20 +176,21 @@ local function create_entity(world, parent_id)
     parent_id = parent_id or 0,
     children = {},
   }
-  return world.last_id -- return the id of created entity
+  return world.last_id, world.entities[#world.entities] -- return the id of created entity and the entity
 end
 
 --- Create an @{entity} in a @{world}
 -- @function new_entity
 -- @usage
--- local entity_id = motor.new_entity(world_ref)
+-- local entity_id, entity_ref = motor.new_entity(world_ref)
 -- @see entity
 -- @see world
 -- @tparam world world
 -- @tparam[opt=0] number  parent_id optional parent id
 -- @treturn number id of the new @{entity}
+-- @treturn entity entity created
 function Motor.new_entity(world, parent_id)
-  local new_entity_id = create_entity(world, parent_id)
+  local new_entity_id, new_entity = create_entity(world, parent_id)
   if parent_id then
     local parent_entity = Motor.get_entity(world, parent_id)
     parent_entity.children[#parent_entity.children+1] = new_entity_id
@@ -203,10 +205,11 @@ end
 -- @tparam number quantity quantity of @{entity|entities} to be created in this @{world}
 -- @tparam[pot=0] number parent_id optional parent_id
 -- @treturn {number} table of entities ids created
+-- @treturn {entity} table of entities created
 function Motor.new_entities(world, quantity, parent_id)
-  local new_entities_ids = {}
+  local new_entities_ids, new_entities = {}, {}
   for i=1, quantity do
-    new_entities_ids[i] = create_entity(world, parent_id)
+    new_entities_ids[i], new_entities[i] = create_entity(world, parent_id)
   end
   if parent_id then
     local parent_entity = Motor.get_entity(world, parent_id)
@@ -216,7 +219,7 @@ function Motor.new_entities(world, quantity, parent_id)
       c = c + 1
     end
   end
-  return new_entities_ids
+  return new_entities_ids, new_entities
 end
 
 --- get a @{entity}
@@ -232,6 +235,15 @@ function Motor.get_entity (world, entity_id)
   return world.entities[bin_search_with_key(world.entities, entity_id, 'id')]
 end
 
+--- get a @{entity} with the given key [with the given value]
+-- @usage
+-- local entity_id, entity_ref = motor.get_entity_by_key(world_ref, "name", "André")
+-- @see world
+-- @see entity
+-- @function get_entity_by_key
+-- @tparam world world table
+-- @tparam string key
+-- @tparam[opt] value value
 function Motor.get_entity_by_key (world, key, value)
   for i=1, #world.entities do
     local entity = world.entities[i]
@@ -240,6 +252,8 @@ function Motor.get_entity_by_key (world, key, value)
     end
   end
 end
+
+-- @todo create get_entities_by_key
 
 --- get multiple @{entity|entities}
 -- @see world
@@ -253,7 +267,7 @@ end
 function Motor.get_entities (world, entities_ids)
   local entities = {}
   for ei=1,#entities_ids do -- ei: entity id
-    entities[ei] = Motor.get_entity(world, entities_ids[ei], 'id')
+    entities[ei] = Motor.get_entity(world, entities_ids[ei])
   end
   return entities
 end
@@ -261,12 +275,10 @@ end
 --- set multiple components in an @{entity}
 -- @usage
 -- -- creating the world and getting a reference of it
--- main_world_id = motor:new_world({"move", "drawer"})
--- local world_ref = motor:get_world(main_world_id)
+-- main_world_id, world_ref = motor:new_world({"move", "drawer"})
 --
 -- -- creating one entity and getting a reference of it
--- entity_id = motor.new_entity(world_ref)
--- local entity_ref = motor.get_entity(world_ref, entity_id)
+-- entity_id, entity_ref = motor.new_entity(world_ref)
 --
 -- -- setting the entity components
 -- motor:set_components_on_entity(world_ref, entity_ref, {
