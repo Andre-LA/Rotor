@@ -20,14 +20,14 @@ local _setmetatable = setmetatable
 -- @usage
 -- local motor = Motor.new(
 --    { -- components constructors:
---        position = function(v) return {x = v.x, y = v.y} end,
---        velocity = function(v) return {x = v.x, y = v.y} end,
---        mesh     = function(v) return {mesh = love.graphics.newMesh(v.vertices, v.mode, v.usage)} end,
---        drawable = function(v) return {drawable = v.drawable} end,
+--      position = function(v) return {x = v.x, y = v.y} end,
+--      velocity = function(v) return {x = v.x, y = v.y} end,
+--      mesh     = function(v) return {value = love.graphics.newMesh(v.vertices, v.mode, v.usage)} end,
+--      drawable = function(v, e) return {drawable = e[v.drawable].value} end,
 --    },
---    { -- systems:
---       require ("example_systems/move_system"),
---       require ("example_systems/draw_drawable_system"),
+--    { -- systems (will be executed in the following order):
+--      require ("example_systems/move_system"),
+--      require ("example_systems/draw_drawable_system"),
 --    }
 -- )
 function motor.new(components_constructors, systems)
