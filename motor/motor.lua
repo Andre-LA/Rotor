@@ -232,6 +232,15 @@ function Motor.get_entity (world, entity_id)
   return world.entities[bin_search_with_key(world.entities, entity_id, 'id')]
 end
 
+function Motor.get_entity_by_key (world, key, value)
+  for i=1, #world.entities do
+    local entity = world.entities[i]
+    if entity[key] and (value ~= nil and entity[key] == value or true) then
+      return entity
+    end
+  end
+end
+
 --- get multiple @{entity|entities}
 -- @see world
 -- @see entity
