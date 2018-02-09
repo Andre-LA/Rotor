@@ -1,13 +1,25 @@
 local draw_drawable_system = {name = "draw_drawable_system"}
-local Draw_Drawable_System = {}
-Draw_Drawable_System.__index = Draw_Drawable_System
-local _setmetatable = setmetatable
+draw_drawable_system.__index = draw_drawable_system
 
-function Draw_Drawable_System.filter (e)
+function draw_drawable_system.new(_motor, _world)
+  local new = {
+    motor = _motor,
+    entities = {},
+    world = _world,
+  }
+  setmetatable(new, draw_drawable_system)
+  return new
+end
+
+setmetatable(draw_drawable_system, {__call = function(_, m, w)
+  return draw_drawable_system.new(m, w)
+end})
+
+function draw_drawable_system.filter (e)
   return e.drawable and e.position
 end
 
-function Draw_Drawable_System:draw ()
+function draw_drawable_system:draw ()
   local entities = self.entities
   local e = 1
   while e <= #entities do
@@ -19,13 +31,4 @@ function Draw_Drawable_System:draw ()
   end
 end
 
-function draw_drawable_system.new(_motor, _world)
-  local new = {
-    motor = _motor,
-    entities = {},
-    world = _world,
-  }
-  _setmetatable(new, Draw_Drawable_System)
-  return new
-end
 return draw_drawable_system

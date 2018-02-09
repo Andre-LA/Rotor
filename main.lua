@@ -4,35 +4,40 @@ local motor = Motor.new(
   { -- components constructors:
     position = function(v) return {x = v.x, y = v.y} end,
     velocity = function(v) return {x = v.x, y = v.y} end,
-    mesh     = function(v) return {mesh = love.graphics.newMesh(v.vertices, v.mode, v.usage)} end,
-    drawable = function(v) return {drawable = v.drawable} end,
+    mesh     = function(v) return {value = love.graphics.newMesh(v.vertices, v.mode, v.usage)} end,
+    drawable = function(v, e) return {drawable = e[v.drawable].value} end,
   },
-  { -- systems:
+  { -- systems (will be executed in the following order):
     require ("example_systems/move_system"),
     require ("example_systems/draw_drawable_system"),
   }
 )
 
-
 local main_world_id;
 local entity_id;
 
 function love.load()
-  -- require ("mobdebug").start()
+  local world_ref;
+  main_world_id, world_ref = motor:new_world({"move_system", "draw_drawable_system"})
 
-  main_world_id = motor:new_world({"move", "drawer"})
-  local world_ref = motor:get_world(main_world_id)
-
-  entity_id = motor.new_entity(world_ref)
-  local entity_ref = motor.get_entity(world_ref, entity_id)
+  local entity_ref;
+  entity_id, entity_ref = motor.new_entity(world_ref)
 
   motor:set_components_on_entity(world_ref, entity_ref, {
-    "position", {x = 5, y = 5},
-    "velocity", {x = 1, y = 1},
-    "mesh"    , {vertices = {{-50, -50}, {50, -50}, {50, 50}, {-50, 50}}},
-  })
-  motor:set_components_on_entity(world_ref, entity_ref, {
-    "drawable", {drawable = entity_ref.mesh.mesh}
+    "position", {x = 150, y = 250},
+    "velocity", {
+      x = 10,
+      y = 10
+    },
+    "mesh", {
+      vertices = {
+        {-50, -50}, { 50, -50},
+        { 50,  50}, {-50,  50}
+      }
+    },
+    "drawable", {
+      drawable = "mesh"
+    }
   })
 end
 

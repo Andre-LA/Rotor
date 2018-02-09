@@ -111,6 +111,10 @@
 	<td class="summary">get a <a href="motordoc.html#entity">entity</a></td>
 	</tr>
 	<tr>
+	<td class="name" nowrap><a href="#get_entity_by_key">get_entity_by_key (world, key[, value])</a></td>
+	<td class="summary">get a <a href="motordoc.html#entity">entity</a> with the given key [with the given value]</td>
+	</tr>
+	<tr>
 	<td class="name" nowrap><a href="#get_entities">get_entities (world, entities)</a></td>
 	<td class="summary">get multiple <a href="motordoc.html#entity">entities</a></td>
 	</tr>
@@ -182,8 +186,8 @@
        drawable = <span class="keyword">function</span>(v) <span class="keyword">return</span> {drawable = v.drawable} <span class="keyword">end</span>,
    },
    { <span class="comment">-- systems:
-</span>      <span class="string">"move"</span>, <span class="global">require</span> (<span class="string">"example_systems/move_system"</span>),
-      <span class="string">"drawer"</span>, <span class="global">require</span> (<span class="string">"example_systems/draw_drawable_system"</span>),
+</span>      <span class="global">require</span> (<span class="string">"example_systems/move_system"</span>),
+      <span class="global">require</span> (<span class="string">"example_systems/draw_drawable_system"</span>),
    }
 )</pre>
     </ul>
@@ -241,9 +245,12 @@
 
     <h3>Returns:</h3>
     <ol>
-
+        <li>
            <span class="types"><span class="type">number</span></span>
-        the id of the created <a href="motordoc.html#world">world</a>
+        the id of the created <a href="motordoc.html#world">world</a>,</li>
+        <li>
+           <span class="types"><a class="type" href="motordoc.html#world">world</a></span>
+        the new world</li>
     </ol>
 
 
@@ -254,7 +261,7 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example"><span class="keyword">local</span> main_world_id = motor:new_world({<span class="string">"move"</span>, <span class="string">"drawer"</span>})</pre>
+        <pre class="example"><span class="keyword">local</span> main_world_id, main_world_ref = motor:new_world({<span class="string">"move"</span>, <span class="string">"drawer"</span>})</pre>
     </ul>
 
 </dd>
@@ -351,9 +358,12 @@
 
     <h3>Returns:</h3>
     <ol>
-
+        <li>
            <span class="types"><span class="type">number</span></span>
-        id of the new <a href="motordoc.html#entity">entity</a>
+        id of the new <a href="motordoc.html#entity">entity</a></li>
+        <li>
+           <span class="types"><a class="type" href="motordoc.html#entity">entity</a></span>
+        entity created</li>
     </ol>
 
 
@@ -365,7 +375,7 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example"><span class="keyword">local</span> entity_id = motor.new_entity(world_ref)</pre>
+        <pre class="example"><span class="keyword">local</span> entity_id, entity_ref = motor.new_entity(world_ref)</pre>
     </ul>
 
 </dd>
@@ -395,9 +405,12 @@
 
     <h3>Returns:</h3>
     <ol>
-
+        <li>
            <span class="types"><span class="type">{number}</span></span>
-        table of entities ids created
+        table of entities ids created</li>
+        <li>
+           <span class="types"><a class="type" href="motordoc.html#entity">{entity}</a></span>
+        table of entities created</li>
     </ol>
 
 
@@ -445,6 +458,45 @@
     <h3>Usage:</h3>
     <ul>
         <pre class="example"><span class="keyword">local</span> entity_ref = motor.get_entity(world_ref, entity_id)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "get_entity_by_key"></a>
+    <strong>get_entity_by_key (world, key[, value])</strong>
+    </dt>
+    <dd>
+    get a <a href="motordoc.html#entity">entity</a> with the given key [with the given value]
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">world</span>
+            <span class="types"><a class="type" href="motordoc.html#world">world</a></span>
+         table
+        </li>
+        <li><span class="parameter">key</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+
+        </li>
+        <li><span class="parameter">value</span>
+            <span class="types"><span class="type">value</span></span>
+
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <li><a href="motordoc.html#world">world</a></li>
+         <li><a href="motordoc.html#entity">entity</a></li>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> entity_id, entity_ref = motor.get_entity_by_key(world_ref, <span class="string">"name"</span>, <span class="string">"André"</span>)</pre>
     </ul>
 
 </dd>
@@ -518,12 +570,10 @@
     <h3>Usage:</h3>
     <ul>
         <pre class="example"><span class="comment">-- creating the world and getting a reference of it
-</span>main_world_id = motor:new_world({<span class="string">"move"</span>, <span class="string">"drawer"</span>})
-<span class="keyword">local</span> world_ref = motor:get_world(main_world_id)
+</span>main_world_id, world_ref = motor:new_world({<span class="string">"move"</span>, <span class="string">"drawer"</span>})
 
 <span class="comment">-- creating one entity and getting a reference of it
-</span>entity_id = motor.new_entity(world_ref)
-<span class="keyword">local</span> entity_ref = motor.get_entity(world_ref, entity_id)
+</span>entity_id, entity_ref = motor.new_entity(world_ref)
 
 <span class="comment">-- setting the entity components
 </span>motor:set_components_on_entity(world_ref, entity_ref, {
@@ -648,7 +698,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2018-01-23 21:29:15 </i>
+<i style="float:right;">Last updated 2018-02-09 01:36:12 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
