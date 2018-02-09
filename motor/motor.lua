@@ -193,7 +193,7 @@ function Motor.new_entity(world, parent_id)
     local parent_entity = Motor.get_entity(world, parent_id)
     parent_entity.children[#parent_entity.children+1] = new_entity_id
   end
-  return new_entity_id
+  return new_entity_id, new_entity
 end
 
 --- create multiple @{entity|entities} in a @{world}
