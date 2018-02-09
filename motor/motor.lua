@@ -118,7 +118,7 @@ function Motor:new_world(systems_names)
     end
   end
 
-  return self.last_world_id
+  return self.last_world_id, new_world
 end
 
 --- returns the @{world} of this id
