@@ -117,6 +117,7 @@ function Motor:call(function_name, ...)
   end
 end
 
+
 --- World Functions
 -- @section World
 
@@ -274,11 +275,13 @@ end
 -- @tparam world world table
 -- @tparam string key
 -- @tparam[opt] value value
+-- @treturn number entity id
+-- @treturn entity entity
 function Motor.get_entity_by_key (world, key, value)
   for i=1, #world.entities do
     local entity = world.entities[i]
     if entity[key] and (value ~= nil and entity[key] == value or true) then
-      return entity
+      return entity.id, entity
     end
   end
 end
