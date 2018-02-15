@@ -10,7 +10,6 @@ Motor.__index = Motor
 
 local _floor = math.floor
 local _table_remove = table.remove
-local _setmetatable = setmetatable
 
 --- Motor constructor
 -- @function new
@@ -44,10 +43,11 @@ function motor.new(components_constructors, systems)
     new.systems[s] = system
   end
 
-  _setmetatable(new, Motor)
+  setmetatable(new, Motor)
   return new
 end
-_setmetatable(motor, {__call = function(_, cc, s) return motor.new(cc, s) end})
+
+setmetatable(motor, {__call = function(_, cc, s) return motor.new(cc, s) end})
 
 local function bin_search_with_key(tbl, target, key)
   local min = 1
