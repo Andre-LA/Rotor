@@ -49,6 +49,36 @@ end
 
 setmetatable(motor, {__call = function(_, cc, s) return motor.new(cc, s) end})
 
+--- @todo doc this!
+
+function motor.new_system(_name, _filter)
+  local new_system = {
+    name = _name,
+    filter = _filter,
+  }
+
+  new_system.__index = new_system
+
+  new_system.new = function(motor_instance, _world)
+    local system_constructor = {
+      motor = motor_instance,
+      world = _world,
+      entities = {},
+    }
+    setmetatable(system_constructor, new_system)
+    return system_constructor
+  end
+
+  setmetatable(new_system, {
+    __call = function(_, m, w)
+      return new_system.new(m, w)
+    end
+  })
+
+  return new_system
+end
+
+
 local function bin_search_with_key(tbl, target, key)
   local min = 1
   local max = #tbl
