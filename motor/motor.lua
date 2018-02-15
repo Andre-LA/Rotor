@@ -18,16 +18,16 @@ local _table_remove = table.remove
 -- @treturn table new Motor instance
 -- @usage
 -- local motor = Motor.new(
---    { -- components constructors:
---      position = function(v) return {x = v.x, y = v.y} end,
---      velocity = function(v) return {x = v.x, y = v.y} end,
---      mesh     = function(v) return {value = love.graphics.newMesh(v.vertices, v.mode, v.usage)} end,
---      drawable = function(v, e) return {drawable = e[v.drawable].value} end,
---    },
---    { -- systems (will be executed in the following order):
---      require ("example_systems/move_system"),
---      require ("example_systems/draw_drawable_system"),
---    }
+--   { -- components constructors:
+--     position = function(v) return {x = v.x, y = v.y} end,
+--     velocity = function(v) return {x = v.x, y = v.y} end,
+--     mesh     = function(v) return {value = love.graphics.newMesh(v.vertices, v.mode, v.usage)} end,
+--     drawable = function(v, e) return {drawable = e[v.drawable].value} end,
+--   },
+--   { -- systems (will be executed in the following order):
+--     require ("example_systems/move_system"),
+--     require ("example_systems/draw_drawable_system"),
+--   }
 -- )
 function motor.new(components_constructors, systems)
   local new = {
