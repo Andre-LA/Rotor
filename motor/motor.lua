@@ -117,7 +117,6 @@ function Motor:call(function_name, ...)
   end
 end
 
-
 --- World Functions
 -- @section World
 
@@ -327,7 +326,7 @@ function Motor:set_components_on_entity (world, entity, component_names_and_valu
   for cnavi=1,#component_names_and_values, 2 do -- cnavi: Component Name And Value Index
     local component_name = component_names_and_values[cnavi]
     local component_constructor = self.components_constructors[component_name]
-    entity[component_name] = component_constructor(component_names_and_values[cnavi+1], entity)
+    entity[component_name] = component_constructor(component_names_and_values[cnavi+1], self, world)
   end
   update_systems_entities_on_add(world, entity)
 end
