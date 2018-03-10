@@ -313,16 +313,16 @@ end
 -- entity_id, entity_ref = motor.new_entity(world_ref)
 --
 -- -- setting the entity components
--- motor:set_components_on_entity(world_ref, entity_ref, {
+-- motor:set_components(world_ref, entity_ref, {
 --     "position", {x = 5, y = 5},
 --     "velocity", {x = 1, y = 1},
 --     "mesh"    , {vertices = {{-50, -50}, {50, -50}, {00, 50}}},
 -- })
--- @function set_components_on_entity
+-- @function set_components
 -- @tparam world world table (not world id)
 -- @tparam entity entity to be modified
 -- @tparam table component_names_and_values component names and values in pairs
-function Motor:set_components_on_entity (world, entity, component_names_and_values)
+function Motor:set_components (world, entity, component_names_and_values)
   for cnavi=1,#component_names_and_values, 2 do -- cnavi: Component Name And Value Index
     local component_name = component_names_and_values[cnavi]
     local component_constructor = self.components_constructors[component_name]
