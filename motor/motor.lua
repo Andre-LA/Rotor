@@ -276,11 +276,28 @@ end
 -- @tparam[opt] value value
 -- @treturn number entity id
 -- @treturn entity entity
-function Motor.get_entity_by_key (world, key, value)
+function Motor.get_entity_by_key (world, key, value, subkeys)
+  -- making value optional
+  if not value then
+    value = true
+  end
+
   for i=1, #world.entities do
     local entity = world.entities[i]
-    if entity[key] and (value ~= nil and entity[key] == value or true) then
-      return entity.id, entity
+    if entity[key] then
+      local subkeys_count = subkeys and #subkeys or 0
+      local key_value = entity[key]
+
+      if subkeys_count > 0 then
+        for k=1, subkeys_count do
+          -- @todo TODO: introduce asserts in the next version
+          key_value = key_value[subkeys[k]]
+        end
+      end
+
+      if key_value == value then
+        return entity.id, entity
+      end
     end
   end
 end
