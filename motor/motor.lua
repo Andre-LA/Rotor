@@ -307,17 +307,18 @@ function motor.set_components (universe, world, entity, component_names_and_valu
     local component_name = component_names_and_values[cnavi]
 
     if component_name == "id" or component_name == "children" then
-      print("component pair ignored: '" .. component_name ..
-        "' because " .. component_name .. " not should be modified here"
+      print(
+        "component pair ignored: '" .. component_name
+        .. "' because " .. component_name .. " not should be modified here"
       )
+    else
+      local component_constructor = _assert(
+        universe.components_constructors[component_name],
+        "component constructor of '" .. component_name .. "' not found"
+      )
+
+      entity[component_name] = component_constructor(component_names_and_values[cnavi+1], world, entity, universe)
     end
-
-    local component_constructor = _assert(
-      universe.components_constructors[component_name],
-      "component constructor of '" .. component_name .. "' not found"
-    )
-
-    entity[component_name] = component_constructor(component_names_and_values[cnavi+1], world, entity, universe)
   end
 
   update_systems_entities_on_add(world, entity)
