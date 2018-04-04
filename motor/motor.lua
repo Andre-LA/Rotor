@@ -158,21 +158,6 @@ function motor.get_world (universe, world_id)
   return universe.worlds[bin_search_with_key(universe.worlds, world_id, 'id')]
 end
 
---- returns multiple @{world|worlds} from multiple world ids
--- @see world
--- @function get_worlds
--- @tparam {number} world_ids table of ids
--- @treturn {world} a table of worlds
-function motor.get_worlds (universe, world_ids)
-  local worlds = {}
-
-  for wi=1,#world_ids do
-    worlds[wi] = motor.get_world(universe, world_ids[wi])
-  end
-
-  return worlds
-end
-
 local function update_systems_entities_on_add(world, entity)
   for s=1, #world.systems do
     local system = world.systems[s]
