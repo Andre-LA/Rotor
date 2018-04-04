@@ -45,10 +45,7 @@ function motor.new_universe(components_constructors, systems)
   return new
 end
 
-setmetatable(motor, {__call = function(_, cc, s) return motor.new(cc, s) end})
-
 --- @todo doc this!
-
 function motor.new_system(_name, _filter)
   local new_system = {
     name = _name,
