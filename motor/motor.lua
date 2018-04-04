@@ -54,9 +54,8 @@ function motor.new_system(_name, _filter)
 
   new_system.__index = new_system
 
-  new_system.new = function(motor_instance, _world)
+  new_system.new = function(_world)
     local system_constructor = {
-      motor = motor_instance,
       world = _world,
       entities = {},
     }
@@ -138,7 +137,7 @@ function motor.new_world(universe, systems_names)
   for s=1, #universe.systems do
     for sn=1, #systems_names do
       if systems_names[sn] == universe.systems[s].name then
-        new_world.systems[#new_world.systems+1] = universe.systems[s](universe, new_world)
+        new_world.systems[#new_world.systems+1] = universe.systems[s](new_world)
         break
       end
     end
