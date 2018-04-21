@@ -1,4 +1,8 @@
---- motor: An ECS-like lua library.
+-- TODO: the documentation is TOTALLY deprecated,
+-- I will update when Motor becomes stable
+-- (this means: at least one complete game made in Motor)
+
+--- motor: An ECS lua library.
 -- check @{main.lua|main.lua example}
 -- @see new
 -- @license MIT
