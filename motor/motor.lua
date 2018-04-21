@@ -8,11 +8,13 @@
 -- @license MIT
 -- @author André Luiz Alvares
 -- @module motor
+
 local motor = {}
 
 local _floor = math.floor
 local _table_remove = table.remove
 local _assert = assert
+local _type = type
 
 --- motor constructor
 -- @function new
