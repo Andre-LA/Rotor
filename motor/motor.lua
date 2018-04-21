@@ -327,19 +327,6 @@ function motor.new_entity(world, parent_id)
   return new_entity
 end
 
---- get a @{entity}
--- @usage
--- local entity_ref = motor.get_entity(world_ref, entity_id)
--- @see world
--- @see entity
--- @function get_entity
--- @tparam world world table (not world id)
--- @tparam number entity_id id of the @{entity} to be obtained
--- @treturn entity entity reference of this id
-function motor.get_entity (world, entity_id)
-  return world.entities[bin_search_with_key(world.entities, entity_id, 'id')]
-end
-
 --- get a @{entity} with the given key [with the given value]
 -- @usage
 -- local entity_id, entity_ref = motor.get_entity_by_key(world_ref, "name", "André")
@@ -351,26 +338,28 @@ end
 -- @tparam[opt] value value
 -- @treturn number entity id
 -- @treturn entity entity
-function motor.get_entity_by_key (world, key, value, subkeys)
-  -- making value optional
-  if not value then
-    value = true
-  end
+function motor.get_entity (world, keys, value, use_bin_search)
+  -- check values
+  check_value_type(keys, "table", "keys", 2)
+  check_table_values_type(keys, "string", "keys", 2)
 
-  for i=1, #world.entities do
-    local entity = world.entities[i]
-    if entity[key] then
-      local subkeys_count = subkeys and #subkeys or 0
-      local key_value = entity[key]
+  local keys_count = #keys
 
-      if subkeys_count > 0 then
-        for k=1, subkeys_count do
-          -- @todo TODO: introduce asserts in the next version
-          key_value = key_value[subkeys[k]]
-        end
-      end
+  -- use bin search to find the entity
+  if use_bin_search then
+    return world.entities[bin_search_with_key(world.entities, keys, value)]
+  else
+    -- for each entity
+    for i=1, #world.entities do
+      -- get entity reference
+      local entity = world.entities[i]
 
-      if key_value == value then
+      -- get the value of key(s)
+      local entity_key_value = keys_count > 1 and get_table_subkey(entity, keys) or entity[keys[1]]
+
+      -- if this key(s) exists and is equals to value (if value is not nil),
+      -- then return the entity
+      if entity_key_value and (value ~= nil and entity_key_value == value or true) then
         return entity
       end
     end
