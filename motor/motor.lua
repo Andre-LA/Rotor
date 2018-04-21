@@ -163,23 +163,25 @@ function motor.new_system(_name, _filter)
   return new_system
 end
 
+local function bin_search_with_key(tbl, keys, target)
+  local keys_count = #keys
 
-local function bin_search_with_key(tbl, target, key)
   local min = 1
   local max = #tbl
 
   while min <= max do
     local mid = _floor( (min + max)/2 )
-    if tbl[mid][key] == target then
+    local tbl_mid = tbl[mid]
+    local tbl_mid_key_value = keys_count > 1 and get_table_subkey(tbl_mid, keys) or tbl_mid[keys[1]]
+
+    if tbl_mid_key_value == target then
       return mid
-    elseif target < tbl[mid][key] then
+    elseif target < tbl_mid_key_value then
       max = mid - 1
     else
       min = mid + 1
     end
   end
-
-  return nil, "value " .. target .. " of " .. key .. " key not found"
 end
 
 --- calls a function (if it exists) in all systems in all @{world|worlds}
