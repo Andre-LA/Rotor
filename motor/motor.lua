@@ -16,6 +16,91 @@ local _table_remove = table.remove
 local _assert = assert
 local _type = type
 
+local function check_value_type (value_to_check, type_expected, arg_name, arg_number)
+  local value_type = _type(value_to_check)
+  _assert(
+    value_type == type_expected,
+    "Motor problem: \n\t*"
+    .. type_expected .. "* expected in the #" .. arg_number .. " argument ('" .. arg_name .. "'), got *"
+    .. value_type .. "*"
+  )
+  return value_to_check
+end
+
+local function check_table_values_type (table_to_check, type_expected, arg_name, arg_number)
+  local check_iter = function()
+    local table_to_check_len = #table_to_check
+    local type_expected_len = #type_expected
+    local iterator_count = 0
+
+    if _type(type_expected) == "table" then
+      local type_expected_index = 0
+
+      return function ()
+        iterator_count = iterator_count + 1
+        if iterator_count <= table_to_check_len then
+          type_expected_index = type_expected_index <= type_expected_len
+            and type_expected_index + 1
+            or 1
+
+          return table_to_check[iterator_count], type_expected[type_expected_index], iterator_count
+        end
+      end
+    else
+      return function()
+        iterator_count = iterator_count + 1
+        if iterator_count <= table_to_check_len then
+          return table_to_check[iterator_count], type_expected, iterator_count
+        end
+      end
+    end
+  end
+
+  for table_value_to_check, value_type_expected, table_value_to_check_index in check_iter() do
+    local value_type = _type(table_value_to_check)
+    _assert(
+      value_type == value_type_expected,
+      "Motor problem: \n\t*"
+      .. value_type_expected .. "* expected in the #" .. table_value_to_check_index
+      .. " index of the table in the #" .. arg_number .. " argument ('" .. arg_name .. "'), got *" .. value_type .. "*"
+    )
+  end
+
+  return table_to_check
+end
+
+local function prepare_component_constructors(component_constructors)
+  -- note: in this scope, "cc" means "Component Constructor(s)"
+
+  local function _check_cc_value(cc, key, type_expected)
+    local cc_value = _assert(cc[key], "Motor problem: '" .. key .. "' key expected in a component constructor")
+    local cc_value_type = _type(cc_value)
+
+    _assert(
+      cc_value_type == type_expected,
+      "Motor problem: '"
+        .. type_expected .. "' type expected in '"
+        .. key .. "' key in a component constructor, got '"
+        .. cc_value_type .. "'"
+    )
+
+    return cc_value
+  end
+
+  local prepared_cc = {}
+
+  for i = 1, #component_constructors do
+    local cc = component_constructors[i]
+
+    local cc_name = _check_cc_value(cc, "name", "string")
+    local cc_constructor = _check_cc_value(cc, "constructor", "function")
+
+    prepared_cc[cc_name] = cc_constructor
+  end
+
+  return prepared_cc
+end
+
 --- motor constructor
 -- @function new
 -- @tparam table components_constructors
