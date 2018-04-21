@@ -103,7 +103,7 @@ end
 
 --- motor constructor
 -- @function new
--- @tparam table components_constructors
+-- @tparam table component_constructors
 -- @tparam table systems
 -- @treturn table new motor instance
 -- @usage
@@ -119,19 +119,18 @@ end
 --     require ("example_systems/draw_drawable_system"),
 --   }
 -- )
-function motor.new_universe(components_constructors, systems)
+function motor.new_universe(component_constructors, systems)
+  check_value_type(component_constructors, "table", "component_constructors", 1)
+  check_value_type(systems, "table", "systems", 2)
+  check_table_values_type(component_constructors, "table", "component_constructors", 1)
+
   local new = {
-    -- registered components_constructors and systems
-    components_constructors = components_constructors,
-    systems = {},
+    -- registered component_constructors and systems
+    component_constructors = prepare_component_constructors(component_constructors),
+    systems = check_table_values_type(systems, "table", "component_constructors", 1),
     worlds = {},
     last_world_id = 0,
   }
-
-  for s=1, #systems do
-    local system = systems[s]
-    new.systems[s] = system
-  end
 
   return new
 end
@@ -154,13 +153,23 @@ function motor.new_system(_name, _filter)
     return system_constructor
   end
 
-  setmetatable(new_system, {
-    __call = function(_, m, w)
-      return new_system.new(m, w)
-    end
-  })
-
   return new_system
+end
+
+local function get_table_subkey(tbl, subkeys)
+  local subkeys_count = #subkeys
+  local key_value = tbl;
+
+  for k=1, subkeys_count do
+    local sub = key_value[subkeys[k]]
+    if sub ~= nil then
+      key_value = sub
+    else
+      return
+    end
+  end
+
+  return key_value
 end
 
 local function bin_search_with_key(tbl, keys, target)
@@ -193,10 +202,14 @@ end
 -- @tparam string function_name the name of function to be called
 -- @param ... parameters of the function to be called.
 function motor.call(universe, function_name, ...)
+  check_value_type(function_name, "string", "function_name", 2)
+
   for w=1, #universe.worlds do
     local world = universe.worlds[w]
+
     for s=1, #world.systems do
       local system = world.systems[s]
+
       if system[function_name] then
         system[function_name](system, ...)
       end
@@ -216,6 +229,9 @@ end
 -- @treturn number the id of the created @{world},
 -- @treturn world the new world
 function motor.new_world(universe, systems_names)
+  check_value_type(systems_names, "table", "systems_names", 2)
+  check_table_values_type(systems_names, "string", "systems_names", 2)
+
   universe.last_world_id = universe.last_world_id + 1
 
   universe.worlds[#universe.worlds+1] = {
@@ -230,7 +246,7 @@ function motor.new_world(universe, systems_names)
   for s=1, #universe.systems do
     for sn=1, #systems_names do
       if systems_names[sn] == universe.systems[s].name then
-        new_world.systems[#new_world.systems+1] = universe.systems[s](new_world)
+        new_world.systems[#new_world.systems+1] = universe.systems[s].new(new_world)
         break
       end
     end
@@ -253,6 +269,7 @@ end
 local function update_systems_entities_on_add(world, entity)
   for s=1, #world.systems do
     local system = world.systems[s]
+
     if system.filter(entity) and not (bin_search_with_key(system.entities, entity.id, 'id')) then
       system.entities[#system.entities+1] = entity
     end
@@ -262,7 +279,9 @@ end
 local function update_systems_entities_on_remove(world, entity_id)
   for s=1, #world.systems do
     local system = world.systems[s]
+
     local entity_index_in_system = bin_search_with_key(system.entities, entity_id, 'id')
+
     if entity_index_in_system then
       _table_remove(system.entities, entity_index_in_system)
     end
@@ -385,17 +404,17 @@ end
 -- @tparam entity entity to be modified
 -- @tparam table component_names_and_values component names and values in pairs
 function motor.set_components (universe, world, entity, component_names_and_values)
-  for cnavi=1,#component_names_and_values, 2 do -- cnavi: Component Name And Value Index
+  for cnavi=1, #component_names_and_values, 2 do -- cnavi: Component Name And Value Index
     local component_name = component_names_and_values[cnavi]
 
     if component_name == "id" or component_name == "children" then
       print(
         "component pair ignored: '" .. component_name
-        .. "' because " .. component_name .. " not should be modified here"
+          .. "' because " .. component_name .. " not should be modified"
       )
     else
       local component_constructor = _assert(
-        universe.components_constructors[component_name],
+        universe.component_constructors[component_name],
         "component constructor of '" .. component_name .. "' not found"
       )
 
