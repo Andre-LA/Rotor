@@ -263,14 +263,14 @@ end
 -- @number world_id (integer) id of the @{world} to be obtained
 -- @treturn world world reference
 function motor.get_world (universe, world_id)
-  return universe.worlds[bin_search_with_key(universe.worlds, world_id, 'id')]
+  return universe.worlds[bin_search_with_key(universe.worlds, {"id"}, world_id)]
 end
 
 local function update_systems_entities_on_add(world, entity)
   for s=1, #world.systems do
     local system = world.systems[s]
 
-    if system.filter(entity) and not (bin_search_with_key(system.entities, entity.id, 'id')) then
+    if system.filter(entity) and not (bin_search_with_key(system.entities, {'id'}, entity.id)) then
       system.entities[#system.entities+1] = entity
     end
   end
@@ -280,7 +280,7 @@ local function update_systems_entities_on_remove(world, entity_id)
   for s=1, #world.systems do
     local system = world.systems[s]
 
-    local entity_index_in_system = bin_search_with_key(system.entities, entity_id, 'id')
+    local entity_index_in_system = bin_search_with_key(system.entities, {"id"}, entity_id)
 
     if entity_index_in_system then
       _table_remove(system.entities, entity_index_in_system)
@@ -432,7 +432,7 @@ end
 -- @tparam world world table (not world id)
 -- @tparam number entity_id id of the @{entity} to be destroyed
 function motor.destroy_entity(world, entity_id)
-  local entity_id_index = bin_search_with_key(world.entities, entity_id, 'id')
+  local entity_id_index = bin_search_with_key(world.entities, {"id"}, entity_id)
   _table_remove(world.entities, entity_id_index)
   update_systems_entities_on_remove(world, entity_id)
 end
