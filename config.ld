@@ -1,7 +1,9 @@
 project = "Motor"
 title = "Motor documentation"
-description = "Motor: An ECS-like lua library"
-file = "motor/motor.lua"
-examples = {"main.lua", "example_systems"}
+description = "ECS lua library, inspired from SPECS"
+dir = 'docs'
+file = './motor'
+not_luadoc = true
+examples = {"main.lua"}
 readme = "README.md"
-output = "motordoc"
+

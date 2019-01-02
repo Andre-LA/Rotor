@@ -1,0 +1,261 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+<li><a href="#Tables">Tables</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/bit_ids.html">bit_ids</a></li>
+  <li><a href="../modules/entities.html">entities</a></li>
+  <li><a href="../modules/operations.html">operations</a></li>
+  <li><a href="../modules/Lua51_Operations.html">Lua51_Operations</a></li>
+  <li><a href="../modules/Lua53_Operations.html">Lua53_Operations</a></li>
+  <li><strong>states</strong></li>
+  <li><a href="../modules/storages.html">storages</a></li>
+  <li><a href="../modules/systems.html">systems</a></li>
+</ul>
+<h2>Examples</h2>
+<ul class="nowrap">
+  <li><a href="../examples/main.lua.html">main.lua</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>states</code></h1>
+<p>states</p>
+<p></p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#new_state">new_state ()</a></td>
+	<td class="summary">Creates a new state</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#add_state_data">add_state_data (state, state_data_content)</a></td>
+	<td class="summary">Adds a new StateData in the State</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#new_systems_step">new_systems_step (state, systems_step)</a></td>
+	<td class="summary">Creates a new system step, a system step is a group of systems
+ , the next group only runs after the current group finishes
+ , for now, this is the only way to run systems in a sequential order</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#run">run (state)</a></td>
+	<td class="summary">Run the systems of the state
+ , more specifically, each systems step sequentially</td>
+	</tr>
+</table>
+<h2><a href="#Tables">Tables</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#state">state</a></td>
+	<td class="summary">the states table</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "new_state"></a>
+    <strong>new_state ()</strong>
+    </dt>
+    <dd>
+    Creates a new state
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="../modules/states.html#state">state</a></span>
+
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "add_state_data"></a>
+    <strong>add_state_data (state, state_data_content)</strong>
+    </dt>
+    <dd>
+    Adds a new StateData in the State
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">state</span>
+            <span class="types"><a class="type" href="../modules/states.html#state">state</a></span>
+         the state to add a new state data
+        </li>
+        <li><span class="parameter">state_data_content</span>
+         state data content (what this state data actually is), state data can be any type of value
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">bit_ids.bit_id</span></span>
+        bit_id of the new state data
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../modules/bit_ids.html#bit_id">bit_ids.bit_id</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "new_systems_step"></a>
+    <strong>new_systems_step (state, systems_step)</strong>
+    </dt>
+    <dd>
+    Creates a new system step, a system step is a group of systems
+ , the next group only runs after the current group finishes
+ , for now, this is the only way to run systems in a sequential order
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">state</span>
+            <span class="types"><a class="type" href="../modules/states.html#state">state</a></span>
+         state to add systems step
+        </li>
+        <li><span class="parameter">systems_step</span>
+            <span class="types"><a class="type" href="../modules/systems.html#system">{systems.system}</a></span>
+          array of systems to run
+        </li>
+    </ul>
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../modules/systems.html#system">systems.system</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "run"></a>
+    <strong>run (state)</strong>
+    </dt>
+    <dd>
+    Run the systems of the state
+ , more specifically, each systems step sequentially
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">state</span>
+            <span class="types"><a class="type" href="../modules/states.html#state">state</a></span>
+         state to run
+        </li>
+    </ul>
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../modules/states.html#state">state</a>
+    </ul>
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Tables"></a>Tables</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "state"></a>
+    <strong>state</strong>
+    </dt>
+    <dd>
+    the states table
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">systems</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
+         contains all the systems in the State
+        </li>
+        <li><span class="parameter">state_data</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
+         contains all the StateData in the State
+        </li>
+        <li><span class="parameter">last_state_data_bit_id</span>
+            <span class="types"><span class="type">number</span></span>
+         last bit id used for state_data
+        </li>
+        <li><span class="parameter">entities_state_data_bit_id</span>
+            <span class="types"><span class="type">number</span></span>
+         the bit id of the Storage of entities
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2018-12-30 17:03:55 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+<li><a href="#Tables">Tables</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/bit_ids.html">bit_ids</a></li>
+  <li><strong>entities</strong></li>
+  <li><a href="../modules/operations.html">operations</a></li>
+  <li><a href="../modules/Lua51_Operations.html">Lua51_Operations</a></li>
+  <li><a href="../modules/Lua53_Operations.html">Lua53_Operations</a></li>
+  <li><a href="../modules/states.html">states</a></li>
+  <li><a href="../modules/storages.html">storages</a></li>
+  <li><a href="../modules/systems.html">systems</a></li>
+</ul>
+<h2>Examples</h2>
+<ul class="nowrap">
+  <li><a href="../examples/main.lua.html">main.lua</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>entities</code></h1>
+<p>entities</p>
+<p></p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#new_entity">new_entity ()</a></td>
+	<td class="summary">Creates a new entity data.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#associate_component">associate_component (entity, component_entry_id, component_state_data_bit_id)</a></td>
+	<td class="summary">Associate a entity with a component entry id and a state data bit id.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#disassociate_component">disassociate_component (entity, component_entry_id, component_state_data_bit_id)</a></td>
+	<td class="summary">Disassociate entity from components (not tested)</td>
+	</tr>
+</table>
+<h2><a href="#Tables">Tables</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#entity">entity</a></td>
+	<td class="summary">entity table record</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "new_entity"></a>
+    <strong>new_entity ()</strong>
+    </dt>
+    <dd>
+    Creates a new entity data.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        entity
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "associate_component"></a>
+    <strong>associate_component (entity, component_entry_id, component_state_data_bit_id)</strong>
+    </dt>
+    <dd>
+    Associate a entity with a component entry id and a state data bit id.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">entity</span>
+            <span class="types"><a class="type" href="../modules/entities.html#entity">entity</a></span>
+         entity to apply association
+        </li>
+        <li><span class="parameter">component_entry_id</span>
+         component entry id
+        </li>
+        <li><span class="parameter">component_state_data_bit_id</span>
+            <span class="types"><span class="type">bit_ids.bit_id</span></span>
+         component state_data bit id
+        </li>
+    </ul>
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <li><a href="../modules/entities.html#entity">entity</a></li>
+         <li><a href="../modules/entities.html#disassociate_component">disassociate_component</a></li>
+         <li><a href="../modules/bit_ids.html#bit_id">bit_ids.bit_id</a></li>
+         <li><a href="../examples/main.lua.html#">main.lua</a></li>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="comment">-- (see main.lua file example)
+</span><span class="keyword">local</span> entities = <span class="global">require</span> <span class="string">'motor.entities'</span>
+
+<span class="comment">-- (...)
+</span>
+<span class="comment">-- create a new name entry in names storage
+</span><span class="keyword">local</span> new_name_id = storages.new_entry(
+  main_state.state_data[names_state_data_id],
+  name_constructor(<span class="string">"Hero Player"</span>)
+)
+
+<span class="comment">-- get entities storages from the state
+</span><span class="keyword">local</span> entities_storage = main_state.state_data[main_state.entities_state_data_bit_id]
+
+<span class="comment">-- create a new entity entry in entities storage
+</span><span class="keyword">local</span> new_entity_id = storages.new_entry(
+  entities_storage,
+  entities.new_entity()
+)
+
+<span class="comment">-- get the entry of the created entity
+</span><span class="keyword">local</span> entry_of_new_entity = storages.get_entry_content(entities_storage, new_entity_id)
+
+<span class="comment">-- associate with component
+</span>entities.associate_component(
+  entry_of_new_entity,
+  new_name_id,
+  names_state_data_id
+)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "disassociate_component"></a>
+    <strong>disassociate_component (entity, component_entry_id, component_state_data_bit_id)</strong>
+    </dt>
+    <dd>
+    Disassociate entity from components (not tested)
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">entity</span>
+            <span class="types"><a class="type" href="../modules/entities.html#entity">entity</a></span>
+         entity to apply disassociation
+        </li>
+        <li><span class="parameter">component_entry_id</span>
+         component entry id
+        </li>
+        <li><span class="parameter">component_state_data_bit_id</span>
+            <span class="types"><span class="type">bit_ids.bit_id</span></span>
+         component state_data bit id
+        </li>
+    </ul>
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <li><a href="../modules/entities.html#entity">entity</a></li>
+         <li><a href="../modules/entities.html#associate_component">associate_component</a></li>
+         <li><a href="../modules/bit_ids.html#bit_id">bit_ids.bit_id</a></li>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> entities = <span class="global">require</span> <span class="string">'motor.entities'</span>
+
+<span class="comment">-- (...) (see associate_component example)
+</span>
+entities.disassociate_component(
+  entry_of_new_entity,
+  new_name_id
+  names_state_data_id
+)</pre>
+    </ul>
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Tables"></a>Tables</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "entity"></a>
+    <strong>entity</strong>
+    </dt>
+    <dd>
+    entity table record
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">state_data_bit_filter</span>
+            <span class="types"><span class="type">bit_ids.bit_filter</span></span>
+
+        </li>
+        <li><span class="parameter">associated_components_entries_ids</span>
+            <span class="types"><span class="type">{id}</span></span>
+         array of ids
+        </li>
+        <li><span class="parameter">associated_components_entries_bit_ids</span>
+            <span class="types"><span class="type">{bit_ids.bit_id}</span></span>
+         array of <a href="../modules/bit_ids.html#bit_id">bit_ids.bit_id</a>s of the asssociated components
+        </li>
+    </ul>
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <li><a href="../modules/bit_ids.html#bit_id">bit_ids.bit_id</a></li>
+         <li><a href="../modules/bit_ids.html#bit_filter">bit_ids.bit_filter</a></li>
+    </ul>
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2018-12-30 17:03:55 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

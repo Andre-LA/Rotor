@@ -1,0 +1,308 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/bit_ids.html">bit_ids</a></li>
+  <li><a href="../modules/entities.html">entities</a></li>
+  <li><strong>operations</strong></li>
+  <li><a href="../modules/Lua51_Operations.html">Lua51_Operations</a></li>
+  <li><a href="../modules/Lua53_Operations.html">Lua53_Operations</a></li>
+  <li><a href="../modules/states.html">states</a></li>
+  <li><a href="../modules/storages.html">storages</a></li>
+  <li><a href="../modules/systems.html">systems</a></li>
+</ul>
+<h2>Examples</h2>
+<ul class="nowrap">
+  <li><a href="../examples/main.lua.html">main.lua</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>operations</code></h1>
+<p>operations</p>
+<p>
+ Table with simple operations that are not compatible between versions 5.1 and 5.3
+ this is done by `require ('motor.operations.' .. _VERSION:gsub('([%s%.])', ''):lower() .. '_operations')`</p>
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">local operations = require &quot;motor.operations&quot;
+</pre>
+    </ul>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#lshift">lshift (left, right)</a></td>
+	<td class="summary">the << operation.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#band">band (left, right)</a></td>
+	<td class="summary">the & operation.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#bor">bor (left, right)</a></td>
+	<td class="summary">the | operation.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#bxor">bxor (left, right)</a></td>
+	<td class="summary">the ~ (binary) operation.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#combine_2_array_tables">combine_2_array_tables (t1, t2)</a></td>
+	<td class="summary">combines two arrays in one.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "lshift"></a>
+    <strong>lshift (left, right)</strong>
+    </dt>
+    <dd>
+    the << operation.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">left</span>
+            <span class="types"><span class="type">number</span></span>
+
+        </li>
+        <li><span class="parameter">right</span>
+            <span class="types"><span class="type">number</span></span>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        result
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> operations = <span class="global">require</span> <span class="string">'motor.operations'</span>
+<span class="keyword">local</span> lshift = operations.lshift
+<span class="keyword">local</span> a = <span class="number">1</span> <span class="comment">-- 0b0001
+</span><span class="global">print</span>(lshift(a. <span class="number">1</span>)) <span class="comment">-- prints "2" (0b0010)
+</span><span class="global">print</span>(lshift(a. <span class="number">2</span>)) <span class="comment">-- prints "4" (0b0100)
+</span><span class="global">print</span>(lshift(a. <span class="number">3</span>)) <span class="comment">-- prints "8" (0b1000)</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "band"></a>
+    <strong>band (left, right)</strong>
+    </dt>
+    <dd>
+    the & operation.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">left</span>
+            <span class="types"><span class="type">number</span></span>
+
+        </li>
+        <li><span class="parameter">right</span>
+            <span class="types"><span class="type">number</span></span>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        result
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> operations = <span class="global">require</span> <span class="string">'motor.operations'</span>
+<span class="keyword">local</span> band = operations.band
+<span class="keyword">local</span> a = <span class="number">1</span> <span class="comment">-- 0b01
+</span><span class="keyword">local</span> b = <span class="number">3</span> <span class="comment">-- 0b11
+</span><span class="global">print</span>(band(a. b)) <span class="comment">-- prints "1" (0b01)</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "bor"></a>
+    <strong>bor (left, right)</strong>
+    </dt>
+    <dd>
+    the | operation.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">left</span>
+            <span class="types"><span class="type">number</span></span>
+
+        </li>
+        <li><span class="parameter">right</span>
+            <span class="types"><span class="type">number</span></span>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        result
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> operations = <span class="global">require</span> <span class="string">'motor.operations'</span>
+<span class="keyword">local</span> bor = operations.bor
+<span class="keyword">local</span> a = <span class="number">1</span> <span class="comment">-- 0b01
+</span><span class="keyword">local</span> b = <span class="number">3</span> <span class="comment">-- 0b11
+</span><span class="global">print</span>(bor(a. b)) <span class="comment">-- prints "3" (0b11)</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "bxor"></a>
+    <strong>bxor (left, right)</strong>
+    </dt>
+    <dd>
+    the ~ (binary) operation.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">left</span>
+            <span class="types"><span class="type">number</span></span>
+
+        </li>
+        <li><span class="parameter">right</span>
+            <span class="types"><span class="type">number</span></span>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        result
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> operations = <span class="global">require</span> <span class="string">'motor.operations'</span>
+<span class="keyword">local</span> bxor = operations.bxor
+<span class="keyword">local</span> a = <span class="number">1</span> <span class="comment">-- 0b01
+</span><span class="keyword">local</span> b = <span class="number">3</span> <span class="comment">-- 0b11
+</span><span class="global">print</span>(bxor(a. b)) <span class="comment">-- prints "2" (0b10)</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "combine_2_array_tables"></a>
+    <strong>combine_2_array_tables (t1, t2)</strong>
+    </dt>
+    <dd>
+    combines two arrays in one.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">t1</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
+         first array
+        </li>
+        <li><span class="parameter">t2</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
+         second array
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.6">table</a></span>
+        t1 and t2 merged
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> operations = <span class="global">require</span> <span class="string">'motor.operations'</span>
+<span class="keyword">local</span> a = {<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>}
+<span class="keyword">local</span> b = {<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>}
+<span class="keyword">local</span> r = operations.combine_2_array_tables(a, b) <span class="comment">-- {0, 1, 2, 3, 4, 5}</span></pre>
+    </ul>
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2018-12-30 17:03:55 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>
