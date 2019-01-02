@@ -1,4 +1,7 @@
 # Motor
-ECS lua library
+ECS lua library, inspired from [SPECS][specs-url]
 
-**Alert: ** The documentation is TOTALLY deprecated, I will update when Motor becomes stable (this means: at least one complete game made in Motor).
+Check [example.lua][example-file] to see how to use it
+
+[specs-url]: https://github.com/slide-rs/specs/ "SPECS repository"
+[example.lua]: README.md
