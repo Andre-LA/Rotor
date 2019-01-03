@@ -85,7 +85,7 @@ end
 -- to run outside before the first state's run
 -- @tparam system system system to update components ids
 -- @tparam {storages.entry} entities_entries entities entries in the entities storage
--- @see main.lua
+-- @see example.lua
 -- @usage
 -- -- unfortunately this is still necessary before the first state's run
 -- -- get main_state's entities storage

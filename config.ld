@@ -4,6 +4,7 @@ description = "ECS lua library, inspired from SPECS"
 dir = 'docs'
 file = './motor'
 not_luadoc = true
-examples = {"main.lua"}
+format = 'markdown'
+examples = {"example.lua"}
 readme = "README.md"
 

@@ -59,9 +59,9 @@ end
 -- @see entity
 -- @see disassociate_component
 -- @see bit_ids.bit_id
--- @see main.lua
+-- @see example.lua
 -- @usage
--- -- (see main.lua file example)
+-- -- (see example.lua file example)
 -- local entities = require 'motor.entities'
 -- 
 -- -- (...)
