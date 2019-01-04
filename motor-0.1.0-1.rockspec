@@ -1,5 +1,5 @@
 package = "motor"
-version = "0.1.0"
+version = "0.1.0-1"
 source = {
    url = "git://github.com/Andre-LA/Motor",
    tag = "v0.1.0"
@@ -7,7 +7,7 @@ source = {
 description = {
    summary = "ECS library for Lua, inspired from SPECS",
    license = "MIT/X11",
-   
+
 }
 build = {
    type = "builtin",
@@ -24,5 +24,5 @@ build = {
    copy_directories = {"docs"},
 }
 dependencies = {
-   "lua 5.1, 5.3"
+   "lua >= 5.1, <= 5.3, ~= 5.2"
 }
