@@ -4,7 +4,7 @@ local M = {}
 
 
 --- id table record
--- 
+--
 -- some description
 -- @table id
 -- @tfield integer 1 index in table, where the content is localized in @{entry|entries} array table,
@@ -42,7 +42,7 @@ end
 -- @treturn storage
 -- @usage
 -- local storages = require 'motor.storages'
--- 
+--
 -- -- create a storage
 -- local my_storage_id = storages.new_storage()
 function M.new_storage()
@@ -63,10 +63,10 @@ end
 -- @usage
 -- -- require 'storages'
 -- local storages = require 'motor.storages'
--- 
+--
 -- -- create a new storage
 -- local my_storage_id = storages.new_storage()
--- 
+--
 -- -- create a new entry in this storage, with content "10"
 -- local my_entry_id = storages.new_entry(my_storage_id, 10)
 function M.new_entry(storage, new_entry_content)
@@ -112,7 +112,7 @@ end
 function M.get_entry(storage, id)
   -- get entry
   local entry = storage.entries[id[1]]
-  
+
   -- only return entry if generation is equal
   return entry[1][2] == id[2]
     and entry
@@ -125,7 +125,7 @@ end
 -- @return the entry's content
 -- @see entry
 -- @see get_entry
-function M.get_entry_content(storage, id)  
+function M.get_entry_content(storage, id)
   return M.get_entry(storage, id)[2]
 end
 

@@ -29,12 +29,12 @@ end
 function M.find_associated_id(entity, id)
   for i = 1, #entity.associated_components_entries_ids do
     local entity_entry_id = entity.associated_components_entries_ids[i]
-    
+
     if entity_entry_id[1] == id[1] and entity_entry_id[2] == id[2]  then
       return i
     end
   end
-  
+
   error("component_entry_id not found in the entity's associated_components_entries ids")
 end
 
@@ -48,7 +48,7 @@ function M.find_associated_bit_id(entity, bit_id)
       return i
     end
   end
-  
+
   error("component_state_data_bit_id not found in the entity's associated_state_data_bit_ids")
 end
 
@@ -63,18 +63,18 @@ end
 -- @usage
 -- -- (see example.lua file example)
 -- local entities = require 'motor.entities'
--- 
+--
 -- -- (...)
--- 
+--
 -- -- create a new name entry in names storage
 -- local new_name_id = storages.new_entry(
 --   main_state.state_data[names_state_data_id],
 --   name_constructor("Hero Player")
 -- )
--- 
+--
 -- -- get entities storages from the state
 -- local entities_storage = main_state.state_data[main_state.entities_state_data_bit_id]
--- 
+--
 -- -- create a new entity entry in entities storage
 -- local new_entity_id = storages.new_entry(
 --   entities_storage,
@@ -83,7 +83,7 @@ end
 --
 -- -- get the entry of the created entity
 -- local entry_of_new_entity = storages.get_entry_content(entities_storage, new_entity_id)
--- 
+--
 -- -- associate with component
 -- entities.associate_component(
 --   entry_of_new_entity,
@@ -105,9 +105,9 @@ end
 -- @see bit_ids.bit_id
 -- @usage
 -- local entities = require 'motor.entities'
--- 
+--
 -- -- (...) (see associate_component example)
---  
+--
 -- entities.disassociate_component(
 --   entry_of_new_entity,
 --   new_name_id

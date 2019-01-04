@@ -81,7 +81,7 @@ function M.new_system(required_simple_state_data, required_compnt_state_data, ru
 end
 
 --- Updates the components ids to iterate when runs
--- , needed when an entity is deleted, but Motor handles that automatically, only necessary 
+-- , needed when an entity is deleted, but Motor handles that automatically, only necessary
 -- to run outside before the first state's run
 -- @tparam system system system to update components ids
 -- @tparam {storages.entry} entities_entries entities entries in the entities storage
@@ -90,11 +90,11 @@ end
 -- -- unfortunately this is still necessary before the first state's run
 -- -- get main_state's entities storage
 -- local entities_storage = main_state.state_data[main_state.entities_state_data_bit_id]
--- 
+--
 -- -- for each step, for each system in this step, update components ids to iterate
 -- for step_i = 1, #main_state.systems do
 --   local step = main_state.systems[step_i]
--- 
+--
 --   for system_i = 1, #step do
 --     systems.update_components_ids_to_iterate(step[system_i], entities_storage.entries)
 --   end
@@ -109,8 +109,8 @@ function M.update_components_ids_to_iterate(system, entities_entries)
     -- if entry is valid and alive
     if entity_entry and entity_entry[3] then
       local entity = entity_entry[2]
-      
-      -- does this entity contains the required components?      
+
+      -- does this entity contains the required components?
       if bit_ids.contains_bit_ids(entity.state_data_bit_filter, system.compnt_state_data_bit_filter) then
 
         -- then we will get the ids of the associated components

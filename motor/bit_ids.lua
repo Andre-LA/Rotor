@@ -38,7 +38,7 @@ local bxor    = operations.bxor
 
 --- bit filter array table.
 --
--- Same structure as @{bit_id}, but with only zeroes by default,  
+-- Same structure as @{bit_id}, but with only zeroes by default,
 -- is used to identify the presence of multiple @{bit_id}s
 -- @table bit_filter
 -- @tfield integer 1 = 0 initially
@@ -78,7 +78,7 @@ end
 -- @tparam[opt] bit_id previous_bit_id previous @{bit_id} to lshift
 -- @usage
 -- local bit_ids = require "motor.bit_ids"
--- 
+--
 -- local first_bit_id  = bit_ids.new_bit_id()              -- {1, 0, 0, 0}, 1 in binary is 001
 -- local second_bit_id = bit_ids.new_bit_id(first_bit_id)  -- {2, 0, 0, 0}, 2 in binary is 010
 -- local third_bit_id  = bit_ids.new_bit_id(second_bit_id) -- {4, 0, 0, 0}, 4 in binary is 100
@@ -112,10 +112,10 @@ end
 -- @treturn bit_filter a new @{bit_filter}
 -- @usage
 -- local bit_ids = require "motor.bit_ids"
--- 
+--
 -- local first_bit_id  = bit_ids.new_bit_id()             -- {1, 0, 0, 0}, 1 in binary is 001
 -- local second_bit_id = bit_ids.new_bit_id(first_bit_id) -- {2, 0, 0, 0}, 2 in binary is 010
--- 
+--
 -- local bit_filter = bit_ids.new_bit_filter({first_bit_id, second_bit_id}) -- {3, 0, 0, 0}, 3 in binary is 011
 -- @see bit_id
 -- @see bit_filter
@@ -140,14 +140,14 @@ end
 -- @tparam bit_id bit_id bit to add
 -- @usage
 -- local bit_ids = require "motor.bit_ids"
--- 
+--
 -- local first_bit_id  = bit_ids.new_bit_id()             -- {1, 0, 0, 0}, 1 in binary is 001
 -- local second_bit_id = bit_ids.new_bit_id(first_bit_id) -- {2, 0, 0, 0}, 2 in binary is 010
--- 
+--
 -- local bit_filter = bit_ids.new_bit_filter({first_bit_id, second_bit_id}) -- {3, 0, 0, 0}, 3 in binary is 011
--- 
+--
 -- local third_bit_id = bit_ids.new_bit_id(second_bit_id) -- {4, 0, 0, 0}, 4 in binary is 100
--- 
+--
 -- bit_ids.add_in_bit_filter(bit_filter, third_bit_id) -- bit_filter now is {7, 0, 0, 0}, 7 in binary is 111
 -- @see bit_id
 -- @see remove_in_bit_filter
@@ -162,11 +162,11 @@ end
 -- @tparam bit_filter bit_filter bit filter to remove the bit
 -- @tparam bit_id bit_id bit to remove
 -- @usage
--- 
+--
 -- local bit_ids = require "motor.bit_ids"
--- 
+--
 -- -- (...) same algorithm in the add_in_bit_filter example
--- 
+--
 -- bit_ids.remove_in_bit_filter(bit_filter, second_bit_filter) -- bit filter now is {5, 0, 0, 0}, 5 in binary is 101
 -- @see bit_id
 -- @see add_in_bit_filter
@@ -182,14 +182,14 @@ end
 -- @tparam bit_filter bit_filter_r
 -- @usage
 -- local bit_ids = require "motor.bit_ids"
--- 
+--
 -- local first_bit_id  = bit_ids.new_bit_id()              -- {1, 0, 0, 0}, 1 in binary is 001
 -- local second_bit_id = bit_ids.new_bit_id(first_bit_id)  -- {2, 0, 0, 0}, 2 in binary is 010
 -- local third_bit_id  = bit_ids.new_bit_id(second_bit_id) -- {4, 0, 0, 0}, 4 in binary is 100
--- 
+--
 -- local first_bit_filter  = bit_ids.new_bit_filter({first_bit_id, second_bit_id})               -- {3, 0, 0, 0}, 3 in binary is 011
 -- local second_bit_filter = bit_ids.new_bit_filter({first_bit_id, second_bit_id, third_bit_id}) -- {7, 0, 0, 0}, 7 in binary is 111
--- 
+--
 -- print(bit_ids.contains_bit_ids(first_bit_filter, second_bit_filter)) -- prints "false"
 -- print(bit_ids.contains_bit_ids(second_bit_filter, first_bit_filter)) -- prints "true"
 -- @treturn boolean
@@ -210,11 +210,11 @@ end
 -- @tparam bit_id bit_id_r
 -- @usage
 -- local bit_ids = require "motor.bit_ids"
--- 
+--
 -- local first_bit_id  = bit_ids.new_bit_id()              -- {1, 0, 0, 0}, 1 in binary is 001
 -- local second_bit_id = bit_ids.new_bit_id()              -- {1, 0, 0, 0}, 1 in binary is 001
 -- local third_bit_id  = bit_ids.new_bit_id(second_bit_id) -- {2, 0, 0, 0}, 2 in binary is 010
--- 
+--
 -- print(bit_ids.equals(first_bit_id, second_bit_id)) -- prints "true"
 -- print(bit_ids.equals(first_bit_id, third_bit_id))  -- prints "false"
 -- @treturn boolean

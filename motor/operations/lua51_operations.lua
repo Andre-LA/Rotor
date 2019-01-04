@@ -11,8 +11,8 @@ return {
   lshift = _bit.lshift,
   band   = _bit.band,
   bor    = _bit.bor,
-  bxor   = _bit.bxor
-  
+  bxor   = _bit.bxor,
+
   -- functions
   combine_2_array_tables = function(t1, t2)
     local new_table = {}
