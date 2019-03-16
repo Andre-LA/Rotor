@@ -1,65 +1,45 @@
 --- entities
 -- @module entities
-local M = {}
-
 local bit_ids = require 'motor.bit_ids'
 
---- entity table record
--- @table entity
--- @tfield bit_ids.bit_filter state_data_bit_filter
--- @tfield {id} associated_components_entries_ids array of ids
--- @tfield {bit_ids.bit_id} associated_state_data_bit_ids array of @{bit_ids.bit_id}s of the asssociated components
--- @see bit_ids.bit_id
--- @see bit_ids.bit_filter
-
---- Creates a new entity data.
--- @return entity
-function M.new_entity()
-  return {
-    state_data_bit_filter = bit_ids.new_bit_filter(),
-    associated_components_entries_ids = {},
-    associated_state_data_bit_ids = {},
-  }
-end
-
 --- find index of an associated id in the entity
--- @tparam entity entity
--- @tparam storages.id id id to find
+-- @tparam Entity entity
+-- @tparam Storages.Id id id to find
 -- @treturn integer index
-function M.find_associated_id(entity, id)
+local function find_associated_id(entity, id)
   for i = 1, #entity.associated_components_entries_ids do
     local entity_entry_id = entity.associated_components_entries_ids[i]
 
-    if entity_entry_id[1] == id[1] and entity_entry_id[2] == id[2]  then
+    if entity_entry_id.index == id.index and entity_entry_id.generation == id.generation then
       return i
     end
   end
 
-  error("component_entry_id not found in the entity's associated_components_entries ids")
+  return nil, "associated id not found"
 end
 
 --- find index of an associated bit id in the entity
--- @tparam entity entity
+-- @tparam Entity entity
 -- @tparam bit_ids.bit_id bit_id bit_id to find
 -- @treturn integer index
-function M.find_associated_bit_id(entity, bit_id)
+local function find_associated_bit_id(entity, bit_id)
   for i = 1, #entity.associated_state_data_bit_ids do
     if bit_ids.equals(entity.associated_state_data_bit_ids[i], bit_id) then
       return i
     end
   end
 
-  error("component_state_data_bit_id not found in the entity's associated_state_data_bit_ids")
+  return nil, "associated bit id not found"
 end
 
+
 --- Associate a entity with a component entry id and a state data bit id.
--- @tparam entity entity entity to apply association
--- @param component_entry_id component entry id
+-- @tparam Entity entity entity to apply association
+-- @tparam Storages.Id component_entry_id component entry id
 -- @tparam bit_ids.bit_id component_state_data_bit_id component state_data bit id
--- @see entity
+-- @see Entity
 -- @see disassociate_component
 -- @see bit_ids.bit_id
--- @see example.lua
 -- @usage
 -- -- (see example.lua file example)
 -- local entities = require 'motor.entities'
@@ -90,17 +70,17 @@ end
 --   new_name_id,
 --   names_state_data_id
 -- )
-function M.associate_component(entity, component_entry_id, component_state_data_bit_id)
+local function associate_component(entity, component_entry_id, component_state_data_bit_id)
   bit_ids.add_in_bit_filter(entity.state_data_bit_filter, component_state_data_bit_id)
   table.insert(entity.associated_components_entries_ids, component_entry_id)
   table.insert(entity.associated_state_data_bit_ids, component_state_data_bit_id)
 end
 
 --- Disassociate entity from components (not tested)
--- @tparam entity entity entity to apply disassociation
--- @param component_entry_id component entry id
+-- @tparam Entity entity entity to apply disassociation
+-- @tparam Storages.Id component_entry_id component entry id
 -- @tparam bit_ids.bit_id component_state_data_bit_id component state_data bit id
--- @see entity
+-- @see Entity
 -- @see associate_component
 -- @see bit_ids.bit_id
 -- @usage
@@ -113,10 +93,51 @@ end
 --   new_name_id
 --   names_state_data_id
 -- )
-function M.disassociate_component(entity, component_entry_id, component_state_data_bit_id)
+local function disassociate_component(entity, component_entry_id, component_state_data_bit_id)
   bit_ids.remove_in_bit_filter(entity.state_data_bit_filter, component_state_data_bit_id)
-  table.remove(entity.associated_components_entries_ids, M.find_associated_id(entity, component_entry_id))
-  table.remove(entity.associated_state_data_bit_ids, M.find_associated_bit_id(entity, component_state_data_bit_id))
+  table.remove(entity.associated_components_entries_ids, entity:find_associated_id(component_entry_id))
+  table.remove(entity.associated_state_data_bit_ids, entity:find_associated_bit_id(component_state_data_bit_id))
 end
 
-return M
+local Entity_mt = {
+  __index = {
+    find_associated_id     = find_associated_id,
+    find_associated_bit_id = find_associated_bit_id,
+    associate_component    = associate_component,
+    disassociate_component = disassociate_component
+  }
+}
+
+--- Entity record
+-- @table Entity
+-- @tfield bit_ids.bit_filter state_data_bit_filter
+-- @tfield {id} associated_components_entries_ids array of ids
+-- @tfield {bit_ids.bit_id} associated_state_data_bit_ids array of @{bit_ids.bit_id}s of the asssociated components
+-- @see bit_ids.bit_id
+-- @see bit_ids.bit_filter
+local Entity = {
+  new = function (state_data_bit_filter, associated_components_entries_ids, associated_state_data_bit_ids)
+    local new_entity_data = {
+      state_data_bit_filter = state_data_bit_filter,
+      associated_components_entries_ids = associated_components_entries_ids,
+      associated_state_data_bit_ids = associated_state_data_bit_ids
+    }
+
+    setmetatable(new_entity_data, Entity_mt)
+
+    return new_entity_data
+  end
+}
+
+local function new_entity()
+  return Entity.new(bit_ids.new_bit_filter(), {}, {})
+end
+
+return {
+  Entity = Entity,
+  new_entity = new_entity,
+  find_associated_id     = find_associated_id,
+  find_associated_bit_id = find_associated_bit_id,
+  associate_component    = associate_component,
+  disassociate_component = disassociate_component
+}
