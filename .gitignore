@@ -4,3 +4,4 @@ motor_titan/titan-runtime/*
 *.c
 *.o
 *.so
+*.html
