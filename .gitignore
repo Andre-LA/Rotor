@@ -1,0 +1,6 @@
+motor_titan/lua-5.3.5/*
+motor_titan/titan-runtime/*
+
+*.c
+*.o
+*.so
