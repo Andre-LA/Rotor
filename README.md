@@ -8,4 +8,4 @@ Check [example.lua][example-file] to see how to use it
 [specs-url]: https://github.com/slide-rs/specs/ "SPECS repository"
 [example-file]: example.lua
 [lua-org]: https://lua.org/ "lua.org"
-[titan-repository]: github.com/titan-lang/titan "Titan's repository"
+[titan-repository]: https://github.com/titan-lang/titan "Titan's repository"
