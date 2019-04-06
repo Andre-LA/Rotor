@@ -1,9 +1,10 @@
 --- entities
 -- @module entities
-local bit_ids = require 'motor.bit_ids'
+
+local bit_ids = require ("motor.bit_ids")
 
 --- find index of an associated id in the entity
--- @tparam Entity entity
+-- @tparam EntityData entity
 -- @tparam Storages.Id id id to find
 -- @treturn integer index
 local function find_associated_id(entity, id)
@@ -19,12 +20,12 @@ local function find_associated_id(entity, id)
 end
 
 --- find index of an associated bit id in the entity
--- @tparam Entity entity
+-- @tparam EntityData entity
 -- @tparam bit_ids.bit_id bit_id bit_id to find
 -- @treturn integer index
 local function find_associated_bit_id(entity, bit_id)
-  for i = 1, #entity.associated_state_data_bit_ids do
-    if bit_ids.equals(entity.associated_state_data_bit_ids[i], bit_id) then
+  for i = 1, #entity.associated_state_content_bit_ids do
+    if bit_ids.equals(entity.associated_state_content_bit_ids[i], bit_id) then
       return i
     end
   end
@@ -34,10 +35,10 @@ end
 
 
 --- Associate a entity with a component entry id and a state data bit id.
--- @tparam Entity entity entity to apply association
+-- @tparam EntityData entity entity to apply association
 -- @tparam Storages.Id component_entry_id component entry id
--- @tparam bit_ids.bit_id component_state_data_bit_id component state_data bit id
--- @see Entity
+-- @tparam bit_ids.bit_id component_state_content_bit_id component state_content bit id
+-- @see EntityData
 -- @see disassociate_component
 -- @see bit_ids.bit_id
 -- @usage
@@ -48,17 +49,17 @@ end
 --
 -- -- create a new name entry in names storage
 -- local new_name_id = storages.new_entry(
---   main_state.state_data[names_state_data_id],
+--   main_state.state_content[names_state_content_id],
 --   name_constructor("Hero Player")
 -- )
 --
 -- -- get entities storages from the state
--- local entities_storage = main_state.state_data[main_state.entities_state_data_bit_id]
+-- local entities_storage = main_state.state_content[main_state.entities_state_content_bit_id]
 --
 -- -- create a new entity entry in entities storage
 -- local new_entity_id = storages.new_entry(
 --   entities_storage,
---   entities.new_entity()
+--   entities.new_init_entity()
 -- )
 --
 -- -- get the entry of the created entity
@@ -68,19 +69,19 @@ end
 -- entities.associate_component(
 --   entry_of_new_entity,
 --   new_name_id,
---   names_state_data_id
+--   names_state_content_id
 -- )
-local function associate_component(entity, component_entry_id, component_state_data_bit_id)
-  bit_ids.add_in_bit_filter(entity.state_data_bit_filter, component_state_data_bit_id)
+local function associate_component(entity, component_entry_id, component_state_content_bit_id)
+  bit_ids.add_in_bit_filter(entity.state_content_bit_filter, component_state_content_bit_id)
   table.insert(entity.associated_components_entries_ids, component_entry_id)
-  table.insert(entity.associated_state_data_bit_ids, component_state_data_bit_id)
+  table.insert(entity.associated_state_content_bit_ids, component_state_content_bit_id)
 end
 
 --- Disassociate entity from components (not tested)
--- @tparam Entity entity entity to apply disassociation
+-- @tparam EntityData entity entity to apply disassociation
 -- @tparam Storages.Id component_entry_id component entry id
--- @tparam bit_ids.bit_id component_state_data_bit_id component state_data bit id
--- @see Entity
+-- @tparam bit_ids.bit_id component_state_content_bit_id component state_content bit id
+-- @see EntityData
 -- @see associate_component
 -- @see bit_ids.bit_id
 -- @usage
@@ -91,12 +92,12 @@ end
 -- entities.disassociate_component(
 --   entry_of_new_entity,
 --   new_name_id
---   names_state_data_id
+--   names_state_content_id
 -- )
-local function disassociate_component(entity, component_entry_id, component_state_data_bit_id)
-  bit_ids.remove_in_bit_filter(entity.state_data_bit_filter, component_state_data_bit_id)
+local function disassociate_component(entity, component_entry_id, component_state_content_bit_id)
+  bit_ids.remove_in_bit_filter(entity.state_content_bit_filter, component_state_content_bit_id)
   table.remove(entity.associated_components_entries_ids, entity:find_associated_id(component_entry_id))
-  table.remove(entity.associated_state_data_bit_ids, entity:find_associated_bit_id(component_state_data_bit_id))
+  table.remove(entity.associated_state_content_bit_ids, entity:find_associated_bit_id(component_state_content_bit_id))
 end
 
 local Entity_mt = {
@@ -108,19 +109,19 @@ local Entity_mt = {
   }
 }
 
---- Entity record
--- @table Entity
--- @tfield bit_ids.bit_filter state_data_bit_filter
+--- EntityData record
+-- @table EntityData
+-- @tfield bit_ids.bit_filter state_content_bit_filter
 -- @tfield {id} associated_components_entries_ids array of ids
--- @tfield {bit_ids.bit_id} associated_state_data_bit_ids array of @{bit_ids.bit_id}s of the asssociated components
+-- @tfield {bit_ids.bit_id} associated_state_content_bit_ids array of @{bit_ids.bit_id}s of the asssociated components
 -- @see bit_ids.bit_id
 -- @see bit_ids.bit_filter
-local Entity = {
-  new = function (state_data_bit_filter, associated_components_entries_ids, associated_state_data_bit_ids)
+local EntityData = {
+  new = function (state_content_bit_filter, associated_components_entries_ids, associated_state_content_bit_ids)
     local new_entity_data = {
-      state_data_bit_filter = state_data_bit_filter,
+      state_content_bit_filter = state_content_bit_filter,
       associated_components_entries_ids = associated_components_entries_ids,
-      associated_state_data_bit_ids = associated_state_data_bit_ids
+      associated_state_content_bit_ids = associated_state_content_bit_ids
     }
 
     setmetatable(new_entity_data, Entity_mt)
@@ -129,13 +130,13 @@ local Entity = {
   end
 }
 
-local function new_entity()
-  return Entity.new(bit_ids.new_bit_filter(), {}, {})
+local function new_init_entity()
+  return EntityData.new(bit_ids.new_bit_filter(), {}, {})
 end
 
 return {
-  Entity = Entity,
-  new_entity = new_entity,
+  EntityData = EntityData,
+  new_init_entity = new_init_entity,
   find_associated_id     = find_associated_id,
   find_associated_bit_id = find_associated_bit_id,
   associate_component    = associate_component,

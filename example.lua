@@ -6,14 +6,12 @@
 -- run these systems 300x
 -- disassociate velocity component of all entities
 
-local positions_state_data_bit_id  = 0 -- :bitid
-local velocities_state_data_bit_id = 0 -- :bitid
-local names_state_data_bit_id      = 0 -- :bitid
-
-local USAR_TITAN = true
+local positions_state_content_bit_id  = 0 -- :bitid
+local velocities_state_content_bit_id = 0 -- :bitid
+local names_state_content_bit_id      = 0 -- :bitid
 
 -- requires
-local motor    = require ('motor' .. (USAR_TITAN and '_titan' or ''))
+local motor    = require ('motor')
 local states   = motor.states
 local entities = motor.entities
 local storages = motor.storages
@@ -41,18 +39,27 @@ local Name = {
   end
 }
 
+local WhoIsInTheRightMostStateContent = {
+  new = function()
+    return {
+      pos_id  = 0, -- : storages.Id
+      name_id = 0 -- : storages.Id
+    }
+  end
+}
+
 local TranslatorSystem = {
   new = function(_system_data)
     return {
       system_data = _system_data,
 
-      run = function(self, state_datas)
+      run = function(self, state_contents)
         print ("\tTranslator system begin")
 
-        local components = self.system_data.components_ids_to_iterate
+        local vel_storage = state_contents[velocities_state_content_bit_id]
+        local pos_storage = state_contents[positions_state_content_bit_id]
 
-        local vel_storage = state_datas[velocities_state_data_bit_id]
-        local pos_storage = state_datas[positions_state_data_bit_id]
+        local components = self.system_data.components_ids_to_iterate
 
         for i = 1, #components do
 
@@ -62,20 +69,10 @@ local TranslatorSystem = {
           print ("\t\tupdating position, x = x + v -> " .. pos_i.x .. " = " .. pos_i.x .. " + " .. vel_i.v)
 
           pos_i.x = pos_i.x + vel_i.v
-
         end
 
         print ("\tTranslator system end")
       end
-    }
-  end
-}
-
-local WhoIsInTheRightMostStateData = {
-  new = function()
-    return {
-      pos_id  = 0, -- : storages.Id
-      name_id = 0 -- : storages.Id
     }
   end
 }
@@ -85,22 +82,21 @@ local WhoIsInTheRightMostSystem = {
     return {
       system_data = _system_data,
 
-      run = function (self, state_datas)
+      run = function (self, state_contents)
         print("\tWho is on the right most system begin")
 
-        local simple_state_datas = self.system_data.simple_state_data_needs
-        local components = self.system_data.components_ids_to_iterate
+        local simple_state_content = self.system_data.simple_state_content_needs
 
-        local pos_storage = state_datas[positions_state_data_bit_id]
-        local rightmost_data = state_datas[simple_state_datas[1]]
+        local pos_storage = state_contents[positions_state_content_bit_id]
+        local rightmost_data = state_contents[simple_state_content[1]]
 
         local rightmost_pos = -999999999
         local rightmost_idx = 0
 
+        local components = self.system_data.components_ids_to_iterate
+
         for i = 1, #components do
-
           local pos_i = pos_storage:get_entry(components[i][1]).content
-
 
           if pos_i.x  > rightmost_pos then
             print("\t\tupdating rightmost entity information: x = " .. pos_i.x)
@@ -109,11 +105,10 @@ local WhoIsInTheRightMostSystem = {
           end
         end
 
-
         rightmost_data.pos_id  = components[rightmost_idx][1]
         rightmost_data.name_id = components[rightmost_idx][2]
 
-        local names_storage = state_datas[names_state_data_bit_id]
+        local names_storage = state_contents[names_state_content_bit_id]
 
         local name_rm = names_storage:get_entry(components[rightmost_idx][2]).content
 
@@ -128,7 +123,7 @@ local WhoIsInTheRightMostSystem = {
 local MainState = {
   new = function(_state)
     return {
-      state = _state,
+      state_data = _state,
 
       init_systems = function (self, translator_sys, who_in_right_sys)
         translator_sys.system_data:update_components_ids_to_iterate(entities_storage.entries)
@@ -136,63 +131,66 @@ local MainState = {
       end,
 
       run = function (self, translator_sys, who_in_right_sys)
-        translator_sys:run(self.state.state_data)
-        who_in_right_sys:run(self.state.state_data)
+        translator_sys.system_data:prepare(entities_storage)
+        translator_sys:run(self.state_data.state_content)
+
+        who_in_right_sys.system_data:prepare(entities_storage)
+        who_in_right_sys:run(self.state_data.state_content)
       end
     }
   end
 }
 
-local function main()
+local function _main()
   print("start")
 
-  local main_state = MainState.new(states.new_state())
-  entities_storage = main_state.state.state_data[main_state.state.entities_state_data_bit_id]
+  local main_state = MainState.new(states.new_init_state_data())
+  entities_storage = main_state.state_data.state_content[main_state.state_data.entities_bit_id]
 
-  positions_state_data_bit_id  = main_state.state:add_state_data(storages.new_storage())
-  velocities_state_data_bit_id = main_state.state:add_state_data(storages.new_storage())
-  names_state_data_bit_id      = main_state.state:add_state_data(storages.new_storage())
+  positions_state_content_bit_id  = main_state.state_data:add_state_content(storages.new_init_storage())
+  velocities_state_content_bit_id = main_state.state_data:add_state_content(storages.new_init_storage())
+  names_state_content_bit_id      = main_state.state_data:add_state_content(storages.new_init_storage())
 
-  local rightmost_components_bit_id = main_state.state:add_state_data(
-    WhoIsInTheRightMostStateData.new(
+  local rightmost_components_bit_id = main_state.state_data:add_state_content(
+    WhoIsInTheRightMostStateContent.new(
       storages.Id.new(0,0),
       storages.Id.new(0,0)
     )
   )
 
   local translator_sys = TranslatorSystem.new(
-    systems.init_system_data (
+    systems.new_init_system_data (
       {
         {},
         {}
       },
       {
-        {velocities_state_data_bit_id},
-        {positions_state_data_bit_id}
+        {velocities_state_content_bit_id},
+        {positions_state_content_bit_id}
       }
     )
   )
 
   local who_in_right_sys = WhoIsInTheRightMostSystem.new(
-    systems.init_system_data (
+    systems.new_init_system_data (
       {
         {},
         {rightmost_components_bit_id}
       },
       {
-        {positions_state_data_bit_id, names_state_data_bit_id},
+        {positions_state_content_bit_id, names_state_content_bit_id},
         {}
       }
     )
   )
 
-  local positions_storage = main_state.state.state_data[positions_state_data_bit_id]
-  local names_storage     = main_state.state.state_data[names_state_data_bit_id]
+  local positions_storage = main_state.state_data.state_content[positions_state_content_bit_id]
+  local names_storage     = main_state.state_data.state_content[names_state_content_bit_id]
 
   for i=1, 3 do
-    local velocities_storage = main_state.state.state_data[velocities_state_data_bit_id]
+    local velocities_storage = main_state.state_data.state_content[velocities_state_content_bit_id]
 
-    local new_entity_id = entities_storage:new_entry(entities.new_entity())
+    local new_entity_id = entities_storage:new_entry(entities.new_init_entity())
 
     local new_name_id = names_storage:new_entry(Name.new("entity #" .. i))
 
@@ -205,20 +203,19 @@ local function main()
 
     entry_of_new_entity:associate_component(
       new_name_id,
-      names_state_data_bit_id
+      names_state_content_bit_id
     )
 
     entry_of_new_entity:associate_component(
       new_position_id,
-      positions_state_data_bit_id
+      positions_state_content_bit_id
     )
 
     entry_of_new_entity:associate_component(
       new_velocity_id,
-      velocities_state_data_bit_id
+      velocities_state_content_bit_id
     )
   end
-
 
   main_state:init_systems(translator_sys, who_in_right_sys)
 
@@ -230,21 +227,25 @@ local function main()
     local entity = entities_storage:get_entry(entities_storage.entries[i].id).content
 
     entity:disassociate_component(
-      entity.associated_components_entries_ids[entity:find_associated_bit_id(velocities_state_data_bit_id)], -- associated velocity id
-      velocities_state_data_bit_id -- velocities state data bit id
+      entity.associated_components_entries_ids[entity:find_associated_bit_id(velocities_state_content_bit_id)], -- associated velocity id
+      velocities_state_content_bit_id -- velocities state data bit id
     )
   end
 
-  local rightmost_data = main_state.state.state_data[rightmost_components_bit_id]
+  local rightmost_data = main_state.state_data.state_content[rightmost_components_bit_id]
 
   local position_id = rightmost_data.pos_id
   local name_id = rightmost_data.name_id
 
   local position = positions_storage:get_entry(position_id).content
 
-  local name = names_storage:get_entry(name_id).content
+  local name = names_storage:get_entry(name_id).content.name
+
+  print ('entity "' .. tostring(name) .. '" is in the rightmost position: '
+    .. "x: " .. tostring(position.x)
+  )
 
   print("end")
 end
 
-main()
+_main()

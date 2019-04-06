@@ -3,8 +3,9 @@
 -- Table with simple operations that are not compatible between versions 5.1 and 5.3
 -- this is done by `require ('motor.operations.' .. _VERSION:gsub('([%s%.])', ''):lower() .. '_operations')`
 -- @usage
--- local operations = require "motor.operations"
-local operations = require ('motor.operations.' .. _VERSION:gsub('([%s%.])', ''):lower() .. '_operations')
+-- local operations = require "motor".operations
+local localpath = (...):match("(.-)[^%.]+$")
+local operations = require (localpath .. "operations." .. _VERSION:gsub('([%s%.])', ''):lower() .. '_operations')
 return operations
 
 --- the << operation.

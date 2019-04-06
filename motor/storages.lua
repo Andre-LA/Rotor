@@ -40,7 +40,7 @@ local Entry = {
 -- local storages = require 'motor.storages'
 --
 -- -- create a new storage
--- local my_storage_id = storages.new_storage()
+-- local my_storage_id = storages.new_init_storage()
 --
 -- -- create a new entry in this storage, with content "10"
 -- local my_entry_id = storages.new_entry(my_storage_id, 10)
@@ -159,7 +159,7 @@ local State_mt = {
 -- @tfield {Entry} entries
 local Storage = {
   new = function(free_ids_len, free_ids, entries)
-    local new_state_data = {
+    local new_storage_data = {
       free_ids_len =  free_ids_len,
       free_ids = free_ids,
       entries = entries,
@@ -167,13 +167,13 @@ local Storage = {
       -- TODO: alive_ids = {}, and remove alive fields in entries
     }
 
-    setmetatable(new_state_data, State_mt)
+    setmetatable(new_storage_data, State_mt)
 
-    return new_state_data
+    return new_storage_data
   end
 }
 
-local function new_storage()
+local function new_init_storage()
   return Storage.new(0, {}, {})
 end
 
@@ -181,7 +181,7 @@ return {
   Storage = Storage,
   Id = Id,
   Entry = Entry,
-  new_storage = new_storage,
+  new_init_storage = new_init_storage,
   new_entry  = new_entry,
   get_entry  = get_entry,
   kill_entry = kill_entry,

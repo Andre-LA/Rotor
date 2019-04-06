@@ -2,7 +2,7 @@
 -- @module bit_ids
 local M = {}
 
-local operations = require 'motor.operations'
+local operations = require ("motor.operations")
 
 local lshift = operations.lshift
 local band   = operations.band
