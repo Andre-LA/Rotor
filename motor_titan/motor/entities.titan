@@ -1,0 +1,72 @@
+local bit_ids  = import "motor.bit_ids"
+local storages = import "motor.storages"
+
+record EntityData
+  state_content_bit_filter: {integer}
+  associated_components_entries_ids: {storages.Id}
+  associated_state_content_bit_ids: {{integer}}
+end
+
+function new_init_entity(): EntityData
+  local entity: EntityData = {
+    state_content_bit_filter = {0, 0, 0, 0},
+    associated_components_entries_ids = {},
+    associated_state_content_bit_ids = {}
+  }
+
+  return entity
+end
+
+--
+
+function find_associated_id(entity: EntityData, id: storages.Id): integer
+  for i = 1, #entity.associated_components_entries_ids do
+    local entity_entry_id: storages.Id = entity.associated_components_entries_ids[i]
+
+    if entity_entry_id.index == id.index and entity_entry_id.generation == id.generation  then
+      return i
+    end
+  end
+
+  return 0 -- in lua version: return nil, "associated id not found"
+end
+
+function find_associated_bit_id(entity: EntityData, bit_id: {integer}): integer
+  for i = 1, #entity.associated_state_content_bit_ids do
+    if bit_ids.equals(entity.associated_state_content_bit_ids[i], bit_id) then
+      return i
+    end
+  end
+
+  return 0 -- lua: return nil, "associated bit id not found"
+end
+
+function associate_component(entity: EntityData, component_entry_id: storages.Id, component_data_bit_id: {integer})
+  bit_ids.add_in_bit_filter(entity.state_content_bit_filter, component_data_bit_id)
+  entity.associated_components_entries_ids[#entity.associated_components_entries_ids+1] = component_entry_id
+  entity.associated_state_content_bit_ids[#entity.associated_state_content_bit_ids+1] =  component_data_bit_id
+end
+
+function disassociate_component(entity: EntityData, component_entry_id: storages.Id, component_data_bit_id: {integer})
+  bit_ids.remove_in_bit_filter(entity.state_content_bit_filter, component_data_bit_id)
+  entity.associated_components_entries_ids[entity:find_associated_id(component_entry_id)] = nil
+  entity.associated_state_content_bit_ids[entity:find_associated_bit_id(component_data_bit_id)] = nil
+end
+
+--
+
+function EntityData:find_associated_id(id: storages.Id): integer
+  return find_associated_id(self, id)
+end
+
+function EntityData:find_associated_bit_id(bit_id: {integer}): integer
+  return find_associated_bit_id(self, bit_id)
+end
+
+function EntityData:associate_component(component_entry_id: storages.Id, component_data_bit_id: {integer})
+  associate_component(self, component_entry_id, component_data_bit_id)
+end
+
+function EntityData:disassociate_component(component_entry_id: storages.Id, component_data_bit_id: {integer})
+  disassociate_component(self, component_entry_id, component_data_bit_id)
+end

@@ -1,0 +1,92 @@
+local function bxor(p: integer, q: integer): integer
+  return (p | q) & ~(p & q)
+end
+
+local BIT_ID_LEN = 4 -- #initial_bit_id()
+
+local function initial_bit_id(): {integer}
+  return {1, 0, 0, 0}
+end
+
+local function initial_bit_filter(): {integer}
+  local bit_filter = initial_bit_id()
+  bit_filter[1] = 0
+  return bit_filter
+end
+
+local function copy_bit_id(bit_id: {integer}): {integer}
+  local new_bit_id = initial_bit_id()
+
+  for i = 1, BIT_ID_LEN do
+    new_bit_id[i] = bit_id[i]
+  end
+
+  return new_bit_id
+end
+
+function new_bit_id(previous_bit_id: {integer}): {integer}
+  if #previous_bit_id == 0 then
+    return initial_bit_id()
+  end
+
+  local new_bit_id = copy_bit_id(previous_bit_id)
+
+  for i=1, BIT_ID_LEN-1 do
+    if new_bit_id[i] < 0 and new_bit_id[i+1] == 0 then
+      new_bit_id[i] = 0
+      new_bit_id[i+1] = 1
+    end
+  end
+
+  for i=1, BIT_ID_LEN do
+    new_bit_id[i] = new_bit_id[i] << 1
+  end
+
+  return new_bit_id
+end
+
+function new_bit_filter(bit_ids: {{integer}}): {integer}
+  local bit_filter = initial_bit_filter()
+
+  if bit_ids then
+    for i=1, #bit_ids do
+      for j=1, BIT_ID_LEN do
+        bit_filter[j] = bit_filter[j] | bit_ids[i][j]
+      end
+    end
+  end
+
+  return bit_filter
+end
+
+function add_in_bit_filter(bit_filter: {integer}, bit_id: {integer})
+  for i=1, BIT_ID_LEN do
+    bit_filter[i] = bit_filter[i] | bit_id[i]
+  end
+end
+
+function remove_in_bit_filter(bit_filter: {integer}, bit_id: {integer})
+  for i=1, BIT_ID_LEN do
+    bit_filter[i] = bxor(bit_filter[i], bit_id[i])
+  end
+end
+
+function contains_bit_ids(bit_filter_l: {integer}, bit_filter_r: {integer}): boolean
+  for i=1, BIT_ID_LEN do
+    if (bit_filter_l[i] & bit_filter_r[i]) ~= bit_filter_r[i] then
+      return false
+    end
+  end
+
+  return true
+end
+
+function equals(bit_id_l: {integer}, bit_id_r: {integer}): boolean
+  for i=1, BIT_ID_LEN do
+    if bit_id_l[i] ~= bit_id_r[i] then
+      return false
+    end
+  end
+
+  return true
+end
