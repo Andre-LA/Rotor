@@ -1,10 +1,9 @@
 project = "Motor"
 title = "Motor documentation"
-description = "ECS lua library, inspired from SPECS"
-dir = 'docs'
-file = './motor'
+description = "Set of libraries to make ECS in Lua"
+dir = 'doc'
+file = './src/'
 not_luadoc = true
-format = 'markdown'
-examples = {"example.lua"}
+examples = {"src/example.lua"}
 readme = "README.md"
 

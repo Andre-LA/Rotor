@@ -1,2 +1,2 @@
 std = "min"
-max_code_line_length = 100
+max_code_line_length = 80

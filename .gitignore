@@ -1,7 +1,4 @@
-motor_titan/lua-5.3.5/*
-motor_titan/titan-runtime/*
-
+luacov.*
 *.c
 *.o
 *.so
-*.html
