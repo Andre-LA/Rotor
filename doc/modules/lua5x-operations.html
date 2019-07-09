@@ -1,0 +1,351 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Motor documentation</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>Motor</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/bitset_array.html">bitset_array</a></li>
+  <li><a href="../modules/entity.html">entity</a></li>
+  <li><a href="../modules/generational_index.html">generational_index</a></li>
+  <li><strong>lua5x-operations</strong></li>
+  <li><a href="../modules/storage.html">storage</a></li>
+  <li><a href="../modules/system_data.html">system_data</a></li>
+</ul>
+<h2>Topics</h2>
+<ul class="">
+  <li><a href="../topics/README.md.html">README</a></li>
+</ul>
+<h2>Examples</h2>
+<ul class="nowrap">
+  <li><a href="../examples/example.lua.html">example.lua</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>lua5x-operations</code></h1>
+<p>lua5x-operations</p>
+<p>
+ Table with simple operations that are not compatible between
+ versions 5.1, 5.2 and 5.3 this is done by
+ `require ('lua5x-operations.' .. _VERSION:sub(-3):gsub("(%.)", "_"))`</p>
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">local operations = &quot;lua5x-operations&quot;
+</pre>
+    </ul>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#lshift">lshift (left, right)</a></td>
+	<td class="summary">the << operation.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#rshift">rshift (left, right)</a></td>
+	<td class="summary">the >> operation.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#band">band (left, right)</a></td>
+	<td class="summary">the & operation.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#bor">bor (left, right)</a></td>
+	<td class="summary">the | operation.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#bxor">bxor (left, right)</a></td>
+	<td class="summary">the ~ (binary) operation.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#bnot">bnot (number)</a></td>
+	<td class="summary">the ~ (unary) operation.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "lshift"></a>
+    <strong>lshift (left, right)</strong>
+    </dt>
+    <dd>
+    the << operation.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">left</span>
+            <span class="types"><span class="type">number</span></span>
+
+        </li>
+        <li><span class="parameter">right</span>
+            <span class="types"><span class="type">number</span></span>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        result
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> operations = <span class="global">require</span> <span class="string">'lua5x-operations'</span>
+<span class="keyword">local</span> lshift = operations.lshift
+<span class="keyword">local</span> a = <span class="number">1</span> <span class="comment">-- 0b0001
+</span><span class="global">print</span>(lshift(a, <span class="number">1</span>)) <span class="comment">-- prints "2" (0b0010)
+</span><span class="global">print</span>(lshift(a, <span class="number">2</span>)) <span class="comment">-- prints "4" (0b0100)
+</span><span class="global">print</span>(lshift(a, <span class="number">3</span>)) <span class="comment">-- prints "8" (0b1000)</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "rshift"></a>
+    <strong>rshift (left, right)</strong>
+    </dt>
+    <dd>
+    the >> operation.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">left</span>
+            <span class="types"><span class="type">number</span></span>
+
+        </li>
+        <li><span class="parameter">right</span>
+            <span class="types"><span class="type">number</span></span>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        result
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> operations = <span class="global">require</span> <span class="string">'lua5x-operations'</span>
+<span class="keyword">local</span> rshift = operations.rshift
+<span class="keyword">local</span> a = <span class="number">8</span> <span class="comment">-- 0b1000
+</span><span class="global">print</span>(rshift(a, <span class="number">1</span>)) <span class="comment">-- prints "4" (0b0100)
+</span><span class="global">print</span>(rshift(a, <span class="number">2</span>)) <span class="comment">-- prints "2" (0b0010)
+</span><span class="global">print</span>(rshift(a, <span class="number">3</span>)) <span class="comment">-- prints "1" (0b0001)</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "band"></a>
+    <strong>band (left, right)</strong>
+    </dt>
+    <dd>
+    the & operation.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">left</span>
+            <span class="types"><span class="type">number</span></span>
+
+        </li>
+        <li><span class="parameter">right</span>
+            <span class="types"><span class="type">number</span></span>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        result
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> operations = <span class="global">require</span> <span class="string">'lua5x-operations'</span>
+<span class="keyword">local</span> band = operations.band
+<span class="keyword">local</span> a = <span class="number">1</span> <span class="comment">-- 0b01
+</span><span class="keyword">local</span> b = <span class="number">3</span> <span class="comment">-- 0b11
+</span><span class="global">print</span>(band(a, b)) <span class="comment">-- prints "1" (0b01)</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "bor"></a>
+    <strong>bor (left, right)</strong>
+    </dt>
+    <dd>
+    the | operation.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">left</span>
+            <span class="types"><span class="type">number</span></span>
+
+        </li>
+        <li><span class="parameter">right</span>
+            <span class="types"><span class="type">number</span></span>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        result
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> operations = <span class="global">require</span> <span class="string">'lua5x-operations'</span>
+<span class="keyword">local</span> bor = operations.bor
+<span class="keyword">local</span> a = <span class="number">1</span> <span class="comment">-- 0b01
+</span><span class="keyword">local</span> b = <span class="number">3</span> <span class="comment">-- 0b11
+</span><span class="global">print</span>(bor(a, b)) <span class="comment">-- prints "3" (0b11)</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "bxor"></a>
+    <strong>bxor (left, right)</strong>
+    </dt>
+    <dd>
+    the ~ (binary) operation.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">left</span>
+            <span class="types"><span class="type">number</span></span>
+
+        </li>
+        <li><span class="parameter">right</span>
+            <span class="types"><span class="type">number</span></span>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        result
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> operations = <span class="global">require</span> <span class="string">'lua5x-operations'</span>
+<span class="keyword">local</span> bxor = operations.bxor
+<span class="keyword">local</span> a = <span class="number">1</span> <span class="comment">-- 0b01
+</span><span class="keyword">local</span> b = <span class="number">3</span> <span class="comment">-- 0b11
+</span><span class="global">print</span>(bxor(a, b)) <span class="comment">-- prints "2" (0b10)</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "bnot"></a>
+    <strong>bnot (number)</strong>
+    </dt>
+    <dd>
+    the ~ (unary) operation.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">number</span>
+            <span class="types"><span class="type">number</span></span>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        result
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> operations = <span class="global">require</span> <span class="string">'lua5x-operations'</span>
+<span class="keyword">local</span> bnot = operations.bnot
+<span class="keyword">local</span> a = ~<span class="number">0</span> <span class="comment">-- all bits are 1
+</span><span class="global">print</span>(bnot(a)) <span class="comment">-- prints "0"</span></pre>
+    </ul>
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2019-07-08 21:32:37 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

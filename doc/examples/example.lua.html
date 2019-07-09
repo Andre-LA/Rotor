@@ -1,0 +1,217 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Motor documentation</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>Motor</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+
+
+<h2>Examples</h2>
+<ul class="nowrap">
+  <li><strong>example.lua</strong></li>
+</ul>
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/bitset_array.html">bitset_array</a></li>
+  <li><a href="../modules/entity.html">entity</a></li>
+  <li><a href="../modules/generational_index.html">generational_index</a></li>
+  <li><a href="../modules/lua5x-operations.html">lua5x-operations</a></li>
+  <li><a href="../modules/storage.html">storage</a></li>
+  <li><a href="../modules/system_data.html">system_data</a></li>
+</ul>
+<h2>Topics</h2>
+<ul class="">
+  <li><a href="../topics/README.md.html">README</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+    <h2>example.lua</h2>
+<pre>
+<span class="keyword">local</span> entity = <span class="global">require</span> <span class="string">'entity'</span>
+<span class="keyword">local</span> storage = <span class="global">require</span> <span class="string">'storage'</span>
+<span class="keyword">local</span> system_data = <span class="global">require</span> <span class="string">'system_data'</span>
+<span class="keyword">local</span> bitset_array = <span class="global">require</span> <span class="string">'bitset_array'</span>
+
+<span class="comment">-- our components
+</span><span class="keyword">local</span> <span class="keyword">function</span> create_position (x, y)
+  <span class="keyword">return</span> {x = x, y = y}
+<span class="keyword">end</span>
+
+<span class="keyword">local</span> <span class="keyword">function</span> create_velocity (x, y)
+  <span class="keyword">return</span> {x = x, y = y}
+<span class="keyword">end</span>
+
+<span class="comment">-- is not a component, but will be processed by a system
+</span><span class="keyword">local</span> <span class="keyword">function</span> create_rightmost()
+  <span class="keyword">return</span> {
+    pos_comp = <span class="number">0</span>,
+    name_comp = <span class="number">0</span>
+  }
+<span class="keyword">end</span>
+
+<span class="comment">-- systems are just functions
+</span><span class="keyword">local</span> <span class="keyword">function</span> movement_system(
+  tr_system_data,
+  velocities_storage,
+  positions_storage
+)
+  <span class="keyword">for</span> velocity, position <span class="keyword">in</span> tr_system_data:iterate_components(
+    {velocities_storage, positions_storage}, <span class="keyword">true</span>
+  ) <span class="keyword">do</span>
+    position.x = position.x + velocity.x
+    position.y = position.y + velocity.y
+  <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">local</span> <span class="keyword">function</span> rightmost_system(
+  rm_system_data,
+  rightmost,
+  names_storage,
+  positions_storage
+)
+  <span class="keyword">local</span> rightmost_position = -<span class="number">99999999</span>
+
+  <span class="keyword">for</span> name, position <span class="keyword">in</span> rm_system_data:iterate_components(
+    {names_storage, positions_storage}, <span class="keyword">true</span>
+  ) <span class="keyword">do</span>
+    <span class="keyword">if</span> position.x &gt; rightmost_position <span class="keyword">then</span>
+      rightmost_position  = position.x
+      rightmost.pos_comp  = position <span class="comment">-- note: this is a reference
+</span>      rightmost.name_comp = name
+    <span class="keyword">end</span>
+  <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">local</span> position_mask = bitset_array.new(<span class="number">1</span>, {<span class="number">1</span>})
+<span class="keyword">local</span> velocity_mask = bitset_array.new(<span class="number">1</span>, {<span class="number">1</span>}):lshift(<span class="number">1</span>)
+<span class="keyword">local</span> name_mask     = bitset_array.new(<span class="number">1</span>, {<span class="number">1</span>}):lshift(<span class="number">2</span>)
+
+<span class="keyword">local</span> movement_system_data = system_data.new(
+  {velocity_mask}, {position_mask}
+)
+
+<span class="keyword">local</span> rightmost_system_data = system_data.new(
+  {name_mask, position_mask}
+)
+
+<span class="keyword">local</span> positions_storage  = storage.new()
+<span class="keyword">local</span> velocities_storage = storage.new()
+<span class="keyword">local</span> names_storage      = storage.new()
+<span class="keyword">local</span> entities_storage   = storage.new()
+
+<span class="keyword">local</span> names_gen_indexes = {}
+
+<span class="comment">-- let's create 3 entities!
+</span><span class="keyword">for</span> i = <span class="number">1</span>, <span class="number">3</span> <span class="keyword">do</span>
+  <span class="comment">-- create an entity in the entities storage and get this new entity
+</span>  <span class="keyword">local</span> new_entity_gen_idx = entities_storage:new_entry(entity.new())
+  <span class="keyword">local</span> new_entity = entities_storage:get_entry(new_entity_gen_idx)
+
+  <span class="comment">-- create the components in their respective storages.
+</span>  <span class="comment">-- storage.new_entry(value) returns a generational_index, it's used as an ID
+</span>  <span class="keyword">local</span> new_position = positions_storage:new_entry(
+    create_position(<span class="global">math</span>.random(-<span class="number">100.0</span>, <span class="number">100.0</span>), i)
+    <span class="comment">-- create_position(x, y) returns just a new very simple table, remember?
+</span>  )
+
+  <span class="keyword">local</span> new_velocity = velocities_storage:new_entry(
+    create_velocity(<span class="global">math</span>.random(-<span class="number">200.0</span>, <span class="number">200.0</span>), <span class="number">0</span>)
+  )
+
+  <span class="comment">-- storages accepts any value
+</span>  names_gen_indexes[i] = names_storage:new_entry(<span class="string">"entity #"</span> .. i)
+
+  <span class="comment">-- this is how we associate an entity with a storage entry;
+</span>  <span class="comment">-- making a unique bitmask per storage is necessary
+</span>  new_entity:associate(new_position, position_mask)
+  new_entity:associate(new_velocity, velocity_mask)
+  new_entity:associate(new_name, name_mask)
+<span class="keyword">end</span>
+
+<span class="comment">-- now, we update the systems datas, so they will know what entities
+</span><span class="comment">-- should be processed
+</span>movement_system_data:update_components_indexes(entities_storage)
+rightmost_system_data:update_components_indexes(entities_storage)
+
+<span class="comment">-- let's execute movement system 10x
+</span><span class="keyword">for</span> _ = <span class="number">1</span>, <span class="number">10</span> <span class="keyword">do</span>
+  movement_system(movement_system_data, velocities_storage, positions_storage)
+<span class="keyword">end</span>
+
+<span class="keyword">local</span> rightmost = create_rightmost()
+
+<span class="comment">-- let's execute rightmost_system, note that 'rigtmost' variable
+</span><span class="comment">-- is not an storage, component, or something specific;
+</span><span class="comment">-- since systems are just functions that you can declare and use
+</span><span class="comment">-- in whathever way you want, there is absolutely no special thing
+</span><span class="comment">-- in executing systems, they are just functions.
+</span>rightmost_system(
+  rightmost_system_data, rightmost, names_storage, positions_storage
+)
+
+<span class="keyword">local</span> n = <span class="number">1</span>
+<span class="keyword">for</span> e <span class="keyword">in</span> entities_storage:iterate_entries() <span class="keyword">do</span>
+
+  <span class="comment">-- note: methods are implemented using metatable and __index field,
+</span>  <span class="comment">-- so, in all libraries used, methods are optional,
+</span>  <span class="comment">-- you can use (and localize for performance) the function
+</span>  <span class="comment">-- from the library
+</span>
+  entity.disassociate(e, position_mask)
+
+  <span class="keyword">local</span> disassociate = entity.disassociate
+  disassociate(e, velocity_mask)
+
+  <span class="comment">-- you can also disassociate using the entry generational index
+</span>  e:disassociate(names_gen_indexes[n])
+  n = n + <span class="number">1</span>
+<span class="keyword">end</span>
+
+<span class="keyword">local</span> name, pos_x = rightmost.name_comp, rightmost.pos_comp.x
+
+<span class="global">print</span> (
+  <span class="string">'entity "'</span>
+  .. <span class="global">tostring</span>(name)
+  .. <span class="string">'" is in the rightmost position x: '</span>
+  .. <span class="global">tostring</span>(pos_x)
+)</pre>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2019-07-08 21:32:37 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

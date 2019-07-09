@@ -1,0 +1,425 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Motor documentation</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>Motor</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+<li><a href="#Tables">Tables</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><strong>bitset_array</strong></li>
+  <li><a href="../modules/entity.html">entity</a></li>
+  <li><a href="../modules/generational_index.html">generational_index</a></li>
+  <li><a href="../modules/lua5x-operations.html">lua5x-operations</a></li>
+  <li><a href="../modules/storage.html">storage</a></li>
+  <li><a href="../modules/system_data.html">system_data</a></li>
+</ul>
+<h2>Topics</h2>
+<ul class="">
+  <li><a href="../topics/README.md.html">README</a></li>
+</ul>
+<h2>Examples</h2>
+<ul class="nowrap">
+  <li><a href="../examples/example.lua.html">example.lua</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>bitset_array</code></h1>
+<p>bitset array library</p>
+<p></p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#copy">copy (bitset_array)</a></td>
+	<td class="summary">copies a bitset_array in a new one.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#equals">equals (bitset_l, bitset_r)</a></td>
+	<td class="summary">return if bitset_array values are equal</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#band">band (bitset_l, bitset_r)</a></td>
+	<td class="summary">creates a new bitset_array with the result
+ of the & bitwise operation between two bitset_arrays</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#bor">bor (bitset_l, bitset_r)</a></td>
+	<td class="summary">creates a new bitset_array with the result
+ of the | bitwise operation between two bitset_arrays</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#bxor">bxor (bitset_l, bitset_r)</a></td>
+	<td class="summary">creates a new bitset_array with the result
+ of the (binary) ~ bitwise operation between two bitset_arrays</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#bxor">bxor (bitset_array)</a></td>
+	<td class="summary">creates a new bitset_array with the result
+ of the (unary) ~ bitwise operation in a bitset_array</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#lshift">lshift (bitset_array, steps)</a></td>
+	<td class="summary">creates a new bitset_array with the result
+ of the << bitwise operation between two bitset_arrays
+ if a bit overflows, it will go to the next index</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#rshift">rshift (bitset_array, steps)</a></td>
+	<td class="summary">creates a new bitset_array with the result
+ of the >> bitwise operation between two bitset_arrays
+ if a bit overflows, it will go to the previous index</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#new">new (initial_length, initial_value)</a></td>
+	<td class="summary">creates a new bitset_array table</td>
+	</tr>
+</table>
+<h2><a href="#Tables">Tables</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#bitset_array">bitset_array</a></td>
+	<td class="summary">bitset_array is a table of integers</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "copy"></a>
+    <strong>copy (bitset_array)</strong>
+    </dt>
+    <dd>
+    copies a bitset_array in a new one.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">bitset_array</span>
+            <span class="types"><span class="type">bitset_array</span></span>
+         bitset_array to copy
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">bitset_array</span></span>
+
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "equals"></a>
+    <strong>equals (bitset_l, bitset_r)</strong>
+    </dt>
+    <dd>
+    return if bitset_array values are equal
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">bitset_l</span>
+            <span class="types"><span class="type">bitset_array</span></span>
+         bitset_array to compare
+        </li>
+        <li><span class="parameter">bitset_r</span>
+            <span class="types"><span class="type">bitset_array</span></span>
+         bitset_array to compare
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">boolean</span></span>
+
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "band"></a>
+    <strong>band (bitset_l, bitset_r)</strong>
+    </dt>
+    <dd>
+    creates a new bitset_array with the result
+ of the & bitwise operation between two bitset_arrays
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">bitset_l</span>
+            <span class="types"><span class="type">bitset_array</span></span>
+
+        </li>
+        <li><span class="parameter">bitset_r</span>
+            <span class="types"><span class="type">bitset_array</span></span>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">bitset_array</span></span>
+        a new bitset_array with the result
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "bor"></a>
+    <strong>bor (bitset_l, bitset_r)</strong>
+    </dt>
+    <dd>
+    creates a new bitset_array with the result
+ of the | bitwise operation between two bitset_arrays
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">bitset_l</span>
+            <span class="types"><span class="type">bitset_array</span></span>
+
+        </li>
+        <li><span class="parameter">bitset_r</span>
+            <span class="types"><span class="type">bitset_array</span></span>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">bitset_array</span></span>
+        a new bitset_array with the result
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "bxor"></a>
+    <strong>bxor (bitset_l, bitset_r)</strong>
+    </dt>
+    <dd>
+    creates a new bitset_array with the result
+ of the (binary) ~ bitwise operation between two bitset_arrays
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">bitset_l</span>
+            <span class="types"><span class="type">bitset_array</span></span>
+
+        </li>
+        <li><span class="parameter">bitset_r</span>
+            <span class="types"><span class="type">bitset_array</span></span>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">bitset_array</span></span>
+        a new bitset_array with the result
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "bxor"></a>
+    <strong>bxor (bitset_array)</strong>
+    </dt>
+    <dd>
+    creates a new bitset_array with the result
+ of the (unary) ~ bitwise operation in a bitset_array
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">bitset_array</span>
+            <span class="types"><span class="type">bitset_array</span></span>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">bitset_array</span></span>
+        a new bitset_array with the result
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "lshift"></a>
+    <strong>lshift (bitset_array, steps)</strong>
+    </dt>
+    <dd>
+    creates a new bitset_array with the result
+ of the << bitwise operation between two bitset_arrays
+ if a bit overflows, it will go to the next index
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">bitset_array</span>
+            <span class="types"><span class="type">bitset_array</span></span>
+         to shift
+        </li>
+        <li><span class="parameter">steps</span>
+            <span class="types"><span class="type">integer</span></span>
+         steps to shift
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "rshift"></a>
+    <strong>rshift (bitset_array, steps)</strong>
+    </dt>
+    <dd>
+    creates a new bitset_array with the result
+ of the >> bitwise operation between two bitset_arrays
+ if a bit overflows, it will go to the previous index
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">bitset_array</span>
+            <span class="types"><span class="type">bitset_array</span></span>
+         to shift
+        </li>
+        <li><span class="parameter">steps</span>
+            <span class="types"><span class="type">integer</span></span>
+         steps to shift
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "new"></a>
+    <strong>new (initial_length, initial_value)</strong>
+    </dt>
+    <dd>
+    creates a new bitset_array table
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">initial_length</span>
+            <span class="types"><span class="type">integer</span></span>
+         initial length
+        </li>
+        <li><span class="parameter">initial_value</span>
+            <span class="types"><span class="type">{integer}</span></span>
+         initial values
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">bitset_array</span></span>
+
+    </ol>
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Tables"></a>Tables</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "bitset_array"></a>
+    <strong>bitset_array</strong>
+    </dt>
+    <dd>
+    bitset_array is a table of integers
+
+
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2019-07-08 21:32:37 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

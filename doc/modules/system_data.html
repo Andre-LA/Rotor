@@ -1,0 +1,277 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Motor documentation</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>Motor</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+<li><a href="#Tables">Tables</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/bitset_array.html">bitset_array</a></li>
+  <li><a href="../modules/entity.html">entity</a></li>
+  <li><a href="../modules/generational_index.html">generational_index</a></li>
+  <li><a href="../modules/lua5x-operations.html">lua5x-operations</a></li>
+  <li><a href="../modules/storage.html">storage</a></li>
+  <li><strong>system_data</strong></li>
+</ul>
+<h2>Topics</h2>
+<ul class="">
+  <li><a href="../topics/README.md.html">README</a></li>
+</ul>
+<h2>Examples</h2>
+<ul class="nowrap">
+  <li><a href="../examples/example.lua.html">example.lua</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>system_data</code></h1>
+<p>system_data library</p>
+<p></p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#update">update (system_data, entities_storage)</a></td>
+	<td class="summary">updates the system data</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#get_components">get_components (system_data, storages, idx)</a></td>
+	<td class="summary">get components in the same order as passed in <a href="../modules/system_data.html#new">new</a> function</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#iterate_components">iterate_components (system_data, storages, should_unpack)</a></td>
+	<td class="summary">iterates over components</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#new">new (read_components, write_components)</a></td>
+	<td class="summary">creates a new system_data table</td>
+	</tr>
+</table>
+<h2><a href="#Tables">Tables</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#system_data">system_data</a></td>
+	<td class="summary">system_data table</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "update"></a>
+    <strong>update (system_data, entities_storage)</strong>
+    </dt>
+    <dd>
+    updates the system data
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">system_data</span>
+            <span class="types"><span class="type">system_data</span></span>
+         system data to update
+        </li>
+        <li><span class="parameter">entities_storage</span>
+            <span class="types"><span class="type">storage</span></span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "get_components"></a>
+    <strong>get_components (system_data, storages, idx)</strong>
+    </dt>
+    <dd>
+    get components in the same order as passed in <a href="../modules/system_data.html#new">new</a> function
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">system_data</span>
+            <span class="types"><span class="type">system_data</span></span>
+
+        </li>
+        <li><span class="parameter">storages</span>
+            <span class="types"><span class="type">{storages}</span></span>
+         to get components,
+ should be in the same order as passed in <a href="../modules/system_data.html#new">new</a> function
+        </li>
+        <li><span class="parameter">idx</span>
+            <span class="types"><span class="type">integer</span></span>
+         index components_indexes
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        table of components, in the same order as passed in <a href="../modules/system_data.html#new">new</a> function
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "iterate_components"></a>
+    <strong>iterate_components (system_data, storages, should_unpack)</strong>
+    </dt>
+    <dd>
+    iterates over components
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">system_data</span>
+            <span class="types"><span class="type">system_data</span></span>
+
+        </li>
+        <li><span class="parameter">storages</span>
+            <span class="types"><span class="type">{storage}</span></span>
+        , in the same order as passed in <a href="../modules/system_data.html#new">new</a> function
+        </li>
+        <li><span class="parameter">should_unpack</span>
+            <span class="types"><span class="type">boolean</span></span>
+         if false, returns a table
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">func</span></span>
+        components iterator
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "new"></a>
+    <strong>new (read_components, write_components)</strong>
+    </dt>
+    <dd>
+    creates a new system_data table
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">read_components</span>
+            <span class="types"><span class="type">{bitset_array}</span></span>
+         components that
+ are read by the system
+        </li>
+        <li><span class="parameter">write_components</span>
+            <span class="types"><span class="type">{bitset_array}</span></span>
+         components that
+ are written by the system
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">system_data</span></span>
+
+    </ol>
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Tables"></a>Tables</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "system_data"></a>
+    <strong>system_data</strong>
+    </dt>
+    <dd>
+    system_data table
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">mask</span>
+            <span class="types"><span class="type">bitset_array</span></span>
+
+        </li>
+        <li><span class="parameter">write_mask</span>
+            <span class="types"><span class="type">bitset_array</span></span>
+
+        </li>
+        <li><span class="parameter">required_storages</span>
+            <span class="types"><span class="type">{bitset_array}</span></span>
+
+        </li>
+        <li><span class="parameter">components_indexes</span>
+            <span class="types"><span class="type">{{generational_index}}</span></span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2019-07-08 21:32:37 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

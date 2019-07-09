@@ -1,0 +1,287 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Motor documentation</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>Motor</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+<li><a href="#Tables">Tables</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/bitset_array.html">bitset_array</a></li>
+  <li><strong>entity</strong></li>
+  <li><a href="../modules/generational_index.html">generational_index</a></li>
+  <li><a href="../modules/lua5x-operations.html">lua5x-operations</a></li>
+  <li><a href="../modules/storage.html">storage</a></li>
+  <li><a href="../modules/system_data.html">system_data</a></li>
+</ul>
+<h2>Topics</h2>
+<ul class="">
+  <li><a href="../topics/README.md.html">README</a></li>
+</ul>
+<h2>Examples</h2>
+<ul class="nowrap">
+  <li><a href="../examples/example.lua.html">example.lua</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>entity</code></h1>
+<p>entity library</p>
+<p></p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#get_component_index">get_component_index (entity, component_gen_idx)</a></td>
+	<td class="summary">gets the index of associated_components of this component</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#get_storage_index">get_storage_index (entity, storage_mask)</a></td>
+	<td class="summary">gets the index of associated_storages of this storage mask</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#associate">associate (entity, component_gen_idx)</a></td>
+	<td class="summary">associates an component and it's storage mask</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#disassociate">disassociate (entity, component_gen_idx_or_storage_mask)</a></td>
+	<td class="summary">disassociates an component and it's storage mask</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#new">new ()</a></td>
+	<td class="summary">creates a new entity table</td>
+	</tr>
+</table>
+<h2><a href="#Tables">Tables</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#entity">entity</a></td>
+	<td class="summary">entity table</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "get_component_index"></a>
+    <strong>get_component_index (entity, component_gen_idx)</strong>
+    </dt>
+    <dd>
+    gets the index of associated_components of this component
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">entity</span>
+            <span class="types"><a class="type" href="../modules/entity.html#entity">entity</a></span>
+
+        </li>
+        <li><span class="parameter">component_gen_idx</span>
+            <span class="types"><span class="type">generational_index</span></span>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">integer</span> or <span class="type">nil</span></span>
+        integer or nil, string
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "get_storage_index"></a>
+    <strong>get_storage_index (entity, storage_mask)</strong>
+    </dt>
+    <dd>
+    gets the index of associated_storages of this storage mask
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">entity</span>
+            <span class="types"><a class="type" href="../modules/entity.html#entity">entity</a></span>
+
+        </li>
+        <li><span class="parameter">storage_mask</span>
+            <span class="types"><span class="type">bitset_array</span></span>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">integer</span> or <span class="type">nil</span></span>
+        integer or nil, string
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "associate"></a>
+    <strong>associate (entity, component_gen_idx)</strong>
+    </dt>
+    <dd>
+    associates an component and it's storage mask
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">entity</span>
+            <span class="types"><a class="type" href="../modules/entity.html#entity">entity</a></span>
+
+        </li>
+        <li><span class="parameter">component_gen_idx</span>
+            <span class="types"><span class="type">generational_index</span></span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "disassociate"></a>
+    <strong>disassociate (entity, component_gen_idx_or_storage_mask)</strong>
+    </dt>
+    <dd>
+    disassociates an component and it's storage mask
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">entity</span>
+            <span class="types"><a class="type" href="../modules/entity.html#entity">entity</a></span>
+
+        </li>
+        <li><span class="parameter">component_gen_idx_or_storage_mask</span>
+            <span class="types"><span class="type">generational_index</span> or <span class="type">bitset_array</span></span>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">boolean</span> or <span class="type">nil</span></span>
+        returns true if succeedes; nil, string otherwise
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "new"></a>
+    <strong>new ()</strong>
+    </dt>
+    <dd>
+    creates a new entity table
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="../modules/entity.html#entity">entity</a></span>
+
+    </ol>
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Tables"></a>Tables</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "entity"></a>
+    <strong>entity</strong>
+    </dt>
+    <dd>
+    entity table
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">associated_components</span>
+            <span class="types"><span class="type">{generational_index}</span></span>
+
+        </li>
+        <li><span class="parameter">associated_storages</span>
+            <span class="types"><span class="type">{bitset_array}</span></span>
+
+        </li>
+        <li><span class="parameter">mask</span>
+            <span class="types"><span class="type">bitset_array</span></span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2019-07-08 21:32:37 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

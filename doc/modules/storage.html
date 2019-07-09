@@ -1,0 +1,290 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Motor documentation</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>Motor</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+<li><a href="#Tables">Tables</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/bitset_array.html">bitset_array</a></li>
+  <li><a href="../modules/entity.html">entity</a></li>
+  <li><a href="../modules/generational_index.html">generational_index</a></li>
+  <li><a href="../modules/lua5x-operations.html">lua5x-operations</a></li>
+  <li><strong>storage</strong></li>
+  <li><a href="../modules/system_data.html">system_data</a></li>
+</ul>
+<h2>Topics</h2>
+<ul class="">
+  <li><a href="../topics/README.md.html">README</a></li>
+</ul>
+<h2>Examples</h2>
+<ul class="nowrap">
+  <li><a href="../examples/example.lua.html">example.lua</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>storage</code></h1>
+<p>storage library</p>
+<p></p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#new_entry">new_entry (storage, entry_content)</a></td>
+	<td class="summary">inserts a new entry in the storage</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#get_entry">get_entry (storage, gen_idx)</a></td>
+	<td class="summary">gets an entry</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#remove_entry">remove_entry (storage, gen_idx)</a></td>
+	<td class="summary">removes an entry by it's generational index</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#iterate_entries">iterate_entries (storage)</a></td>
+	<td class="summary">iterate over entries</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#new">new ()</a></td>
+	<td class="summary">creates a new storage table</td>
+	</tr>
+</table>
+<h2><a href="#Tables">Tables</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#storage">storage</a></td>
+	<td class="summary">storage table</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "new_entry"></a>
+    <strong>new_entry (storage, entry_content)</strong>
+    </dt>
+    <dd>
+    inserts a new entry in the storage
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">storage</span>
+            <span class="types"><a class="type" href="../modules/storage.html#storage">storage</a></span>
+
+        </li>
+        <li><span class="parameter">entry_content</span>
+         value to insert
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">generational_index</span></span>
+
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "get_entry"></a>
+    <strong>get_entry (storage, gen_idx)</strong>
+    </dt>
+    <dd>
+    gets an entry
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">storage</span>
+            <span class="types"><a class="type" href="../modules/storage.html#storage">storage</a></span>
+
+        </li>
+        <li><span class="parameter">gen_idx</span>
+            <span class="types"><span class="type">generational_index</span></span>
+         generational index of the entry
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        value or nil, string
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "remove_entry"></a>
+    <strong>remove_entry (storage, gen_idx)</strong>
+    </dt>
+    <dd>
+    removes an entry by it's generational index
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">storage</span>
+            <span class="types"><a class="type" href="../modules/storage.html#storage">storage</a></span>
+
+        </li>
+        <li><span class="parameter">gen_idx</span>
+            <span class="types"><span class="type">generational_index</span></span>
+         generational index of the entry
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">boolean</span> or <span class="type">nil</span></span>
+        returns true or nil, string
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "iterate_entries"></a>
+    <strong>iterate_entries (storage)</strong>
+    </dt>
+    <dd>
+    iterate over entries
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">storage</span>
+            <span class="types"><a class="type" href="../modules/storage.html#storage">storage</a></span>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">func</span></span>
+        iterator function
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "new"></a>
+    <strong>new ()</strong>
+    </dt>
+    <dd>
+    creates a new storage table
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="../modules/storage.html#storage">storage</a></span>
+
+    </ol>
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Tables"></a>Tables</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "storage"></a>
+    <strong>storage</strong>
+    </dt>
+    <dd>
+    storage table
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">next_free_ids</span>
+            <span class="types"><span class="type">{generational_index}</span></span>
+
+        </li>
+        <li><span class="parameter">entries</span>
+         -- array of values
+        </li>
+        <li><span class="parameter">generations</span>
+            <span class="types"><span class="type">{integer}</span></span>
+
+        </li>
+        <li><span class="parameter">len</span>
+            <span class="types"><span class="type">integer</span></span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2019-07-08 21:32:37 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>
