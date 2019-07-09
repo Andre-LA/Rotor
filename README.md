@@ -1,11 +1,13 @@
 # Motor
-ECS [Lua][lua-org]/[Titan][titan-repository] library, inspired from [SPECS][specs-url]
 
-Check [example.lua][example-file] to see how to use it
+Motor is a set of libraries for doing ECS ​​in [Lua][lua-org].
 
-**Note: I'm refactoring this now, documentation is outdated**
+Most libraries do one specific thing and can be used for any purpose.
+
+Check [example.lua][example-file] and also the tests in spec directory.
+
+**Note: Unfortunately, documentation is outdated**
 
 [specs-url]: https://github.com/slide-rs/specs/ "SPECS repository"
 [example-file]: example.lua
 [lua-org]: https://lua.org/ "lua.org"
-[titan-repository]: https://github.com/titan-lang/titan "Titan's repository"
