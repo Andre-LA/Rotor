@@ -1,7 +1,7 @@
 --- storage library
 -- @module storage
 
-local generational_index = require 'generational_index'
+local generational_index = require 'motor.generational_index'
 local new_id = generational_index.new
 -- :/alias gen_idx = generational_index
 

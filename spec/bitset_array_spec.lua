@@ -1,5 +1,5 @@
 describe("#bitset_array library", function()
-  local bitset_array = require 'bitset_array'
+  local bitset_array = require 'motor.bitset_array'
 
   describe("bitset array data", function ()
     it(

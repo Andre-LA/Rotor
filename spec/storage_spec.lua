@@ -1,6 +1,6 @@
 describe("storage library", function ()
-  local storage = require "storage"
-  local generational_index = require "generational_index"
+  local storage = require "motor.storage"
+  local generational_index = require "motor.generational_index"
 
   describe("'new' function", function ()
     it("creates a new storage", function()

@@ -1,8 +1,8 @@
 --- entity library
 -- @module entity
 
-local bitset_array = require 'bitset_array'
-local gen_id = require 'generational_index'
+local bitset_array = require 'motor.bitset_array'
+local gen_id = require 'motor.generational_index'
 
 local table_insert, table_remove = table.insert, table.remove
 

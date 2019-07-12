@@ -1,11 +1,11 @@
 --- system_data library
 -- @module system_data
 
-local bitset_array = require "bitset_array"
-local storage = require "storage"
+local bitset_array = require "motor.bitset_array"
+local storage = require "motor.storage"
 
 local table_insert = table.insert
-local _unpack = require 'lua5x-operations'.unpack
+local _unpack = require 'motor.lua5x-operations'.unpack
 
 local function union(a, b)
   local t, a_len = {}, #a

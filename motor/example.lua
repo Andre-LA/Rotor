@@ -1,7 +1,7 @@
-local entity = require 'entity'
-local storage = require 'storage'
-local system_data = require 'system_data'
-local bitset_array = require 'bitset_array'
+local entity = require 'motor.entity'
+local storage = require 'motor.storage'
+local system_data = require 'motor.system_data'
+local bitset_array = require 'motor.bitset_array'
 
 -- our components
 local function create_position (x, y)

@@ -17,11 +17,11 @@ end
 -- all other libraries to work and it's also the core of ECS.
 
 describe("system_data library", function()
-  local system_data = require "system_data"
-  local bitset_array = require "bitset_array"
-  local generational_index = require "generational_index"
-  local storage = require "storage"
-  local entity = require "entity"
+  local system_data = require "motor.system_data"
+  local bitset_array = require "motor.bitset_array"
+  local generational_index = require "motor.generational_index"
+  local storage = require "motor.storage"
+  local entity = require "motor.entity"
 
   -- components and system to use in tests
   local function new_position(x, y)

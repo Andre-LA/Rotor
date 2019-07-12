@@ -6,7 +6,9 @@
 -- @usage
 -- local operations = "lua5x-operations"
 
-local targetmodule = "lua5x-operations." .. (_VERSION:sub(-3):gsub("(%.)", "_"))
+local targetmodule =
+  "motor.lua5x-operations." .. (_VERSION:sub(-3):gsub("(%.)", "_"))
+
 local operations = require (targetmodule)
 return operations
 
