@@ -6,7 +6,7 @@ Most libraries do one specific thing and can be used for any purpose.
 
 Check [example.lua][example-file] and also the [tests][tests-dir].
 
-Documentation is available in the "doc" directory.
+Documentation is available in the "docs" directory and [online](https://andre-la.github.io/Motor/)
 
 [example-file]: src/example.lua
 [tests-dir]: spec/
