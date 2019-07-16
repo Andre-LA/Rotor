@@ -1,9 +1,15 @@
 modules = {
-  ["bitset_array"] = "bitset_array.lua",
-  ["entity"] = "entity.lua",
-  ["storage"] = "storage.lua",
-  ["system_data"] = "system_data.lua",
-
+  ["bitset_array"] = "motor/bitset_array.lua",
+  ["entity"] = "motor/entity.lua",
+  ["generational_index"] = "motor/generational_index.lua",
+  ["storage"] = "motor/storage.lua",
+  ["system_data"] = "motor/system_data.lua",
+  
+  ["lua5x-operations"] = "motor/lua5x-operations.lua",
+  ["lua5x-operations.5_1"] = "motor/lua5x-operations/5_1.lua",
+  ["lua5x-operations.5_2"] = "motor/lua5x-operations/5_2.lua",
+  ["lua5x-operations.5_3"] = "motor/lua5x-operations/5_3.lua",  
+  
   ["bitset_array_spec"] = "spec/bitset_array_spec.lua",
   ["entity_spec"] = "spec/entity_spec.lua",
   ["storage_spec"] = "spec/storage_spec.lua",
