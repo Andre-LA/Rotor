@@ -101,8 +101,8 @@ end
 
 -- now, we update the systems datas, so they will know what entities
 -- should be processed
-movement_system_data:update_components_indexes(entities_storage)
-rightmost_system_data:update_components_indexes(entities_storage)
+movement_system_data:update(entities_storage)
+rightmost_system_data:update(entities_storage)
 
 -- let's execute movement system 10x
 for _ = 1, 10 do
