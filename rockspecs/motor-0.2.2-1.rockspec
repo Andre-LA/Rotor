@@ -1,9 +1,9 @@
 package = "motor"
-version = "0.2.1-1"
+version = "0.2.2-1"
 
 source = {
    url = "git://github.com/Andre-LA/Motor",
-   tag = "v0.2.1"
+   tag = "v0.2.2"
 }
 
 description = {
@@ -25,7 +25,7 @@ build = {
       ["motor.lua5x-operations.5_2"] = "motor/lua5x-operations/5_2.lua",
       ["motor.lua5x-operations.5_3"] = "motor/lua5x-operations/5_3.lua",
    },
-   copy_directories = {"doc"},
+   copy_directories = {"docs"},
 }
 
 dependencies = {
