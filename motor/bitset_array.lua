@@ -13,10 +13,7 @@ local op_rshift = operations.rshift -- >> right shift
 local op_lshift = operations.lshift -- << left shift
 local op_bnot   = operations.bnot   -- ~  bitwise NOT
 
-local LEFTMOSTBIT  = 1
-while LEFTMOSTBIT > 0 do
-  LEFTMOSTBIT = op_lshift(LEFTMOSTBIT, 1)
-end
+local LEFTMOSTBIT = op_bnot(op_rshift(op_bnot(0), 1))
 
 
 local new; -- future constructor
