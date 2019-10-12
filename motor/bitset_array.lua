@@ -141,7 +141,7 @@ local function lshift (bitset, steps)
 
     for i = 1, len do
       local contains_leftmost_bit =
-        op_band(result_prev_step[i], L)EFTMOSTBIT == LEFTMOSTBIT
+        op_band(result_prev_step[i], LEFTMOSTBIT) == LEFTMOSTBIT
 
       result[i] = op_lshift(result_prev_step[i], 1)
 
