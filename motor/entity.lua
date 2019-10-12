@@ -67,9 +67,8 @@ end
 local function disassociate(entity, component_gen_idx_or_storage_mask)
   local is_bitset_array = #component_gen_idx_or_storage_mask > 0
 
-  local ok_index, err_msg =
-    (is_bitset_array and get_storage_index or get_component_index) -- expression
-    (entity, component_gen_idx_or_storage_mask) -- func call of previous expr
+  local get_index = is_bitset_array and get_storage_index or get_component_index
+  local ok_index, err_msg = get_index(entity, component_gen_idx_or_storage_mask)
 
   if ok_index then
     entity.mask = bitset_array.band(
