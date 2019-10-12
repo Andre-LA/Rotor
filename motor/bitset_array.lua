@@ -15,7 +15,7 @@ local op_bnot   = operations.bnot   -- ~  bitwise NOT
 
 local LEFTMOSTBIT  = 1
 while LEFTMOSTBIT > 0 do
-  LEFTMOSTBIT = LEFTMOSTBIT << 1
+  LEFTMOSTBIT = op_lshift(LEFTMOSTBIT, 1)
 end
 
 
@@ -141,12 +141,12 @@ local function lshift (bitset, steps)
 
     for i = 1, len do
       local contains_leftmost_bit =
-        result_prev_step[i] & LEFTMOSTBIT == LEFTMOSTBIT
+        op_band(result_prev_step[i], L)EFTMOSTBIT == LEFTMOSTBIT
 
       result[i] = op_lshift(result_prev_step[i], 1)
 
       if previous_contained_leftmost_bit then
-        result[i] = result[i] | 1
+        result[i] = op_bor(result[i], 1)
       end
 
       previous_contained_leftmost_bit = contains_leftmost_bit
@@ -173,12 +173,12 @@ local function rshift (bitset, steps)
     local result_prev_step = copy(result)
 
     for i = len, 1, -1 do
-      local contains_rightmost_bit = result_prev_step[i] & 1 == 1
+      local contains_rightmost_bit = op_band(result_prev_step[i], 1) == 1
 
       result[i] = op_rshift(result_prev_step[i], 1)
 
       if previous_contained_rightmost_bit then
-        result[i] = result[i] | LEFTMOSTBIT
+        result[i] = op_bor(result[i], LEFTMOSTBIT)
       end
 
       previous_contained_rightmost_bit = contains_rightmost_bit
