@@ -3,25 +3,26 @@
 
 local generational_index = require 'motor.generational_index'
 local new_id = generational_index.new
--- :/alias gen_idx = generational_index
 
-local function try_get_entry_gen_idx(storage, gen_idx)
-   local entry_generation = storage.generations[gen_idx.index]
+local storage_lib = {}
+local storage_mt = {
+   __index = storage_lib,
+}
 
-   if not entry_generation or gen_idx.generation ~= entry_generation then
-      return nil, "entry not found"
-   end
+function storage_lib.new ()
+   local new_storage = {
+      next_free_ids = {new_id(1, 0)},
+      entries = {},
+      generations = {},
+      len = 0
+   } -- : storage
 
-   return gen_idx
+   setmetatable(new_storage, storage_mt)
+
+   return new_storage
 end
--- :(read storage, read gen_idx) -> new gen_idx or nil, string
 
---- inserts a new entry in the storage
--- @function new_entry
--- @tparam storage storage
--- @param entry_content value to insert
--- @treturn generational_index
-local function new_entry(storage, entry_content)
+function storage_lib.new_entry(storage, entry_content)
    local next_free_ids = storage.next_free_ids -- ref
    local next_free_ids_len = #next_free_ids
 
@@ -44,39 +45,27 @@ local function new_entry(storage, entry_content)
    -- return a copy of the gen_idx of this new entry
    return new_id(entry_index, entry_generation)
 end
--- : (write storage, take value) -> new gen_idx
 
---- gets an entry
--- @function get_entry
--- @tparam storage storage
--- @tparam generational_index gen_idx generational index of the entry
--- @return value or nil, string
-local function get_entry(storage, gen_idx)
-   local ok_entry_gen_idx, err_msg = try_get_entry_gen_idx(storage, gen_idx)
+function storage_lib.get_entry(storage, gen_idx)
+   local gen_idx_index = gen_idx.index
 
-   if ok_entry_gen_idx then
-      return storage.entries[ok_entry_gen_idx.index]
-   else
-      return nil, err_msg
+   if gen_idx.generation ~= storage.generations[gen_idx_index] then
+      return nil, "entry not found"
    end
+
+   return storage.entries[gen_idx_index]
 end
--- : (read storage, read gen_idx) -> value or (nil, string)
 
---- removes an entry by it's generational index
--- @function remove_entry
--- @tparam storage storage
--- @tparam generational_index gen_idx generational index of the entry
--- @treturn boolean|nil returns true or nil, string
-local function remove_entry(storage, gen_idx)
-   local ok_entry_gen_idx, err_msg = try_get_entry_gen_idx(storage, gen_idx)
-   if not ok_entry_gen_idx then
+function storage_lib.remove_entry(storage, gen_idx)
+   local ok, err_msg = storage_lib.get_entry(storage, gen_idx)
+   if not ok then
       return nil, err_msg
    end
 
-   storage.entries[ok_entry_gen_idx.index] = nil
-   storage.generations[ok_entry_gen_idx.index] = nil
+   storage.entries[gen_idx.index] = nil
+   storage.generations[gen_idx.index] = nil
 
-   if ok_entry_gen_idx.index == storage.len then
+   if gen_idx.index == storage.len then
       local last_i = 0
       for i=1, storage.len do
          if storage.generations[i] then
@@ -88,18 +77,13 @@ local function remove_entry(storage, gen_idx)
 
    table.insert(
       storage.next_free_ids,
-      new_id(ok_entry_gen_idx.index, ok_entry_gen_idx.generation + 1)
+      new_id(gen_idx.index, gen_idx.generation + 1)
    )
 
   return true
 end
--- : (write storage, read gen_idx) -> boolean or (nil, string)
 
---- iterate over entries
--- @function iterate_entries
--- @tparam storage storage
--- @treturn func iterator function
-local function iterate_entries(storage)
+function storage_lib.iterate_entries(storage)
    local i, entries_len, entry_id = 0, storage.len, new_id(0, 0)
 
    return function ()
@@ -107,66 +91,10 @@ local function iterate_entries(storage)
       while ok_entry == nil and i < entries_len do
          i = i + 1
          entry_id.index, entry_id.generation = i, (storage.generations[i] or -1)
-         ok_entry = get_entry(storage, entry_id)
+         ok_entry = storage_lib.get_entry(storage, entry_id)
       end
       return ok_entry
    end
 end
--- read storage -> () -> value or nil
 
-local storage_methods = {
-   new_entry = new_entry,
-   get_entry = get_entry,
-   remove_entry = remove_entry,
-   iterate_entries = iterate_entries
-}
-
-local storage_mt = {
-   __index = storage_methods,
-}
-
---- creates a new storage table
--- @function new
--- @treturn storage
-local function new ()
-   local new_storage = {
-      next_free_ids = {new_id(1, 0)},
-      entries = {},
-      generations = {},
-      len = 0
-   } -- : storage
-
-   setmetatable(new_storage, storage_mt)
-
-   return new_storage
-end
-
---[[
-   storage: {
-      next_free_ids: {gen_idx},
-      entries: {value},
-      generations: {integer},
-      len: integer,
-   }
---]]
-
---- storage table
--- @tfield {generational_index} next_free_ids
--- @field entries -- array of values
--- @tfield {integer} generations
--- @tfield integer len
--- @table storage
-
-return {
-   new = new,
-   -- : () -> new storage
-
-   new_entry = new_entry,
-   -- : (write storage, value) -> new gen_idx
-   get_entry = get_entry,
-   -- : (read storage, read gen_idx) -> value or (nil, string)
-   remove_entry = remove_entry,
-   -- : (write storage, read gen_idx) -> boolean or (nil, string)
-   iterate_entries = iterate_entries
-   -- : read storage -> () -> value or nil
-}
+return storage_lib
