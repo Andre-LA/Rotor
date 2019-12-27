@@ -33,13 +33,13 @@ local lshift;
 local rshift;
 local new;
 
-local function do_bin_bitop(left_bitset_array_data, right_bitset_array_data, default_vl, bitop_func)
-   local len_l, len_r = #left_bitset_array_data, #right_bitset_array_data
+local function do_bin_bitop(left_bitset_array, right_bitset_array, default_vl, bitop_func)
+   local len_l, len_r = #left_bitset_array, #right_bitset_array
    local len = len_l > len_r and len_l or len_r
    local result = new(len)
 
    for i=1, len do
-      result[i] = bitop_func(left_bitset_array_data[i] or default_vl, right_bitset_array_data[i] or default_vl)
+      result[i] = bitop_func(left_bitset_array[i] or default_vl, right_bitset_array[i] or default_vl)
    end
 
    return result
@@ -48,33 +48,33 @@ end
 function bitset_array_lib.new (initial_length, initial_value)
    initial_value = initial_value or {}
 
-   local new_bitset_array_data = {initial_value[1] or 0}
+   local new_bitset_array = {initial_value[1] or 0}
 
    for i=2, (initial_length or 0) do
-      new_bitset_array_data[i] = initial_value[i] or 0
+      new_bitset_array[i] = initial_value[i] or 0
    end
 
-   setmetatable(new_bitset_array_data, bitset_array_mt)
+   setmetatable(new_bitset_array, bitset_array_mt)
 
-   return new_bitset_array_data
+   return new_bitset_array
 end
 
-function bitset_array_lib.copy(bitset_array_data)
-   local new_bitset_array_data = new()
+function bitset_array_lib.copy(bitset_array)
+   local new_bitset_array = new()
 
-   for i = 1, #bitset_array_data do
-      new_bitset_array_data[i] = bitset_array_data[i]
+   for i = 1, #bitset_array do
+      new_bitset_array[i] = bitset_array[i]
    end
 
-   return new_bitset_array_data
+   return new_bitset_array
 end
 
-function bitset_array_lib.equals(left_bitset_array_data, right_bitset_array_data)
-   local len_l, len_r = #left_bitset_array_data, #right_bitset_array_data
+function bitset_array_lib.equals(left_bitset_array, right_bitset_array)
+   local len_l, len_r = #left_bitset_array, #right_bitset_array
    local len = len_l > len_r and len_l or len_r
 
    for i=1, len do
-      if left_bitset_array_data[i] ~= right_bitset_array_data[i] then
+      if left_bitset_array[i] ~= right_bitset_array[i] then
          return false
       end
    end
@@ -82,32 +82,32 @@ function bitset_array_lib.equals(left_bitset_array_data, right_bitset_array_data
    return true
 end
 
-function bitset_array_lib.band (left_bitset_array_data, right_bitset_array_data)
-   return do_bin_bitop(left_bitset_array_data, right_bitset_array_data, 1, op_band)
+function bitset_array_lib.band (left_bitset_array, right_bitset_array)
+   return do_bin_bitop(left_bitset_array, right_bitset_array, 1, op_band)
 end
 
-function bitset_array_lib.bor (left_bitset_array_data, right_bitset_array_data)
-   return do_bin_bitop(left_bitset_array_data, right_bitset_array_data, 0, op_bor)
+function bitset_array_lib.bor (left_bitset_array, right_bitset_array)
+   return do_bin_bitop(left_bitset_array, right_bitset_array, 0, op_bor)
 end
 
-function bitset_array_lib.bxor (left_bitset_array_data, right_bitset_array_data)
-   return do_bin_bitop(left_bitset_array_data, right_bitset_array_data, 0, op_bxor)
+function bitset_array_lib.bxor (left_bitset_array, right_bitset_array)
+   return do_bin_bitop(left_bitset_array, right_bitset_array, 0, op_bxor)
 end
 
-function bitset_array_lib.bnot (bitset_array_data)
-   local len = #bitset_array_data
+function bitset_array_lib.bnot (bitset_array)
+   local len = #bitset_array
    local result = new(len)
 
-   for i = 1, #bitset_array_data do
-      result[i] = op_bnot(bitset_array_data[i])
+   for i = 1, #bitset_array do
+      result[i] = op_bnot(bitset_array[i])
    end
 
    return result
 end
 
-function bitset_array_lib.lshift (bitset_array_data, steps)
-   local len = #bitset_array_data
-   local result = copy(bitset_array_data)
+function bitset_array_lib.lshift (bitset_array, steps)
+   local len = #bitset_array
+   local result = copy(bitset_array)
 
    for _ = 1, steps do
       local previous_contained_leftmost_bit = false
@@ -129,9 +129,9 @@ function bitset_array_lib.lshift (bitset_array_data, steps)
    return result
 end
 
-function bitset_array_lib.rshift (bitset_array_data, steps)
-   local len = #bitset_array_data
-   local result = copy(bitset_array_data)
+function bitset_array_lib.rshift (bitset_array, steps)
+   local len = #bitset_array
+   local result = copy(bitset_array)
 
    for _ = 1, steps do
       local previous_contained_rightmost_bit = false
