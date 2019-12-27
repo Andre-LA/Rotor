@@ -34,12 +34,14 @@ describe("entity library", function()
             mask = bitset_array.bor(point_mask, name_mask),
             associated_components = {point, name},
             associated_storages = {point_mask, name_mask},
+            untracked = true
           }, test_entity)
       else
         assert.are_same({
           mask = point_mask,
           associated_components = {point},
           associated_storages = {point_mask},
+          untracked = true
         }, test_entity)
       end
     end
@@ -70,6 +72,7 @@ describe("entity library", function()
         mask = {0},
         associated_components = {},
         associated_storages   = {},
+        untracked = true
       }, test_entity)
     end
 
