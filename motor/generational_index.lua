@@ -7,18 +7,18 @@
 -- @tparam generational_index generational_index_r
 -- @treturn boolean
 local function equals(generational_index_l, generational_index_r)
-  return
-    generational_index_l.index == generational_index_r.index
-    and generational_index_l.generation == generational_index_r.generation
+   return
+      generational_index_l.index == generational_index_r.index
+      and generational_index_l.generation == generational_index_r.generation
 end
 -- : (read generational_index, read generational_index) -> boolean
 
 local id_methods = {
-  equals = equals,
+   equals = equals,
 }
 
 local id_mt = {
-  __index = id_methods,
+   __index = id_methods,
 }
 
 --- creates a new generational_index table
@@ -27,21 +27,21 @@ local id_mt = {
 -- @tparam integer gen generation field
 -- @treturn generational_index
 local function new(idx, gen)
-  local new_generational_index = {
-    index = idx,
-    generation = gen
-  } -- : generational_index
+   local new_generational_index = {
+      index = idx,
+      generation = gen
+   } -- : generational_index
 
-  setmetatable(new_generational_index, id_mt)
-  return new_generational_index
+   setmetatable(new_generational_index, id_mt)
+   return new_generational_index
 end
 -- : (integer, integer) -> new generational_index
 
 --[[
-  generational_index: {
-    index: integer,
-    generation: integer
-  }
+   generational_index: {
+      index: integer,
+      generation: integer
+   }
 ]]
 
 -- for LDoc:
@@ -52,7 +52,7 @@ end
 -- @table generational_index
 
 return {
-  new = new, -- : (integer, integer) -> new generational_index
-  equals = equals
-  -- : (read generational_index, read generational_index) -> boolean
+   new = new, -- : (integer, integer) -> new generational_index
+   equals = equals
+   -- : (read generational_index, read generational_index) -> boolean
 }

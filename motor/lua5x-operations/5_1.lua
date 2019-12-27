@@ -5,12 +5,12 @@
 local _bit = require 'bit'
 
 return {
-  -- bit operations
-  band   = _bit.band,
-  bor    = _bit.bor,
-  bxor   = _bit.bxor,
-  rshift = _bit.rshift,
-  lshift = _bit.lshift,
-  bnot   = _bit.bnot,
-  unpack = unpack
+   -- bit operations
+   band   = _bit.band,
+   bor    = _bit.bor,
+   bxor   = _bit.bxor,
+   rshift = _bit.rshift,
+   lshift = _bit.lshift,
+   bnot   = _bit.bnot,
+   unpack = unpack
 }
