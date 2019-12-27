@@ -1,58 +1,24 @@
---- generational index library
--- @module generational_index
-
---- return if two generational indexes are equals
--- @function equals
--- @tparam generational_index generational_index_l
--- @tparam generational_index generational_index_r
--- @treturn boolean
-local function equals(generational_index_l, generational_index_r)
-   return
-      generational_index_l.index == generational_index_r.index
-      and generational_index_l.generation == generational_index_r.generation
-end
--- : (read generational_index, read generational_index) -> boolean
-
-local id_methods = {
-   equals = equals,
+local generational_index_lib = {}
+local generational_index_mt = {
+   __index = generational_index_lib
 }
 
-local id_mt = {
-   __index = id_methods,
-}
-
---- creates a new generational_index table
--- @function new
--- @tparam integer idx index field
--- @tparam integer gen generation field
--- @treturn generational_index
-local function new(idx, gen)
+function generational_index_lib.new(idx, gen)
    local new_generational_index = {
       index = idx,
       generation = gen
-   } -- : generational_index
+   }
 
-   setmetatable(new_generational_index, id_mt)
+   setmetatable(new_generational_index, generational_index_mt)
    return new_generational_index
 end
--- : (integer, integer) -> new generational_index
 
---[[
-   generational_index: {
-      index: integer,
-      generation: integer
-   }
-]]
+function generational_index_lib.equals(g_idx_l, g_idx_r)
+   return g_idx_l.index == g_idx_r.index and g_idx_l.generation == g_idx_r.generation
+end
 
--- for LDoc:
+function generational_index_lib.copy(generational_index)
+   return generational_index_lib.new(generational_index.index, generational_index.generation)
+end
 
---- generational_index table
--- @tfield integer index
--- @tfield integer generation
--- @table generational_index
-
-return {
-   new = new, -- : (integer, integer) -> new generational_index
-   equals = equals
-   -- : (read generational_index, read generational_index) -> boolean
-}
+return generational_index_lib
