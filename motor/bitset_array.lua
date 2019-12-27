@@ -1,4 +1,4 @@
---- bitset array library
+--- bitsetarray library
 -- @module bitset_array
 
 local operations = require "motor.lua5x-operations"
@@ -15,129 +15,106 @@ local op_bnot   = operations.bnot   -- ~  bitwise NOT
 
 local LEFTMOSTBIT = op_bnot(op_rshift(op_bnot(0), 1))
 
-local new; -- future constructor
+local bitset_array_lib = {}
 
--- library functions
+local bitset_array_mt = {
+   __index = bitset_array_lib
+}
 
---- copies a bitset_array in a new one.
--- @function copy
--- @tparam bitset_array bitset_array bitset_array to copy
--- @treturn bitset_array
-local function copy(bitset_array)
-   local new_bitset_array = new()
+-- locals prototypes, maybe is unnecessary, but using locals are faster and some functions
+-- of this library are called with very high frenquency.
+local copy;
+local equals;
+local band;
+local bor;
+local bxor;
+local bnot;
+local lshift;
+local rshift;
+local new;
 
-   for i = 1, #bitset_array do
-      new_bitset_array[i] = bitset_array[i]
+local function do_bin_bitop(left_bitset_array_data, right_bitset_array_data, default_vl, bitop_func)
+   local len_l, len_r = #left_bitset_array_data, #right_bitset_array_data
+   local len = len_l > len_r and len_l or len_r
+   local result = new(len)
+
+   for i=1, len do
+      result[i] = bitop_func(left_bitset_array_data[i] or default_vl, right_bitset_array_data[i] or default_vl)
    end
 
-   return new_bitset_array
+   return result
 end
--- : read bitset_array -> new bitset_array
 
---- return if bitset_array values are equal
--- @function equals
--- @tparam bitset_array bitset_l bitset_array to compare
--- @tparam bitset_array bitset_r bitset_array to compare
--- @treturn boolean
-local function equals(bitset_l, bitset_r)
-   local len_l, len_r = #bitset_l, #bitset_r
+function bitset_array_lib.new (initial_length, initial_value)
+   initial_value = initial_value or {}
+
+   local new_bitset_array_data = {initial_value[1] or 0}
+
+   for i=2, (initial_length or 0) do
+      new_bitset_array_data[i] = initial_value[i] or 0
+   end
+
+   setmetatable(new_bitset_array_data, bitset_array_mt)
+
+   return new_bitset_array_data
+end
+
+function bitset_array_lib.copy(bitset_array_data)
+   local new_bitset_array_data = new()
+
+   for i = 1, #bitset_array_data do
+      new_bitset_array_data[i] = bitset_array_data[i]
+   end
+
+   return new_bitset_array_data
+end
+
+function bitset_array_lib.equals(left_bitset_array_data, right_bitset_array_data)
+   local len_l, len_r = #left_bitset_array_data, #right_bitset_array_data
    local len = len_l > len_r and len_l or len_r
 
    for i=1, len do
-      if bitset_l[i] ~= bitset_r[i] then
+      if left_bitset_array_data[i] ~= right_bitset_array_data[i] then
          return false
       end
    end
 
    return true
 end
--- : (read bitset_array, read bitset_array) -> boolean
 
--- basic binary bitwise operations
+function bitset_array_lib.band (left_bitset_array_data, right_bitset_array_data)
+   return do_bin_bitop(left_bitset_array_data, right_bitset_array_data, 1, op_band)
+end
 
-local function do_bin_bitop(bitset_l, bitset_r, default_vl, bitop_func)
-   local len_l, len_r = #bitset_l, #bitset_r
-   local len = len_l > len_r and len_l or len_r
+function bitset_array_lib.bor (left_bitset_array_data, right_bitset_array_data)
+   return do_bin_bitop(left_bitset_array_data, right_bitset_array_data, 0, op_bor)
+end
+
+function bitset_array_lib.bxor (left_bitset_array_data, right_bitset_array_data)
+   return do_bin_bitop(left_bitset_array_data, right_bitset_array_data, 0, op_bxor)
+end
+
+function bitset_array_lib.bnot (bitset_array_data)
+   local len = #bitset_array_data
    local result = new(len)
 
-   for i=1, len do
-      result[i] = bitop_func(bitset_l[i] or default_vl, bitset_r[i] or default_vl)
+   for i = 1, #bitset_array_data do
+      result[i] = op_bnot(bitset_array_data[i])
    end
 
    return result
 end
 
-
---- creates a new bitset_array with the result
--- of the & bitwise operation between two bitset_arrays
--- @function band
--- @tparam bitset_array bitset_l
--- @tparam bitset_array bitset_r
--- @treturn bitset_array a new bitset_array with the result
-local function band (bitset_l, bitset_r)
-   return do_bin_bitop(bitset_l, bitset_r, 1, op_band)
-end
--- : (read bitset_array, read bitset_array) -> new bitset_array
-
---- creates a new bitset_array with the result
--- of the | bitwise operation between two bitset_arrays
--- @function bor
--- @tparam bitset_array bitset_l
--- @tparam bitset_array bitset_r
--- @treturn bitset_array a new bitset_array with the result
-local function bor (bitset_l, bitset_r)
-   return do_bin_bitop(bitset_l, bitset_r, 0, op_bor)
-end
--- : (read bitset_array, read bitset_array) -> new bitset_array
-
---- creates a new bitset_array with the result
--- of the (binary) ~ bitwise operation between two bitset_arrays
--- @function bxor
--- @tparam bitset_array bitset_l
--- @tparam bitset_array bitset_r
--- @treturn bitset_array a new bitset_array with the result
-local function bxor (bitset_l, bitset_r)
-   return do_bin_bitop(bitset_l, bitset_r, 0, op_bxor)
-end
--- : (read bitset_array, read bitset_array) -> new bitset_array
-
--- basic unary bitwise operations
-
---- creates a new bitset_array with the result
--- of the (unary) ~ bitwise operation in a bitset_array
--- @function bxor
--- @tparam bitset_array bitset_array
--- @treturn bitset_array a new bitset_array with the result
-local function bnot (bitset)
-   local len = #bitset
-   local result = new(len)
-
-   for i = 1, #bitset do
-      result[i] = op_bnot(bitset[i])
-   end
-
-   return result
-end
--- : read bitset_array -> new bitset_array
-
---- creates a new bitset_array with the result
--- of the << bitwise operation between two bitset_arrays
--- if a bit overflows, it will go to the next index
--- @function lshift
--- @tparam bitset_array bitset_array to shift
--- @tparam integer steps steps to shift
--- @todo should grow if the last index bitset overflows
-local function lshift (bitset, steps)
-   local len = #bitset
-   local result = copy(bitset)
+function bitset_array_lib.lshift (bitset_array_data, steps)
+   local len = #bitset_array_data
+   local result = copy(bitset_array_data)
 
    for _ = 1, steps do
       local previous_contained_leftmost_bit = false
       local result_prev_step = copy(result)
 
       for i = 1, len do
-         local contains_leftmost_bit =
-         op_band(result_prev_step[i], LEFTMOSTBIT) == LEFTMOSTBIT
+         local contains_leftmost_bit = op_band(result_prev_step[i], LEFTMOSTBIT) == LEFTMOSTBIT
 
          result[i] = op_lshift(result_prev_step[i], 1)
 
@@ -151,18 +128,10 @@ local function lshift (bitset, steps)
 
    return result
 end
--- : (read bitset_array, integer) -> new bitset_array
 
---- creates a new bitset_array with the result
--- of the >> bitwise operation between two bitset_arrays
--- if a bit overflows, it will go to the previous index
--- @function rshift
--- @tparam bitset_array bitset_array to shift
--- @tparam integer steps steps to shift
--- @todo should grow if the last index bitset overflows
-local function rshift (bitset, steps)
-   local len = #bitset
-   local result = copy(bitset)
+function bitset_array_lib.rshift (bitset_array_data, steps)
+   local len = #bitset_array_data
+   local result = copy(bitset_array_data)
 
    for _ = 1, steps do
       local previous_contained_rightmost_bit = false
@@ -183,67 +152,16 @@ local function rshift (bitset, steps)
 
    return result
 end
--- : (read bitset_array, integer) -> new bitset_array
 
-local methods = {
-   equals = equals,
-   copy   = copy,
-   band   = band,
-   bor    = bor,
-   bxor   = bxor,
-   lshift = lshift,
-   rshift = rshift,
-   bnot   = bnot,
-}
+-- defining the locals
+copy = bitset_array_lib.copy
+equals = bitset_array_lib.equals
+band = bitset_array_lib.band
+bor = bitset_array_lib.bor
+bxor = bitset_array_lib.bxor
+bnot = bitset_array_lib.bnot
+lshift = bitset_array_lib.lshift
+rshift = bitset_array_lib.rshift
+new = bitset_array_lib.new
 
-local mt = {
-   __index = methods
-}
-
---- bitset_array is a table of integers
--- @table bitset_array
-
---- creates a new bitset_array table
--- @function new
--- @tparam integer initial_length initial length
--- @tparam {integer} initial_value initial values
--- @treturn bitset_array
-
--- new is a local variable declared in line 22
-new = function(initial_length, initial_value)
-   if not initial_value then
-      initial_value = {}
-   end
-
-   local new_bitset_array = {initial_value[1] or 0}
-
-   for i=2, (initial_length or 0) do
-      new_bitset_array[i] = initial_value[i] or 0
-   end
-
-   setmetatable(new_bitset_array, mt)
-
-   return new_bitset_array
-end
--- : (integer, read {integer}) -> new bitset_array
-
-return {
-   new = new,  -- : (integer, read {integer}) -> new bitset_array
-
-   equals = equals,
-   -- : (read bitset_array, read bitset_array) -> boolean
-   copy   = copy,
-   -- : read bitset_array -> new bitset_array
-   band   = band,
-   -- : (read bitset_array, read bitset_array) -> new bitset_array
-   bor    = bor,
-   -- : (read bitset_array, read bitset_array) -> new bitset_array
-   bxor   = bxor,
-   -- : (read bitset_array, read bitset_array) -> new bitset_array
-   lshift = lshift,
-   -- : (read bitset_array, integer) -> new bitset_array
-   rshift = rshift,
-   -- : (read bitset_array, integer) -> new bitset_array
-   bnot   = bnot
-   -- : read bitset_array -> new bitset_array
-}
+return bitset_array_lib
