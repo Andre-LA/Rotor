@@ -43,7 +43,7 @@ function storage_lib.new_entry(storage, entry_content)
    end
 
    -- return a copy of the gen_idx of this new entry
-   return new_id(entry_index, entry_generation)
+   return new_id(entry_index, entry_generation), entry_content
 end
 
 function storage_lib.get_entry(storage, gen_idx)
@@ -88,12 +88,14 @@ function storage_lib.iterate_entries(storage)
 
    return function ()
       local ok_entry;
+
       while ok_entry == nil and i < entries_len do
          i = i + 1
          entry_id.index, entry_id.generation = i, (storage.generations[i] or -1)
          ok_entry = storage_lib.get_entry(storage, entry_id)
       end
-      return ok_entry
+
+      return ok_entry, entry_id
    end
 end
 
