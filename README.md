@@ -1,13 +1,11 @@
-# Motor
+# Rotor
 
-Motor is a set of libraries for doing ECS in [Lua][lua-org].
+Rotor is a set of libraries for doing ECS in [Lua][lua-org].
 
 Most libraries do one specific thing and can be used for any purpose.
 
 Check [example.lua][example-file] and also the [tests][tests-dir].
 
-Documentation is available in the "docs" directory and [online](https://andre-la.github.io/Motor/)
-
-[example-file]: src/example.lua
+[example-file]: example.lua
 [tests-dir]: spec/
 [lua-org]: https://lua.org/ "lua.org"

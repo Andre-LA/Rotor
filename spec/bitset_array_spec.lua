@@ -7,7 +7,7 @@ local _lshift,
       _bxor;
 
 if _VERSION == "Lua 5.1" then
-  luabitop = require 'bit'
+  luabitop = require ("bit")
   _lshift  = luabitop.lshift
   _rshift  = luabitop.rshift
   _bnot    = luabitop.bnot
@@ -56,7 +56,7 @@ local LEFTMOSTBIT = bitop_chain(0) -- 0000 [..] 0000
                       :result()
 
 describe("#bitset_array library", function()
-  local bitset_array = require 'motor.bitset_array'
+  local bitset_array = require ("rotor.bitset_array")
 
   describe("bitset array data", function ()
     it(

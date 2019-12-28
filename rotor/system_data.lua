@@ -1,11 +1,11 @@
 --- system_data library
 -- @module system_data
 
-local bitset_array = require "motor.bitset_array"
-local storage = require "motor.storage"
-local generational_index = require "motor.generational_index"
-local entity = require "motor.entity"
-local union = require "motor.lua5x-operations".union
+local bitset_array = require ("rotor.bitset_array")
+local storage = require ("rotor.storage")
+local generational_index = require ("rotor.generational_index")
+local entity = require ("rotor.entity")
+local union = require ("rotor.lua5x-operations").union
 
 local system_data_lib = {}
 local system_data_mt = {

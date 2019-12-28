@@ -1,7 +1,7 @@
 --- bitsetarray library
 -- @module bitset_array
 
-local operations = require "motor.lua5x-operations"
+local operations = require ("rotor.lua5x-operations")
 
 -- from Lua Manual: lua.org/manual/5.3/manual.html#3.4.2
 -- Lua supports the following bitwise operators:

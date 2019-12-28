@@ -1,7 +1,7 @@
 --- storage library
 -- @module storage
 
-local generational_index = require 'motor.generational_index'
+local generational_index = require ("rotor.generational_index")
 local new_id = generational_index.new
 
 local storage_lib = {}

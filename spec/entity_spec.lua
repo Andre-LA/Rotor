@@ -1,7 +1,7 @@
 describe("entity library", function()
-  local storage = require "motor.storage"
-  local entity = require "motor.entity"
-  local bitset_array = require "motor.bitset_array"
+  local storage = require ("rotor.storage")
+  local entity = require ("rotor.entity")
+  local bitset_array = require ("rotor.bitset_array")
 
   -- component constructors
   local function new_point (x, y)

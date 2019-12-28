@@ -17,11 +17,11 @@ local _unpack = unpack or table.unpack
 -- all other libraries to work and it's also the core of ECS.
 
 describe("system_data library", function()
-  local system_data = require "motor.system_data"
-  local bitset_array = require "motor.bitset_array"
-  local generational_index = require "motor.generational_index"
-  local storage = require "motor.storage"
-  local entity = require "motor.entity"
+  local system_data = require ("rotor.system_data")
+  local bitset_array = require ("rotor.bitset_array")
+  local generational_index = require ("rotor.generational_index")
+  local storage = require ("rotor.storage")
+  local entity = require ("rotor.entity")
 
   -- components and system to use in tests
   local function new_position(x, y)
