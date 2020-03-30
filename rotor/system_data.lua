@@ -47,7 +47,7 @@ local function collect_components(system_data, entity_i)
       for j = 1, #entity_i.associated_storages do
          if ba_equals(system_data.required_storages[i], entity_i.associated_storages[j]) then
             n = n + 1
-            components_tuple[n] = entity_i.associated_components[i]
+            components_tuple[n] = entity_i.associated_components[j]
             break
          end
       end
